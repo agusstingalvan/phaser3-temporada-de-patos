@@ -1,4 +1,9 @@
 import HelloWorldScene from './scenes/HelloWorldScene'
+import Precarga from './scenes/Precarga';
+import Inicio from './scenes/Inicio';
+import SeleccionPersonajes from './scenes/SeleccionPersonajes';
+import Tablero from './scenes/Tablero';
+import Ganador from './scenes/Ganador';
 
 export const config = {
     type: Phaser.AUTO,
@@ -25,6 +30,10 @@ export const config = {
         },
     },
     scene: [
-        HelloWorldScene
+        Precarga,
+        Inicio,
+        SeleccionPersonajes,
+        Tablero,
+        Ganador,
     ],
 };
