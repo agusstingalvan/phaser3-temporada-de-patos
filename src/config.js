@@ -4,6 +4,7 @@ import Inicio from './scenes/Inicio';
 import SeleccionPersonajes from './scenes/SeleccionPersonajes';
 import Tablero from './scenes/Tablero';
 import Ganador from './scenes/Ganador';
+import Interface from './scenes/Interface';
 
 export const config = {
     type: Phaser.AUTO,
@@ -34,6 +35,7 @@ export const config = {
         Inicio,
         SeleccionPersonajes,
         Tablero,
+        Interface,
         Ganador,
     ],
 };

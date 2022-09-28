@@ -13,5 +13,9 @@ export default class Ganador extends Phaser.Scene
 
     create()
     {
+        this.add.text(500, 500, 'Estas en Ganador')
+        setTimeout(()=>{
+            this.scene.start("Inicio" );
+        }, 4000)
     }
 }
