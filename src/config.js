@@ -32,7 +32,6 @@ export const config = {
     },
     scene: [
         Precarga,
-        HelloWorldScene,
         Inicio,
         SeleccionPersonajes,
         Tablero,

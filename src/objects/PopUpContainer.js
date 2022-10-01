@@ -32,12 +32,14 @@ export default class PopUpContainer{
         this.container.visible = true;
         //Return false for the canOpenPopUp in the scene.
         // this.setOpen(false)
+        this.scene.canOpenPopUp = false;
         return false;
     }
     hide(){
         this.container.visible = false;
         //Return true for the canOpenPopUp in the scene.
         // this.setOpen(true)
+        this.scene.canOpenPopUp = true;
         return true
     }
     canOpen(){
