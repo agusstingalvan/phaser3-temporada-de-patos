@@ -2,51 +2,49 @@ import Phaser from 'phaser'
 import Button from '../objects/Button';
 
 let stringName = ""
-// #players = [
-//         {
-//             player1: {
-//             name: "Jugador 1",
-//             x: 525,
-//             y: 300,
-//             texture: "pato-bruja",
-//             }
-//         },
-//         {
-//             player2: {
-//             name: "Jugador 2",
-//             x: 725,
-//             y: 300,
-//             texture: "pato-galera",
-//             }
-//         },
-//     ];
+
 export default class SeleccionPersonajes extends Phaser.Scene
 {
-    #players = {
-        player1: {
-            name: "Jugador 1",
+    #players =  [
+        {
+            name: 'Jugador 1',
+            texture: "pato-bruja",
+            x: 300,
+            y: 300,
+        },
+        {
+            name: 'Jugador 2',
+            texture: "pato-recibido",
             x: 525,
             y: 300,
-            texture: "pato-bruja",
         },
-        player2: {
-            name: "Jugador 2",
-            x: 725,
+        {
+            name: 'Jugador 3',
+            texture: "pato-verde",
+            x: 700,
             y: 300,
-            texture: "pato-galera",
         },
-    };
-    #canEdit = true;
-    stringName = "";
+        {
+            name: 'Jugador 4',
+            texture: "pato-galera",
+            x: 900,
+            y: 300,
+        }
+    ];
+
+    canEdit = true;
+
 	constructor() {
         super("SeleccionPersonajes");
     }
     init(data) {
         console.log('estas en pjs')
-        this.#canEdit = true
+        this.canEdit = true
         stringName = "";
-        this.#players.player1.name = 'Jugador 1';
-        this.#players.player2.name = 'Jugador 2';
+        this.#players[0].name = 'Jugador 1';
+        this.#players[1].name = 'Jugador 2';
+        this.#players[2].name = 'Jugador 3';
+        this.#players[3].name = 'Jugador 4';
         this.sonidos = data.sonidos;
     }
     create() {
@@ -57,19 +55,16 @@ export default class SeleccionPersonajes extends Phaser.Scene
         }
         this.background = this.add.image(positionCenter.x, positionCenter.y, 'atlas-backgrounds', "fondo-seleccionPersonajes");
 
-        for (let player in this.#players) {
-            let playerObj = this.#players[player];
-            let { x, y, name, color, texture } = playerObj;
-            this.add.rectangle(x + 20, y + 5, 84, 84, '0x0B4551')
-            this.dataa = this.add.sprite(x + 20, y, 'atlas_patos_static', texture, { frameWidth: 64, frameHeight: 64 }).setTint(color);
+        for(let player of  this.#players){
+            let { x, y, name, texture } = player;
+            this.add.rectangle(x + 20, y + 5, 84, 84, '0x0B4551');
+            this.add.image(x + 20, y, 'atlas-patos-statics', texture, { frameWidth: 64, frameHeight: 64 });
             let nameText = this.add.text(x, y + 70, name, {
                 fontFamily: 'Lsans',
                 fontSize: 18,
             }).setOrigin(0.5);
-
-            this.createInputs(nameText, playerObj);
+            this.createInputs(nameText, player);
         }
-
         const sonidos = this.sonidos;
         const btnCerrar = new Button(this, width - 45, height - (height - 45), 'botones', "boton-cerrar", () => {
             this.sonidos.sound.musicMain.stop();
@@ -81,6 +76,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.sonidos.sound.musicMain.stop()
         });
     }
+
     createInputs(nameText, playerObj) {
         let btnEdit, btnReady;
         btnEdit = this.add
@@ -94,8 +90,8 @@ export default class SeleccionPersonajes extends Phaser.Scene
         btnReady.visible = false;     
         btnEdit.on("pointerdown", () => {
             //Primero verifico si no hay ningun otro editandoce.
-            if (!this.#canEdit) return;
-            this.#canEdit = false;
+            if (!this.canEdit) return;
+            this.canEdit = false;
             nameText.setText("Escriba...");
             nameText.setColor("red");
             stringName = "";
@@ -103,7 +99,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             btnEdit.visible = false;
             btnReady.visible = true;
             this.background.setInteractive().on("pointerdown", ()=>{
-                this.#canEdit = true;
+                this.canEdit = true;
                 btnEdit.visible = true;
                 btnReady.visible = false;
                 nameText.setColor("white");
@@ -114,7 +110,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 });
             });
         btnReady.on("pointerdown", () => {
-            this.#canEdit = true;
+            this.canEdit = true;
             btnEdit.visible = true;
             btnReady.visible = false;
             nameText.setColor("white");
@@ -147,7 +143,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 return;
             }
             if (e.key === 'Enter') {
-                this.#canEdit = true;
+                this.canEdit = true;
                 btnEdit.visible = true;
                 btnReady.visible = false;
                 nameText.setColor("white");

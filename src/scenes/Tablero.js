@@ -13,16 +13,16 @@ export default class Tablero extends Phaser.Scene
 	{
 		super('Tablero')
 	}
-    init({players}){
+    init({players, sonidos}){
         this.#players = players
+        this.sonidos = sonidos;
+        console.log(this.#players)
     }
 
     create()
     {
         this.add.text(500, 500, 'Estas en Tablero')
-        setTimeout(()=>{
-            this.scene.start("Ganador" );
-        }, 4000)
+
     }
 
     changeTurn(player){
