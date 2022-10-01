@@ -1,10 +1,10 @@
-import HelloWorldScene from './scenes/HelloWorldScene'
-import Precarga from './scenes/Precarga';
-import Inicio from './scenes/Inicio';
-import SeleccionPersonajes from './scenes/SeleccionPersonajes';
-import Tablero from './scenes/Tablero';
-import Ganador from './scenes/Ganador';
-import Interface from './scenes/Interface';
+import HelloWorldScene from './scenes/HelloWorldScene.js'
+import Precarga from './scenes/Precarga.js';
+import Inicio from './scenes/Inicio.js';
+import SeleccionPersonajes from './scenes/SeleccionPersonajes.js';
+import Tablero from './scenes/Tablero.js';
+import Ganador from './scenes/Ganador.js';
+import Interface from './scenes/Interface.js';
 
 export const config = {
     type: Phaser.AUTO,
@@ -32,6 +32,7 @@ export const config = {
     },
     scene: [
         Precarga,
+        HelloWorldScene,
         Inicio,
         SeleccionPersonajes,
         Tablero,

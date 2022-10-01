@@ -16,7 +16,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
     {
         this.add.text(500, 500, 'Estas en SeleccionPersonajes')
         setTimeout(()=>{
-            this.scene.start("Tablero", {this.#players} );
+            this.scene.start("Tablero", {player: this.#players} );
         }, 4000)
     }
 }
