@@ -18,11 +18,14 @@ export default class Precarga extends Phaser.Scene
         this.load.image("fondo-tablero", 'assets/escenas/tablero.png');
         this.load.atlas("atlas-backgrounds", 'assets/escenas/atlas-backgrounds.png', 'assets/escenas/atlas-backgrounds.json');
 
-        
-        //Statics sprites of "duckus"
+        this.load.image("invisible", 'assets/capa-invisible.png');
+        //Pointer of ducks
+        this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
+
+        //Statics sprites of "ducks"
         this.load.atlas('atlas-patos-statics', 'assets/patos/atlas-patos-statics.png', 'assets/patos/atlas-patos-statics.json')
 
-        //Spritesheets of "duckus"
+        //Spritesheets of "ducks"
         this.load.spritesheet("pato-recibido-idle", 'assets/patos/spritesheets/pato-recibido-idle.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("pato-recibido-move", 'assets/patos/spritesheets/pato-recibido-move.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("pato-verde-idle", 'assets/patos/spritesheets/pato-verde-idle.png', {frameWidth: 64, frameHeight: 64})
@@ -67,6 +70,15 @@ export default class Precarga extends Phaser.Scene
 
     create()
     {
+        this.anims.create({
+            key: "pointer-duck-anims",
+            frames: this.anims.generateFrameNumbers("pointer-duck", {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 3,
+            repeat: -1,
+        });
         this.anims.create({
             key: "pato-bruja-idle-anims",
             frames: this.anims.generateFrameNumbers("pato-bruja-idle", {

@@ -48,8 +48,6 @@ export default class Inicio extends Phaser.Scene
         this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 150, 'botones', "boton-opciones", () => {
             if(this.canOpenPopUp){
                 this.#popUpOptions.show()
-                // this.setCanOpenPopUp(canOpen)
-
                 return;
             }
         }, 0.65)
@@ -58,27 +56,21 @@ export default class Inicio extends Phaser.Scene
             texture: 'popup-ayuda',
             btnClose: true,
             scale: 1,
-            // setter: this.setCanOpenPopUp
         })
         this.#popUpCredits = this.createPopUp({
             scene: this,
             texture: 'popup-creditos',
             btnClose: true,
             scale: 1,
-            // setter: this.setCanOpenPopUp
         })
         this.#popUpOptions = this.createPopUp({
             scene: this,
             texture: 'popup-opciones',
             btnClose: true,
             scale: 1,
-            // setter: this.setCanOpenPopUp
         })
     }
     createPopUp(data){
         return new PopUpContainer(data)
-    }
-    setCanOpenPopUp(bool){
-        this.canOpenPopUp = bool;
     }
 }
