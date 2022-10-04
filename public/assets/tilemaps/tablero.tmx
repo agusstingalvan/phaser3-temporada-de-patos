@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="102">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="142">
  <editorsettings>
   <export target="tablero.json" format="json"/>
  </editorsettings>
@@ -26,166 +26,121 @@
   <object id="66" name="0" type="salida" x="86" y="142">
    <point/>
   </object>
-  <object id="4" name="1" type="casilla" x="127.333" y="208">
+  <object id="102" name="1" type="casilla" x="126" y="205">
    <point/>
   </object>
-  <object id="5" name="2" type="casilla" x="169.667" y="230">
+  <object id="103" name="2" type="casilla" x="192" y="245">
    <point/>
   </object>
-  <object id="6" name="3" type="casilla" x="220.333" y="254.167">
+  <object id="104" name="3" type="casilla" x="256" y="257">
    <point/>
   </object>
-  <object id="7" name="4" type="casilla" x="275.333" y="260">
+  <object id="105" name="4" type="casilla" x="335" y="242">
    <point/>
   </object>
-  <object id="8" name="5" type="casilla" x="327" y="244.667">
+  <object id="106" name="5" type="casilla" x="421" y="198">
    <point/>
   </object>
-  <object id="9" name="6" type="casilla" x="387.333" y="216.667">
+  <object id="107" name="6" type="casilla" x="513" y="163">
    <point/>
   </object>
-  <object id="10" name="7" type="casilla" x="448" y="184">
+  <object id="108" name="7" type="casilla" x="589" y="166">
    <point/>
   </object>
-  <object id="11" name="8" type="casilla" x="510" y="170">
+  <object id="109" name="8" type="casilla" x="671" y="177">
    <point/>
   </object>
-  <object id="12" name="9" type="casilla" x="575.333" y="164.667">
+  <object id="110" name="9" type="casilla" x="786" y="190">
    <point/>
   </object>
-  <object id="14" name="10" type="casilla" x="639.333" y="171.333">
+  <object id="111" name="10" type="casilla" x="839" y="291">
    <point/>
   </object>
-  <object id="15" name="11" type="casilla" x="704" y="182.667">
+  <object id="112" name="11" type="casilla" x="836" y="372">
    <point/>
   </object>
-  <object id="16" name="12" type="casilla" x="787.333" y="207.333">
+  <object id="113" name="12" type="casilla" x="779" y="451">
    <point/>
   </object>
-  <object id="17" name="13" type="casilla" x="824" y="254.667">
+  <object id="114" name="13" type="casilla" x="681" y="434">
    <point/>
   </object>
-  <object id="19" name="14" type="casilla" x="834.667" y="304">
+  <object id="115" name="14" type="casilla" x="653" y="361">
    <point/>
   </object>
-  <object id="20" name="15" type="casilla" x="845.333" y="365.333">
+  <object id="116" name="15" type="casilla" x="676" y="293">
    <point/>
   </object>
-  <object id="21" name="16" type="casilla" x="823.667" y="421">
+  <object id="117" name="16" type="casilla" x="717" y="235">
    <point/>
   </object>
-  <object id="22" name="17" type="casilla" x="768" y="458.667">
+  <object id="118" name="17" type="casilla" x="915" y="187">
    <point/>
   </object>
-  <object id="23" name="18" type="casilla" x="708" y="450">
+  <object id="119" name="18" type="casilla" x="1018" y="206">
    <point/>
   </object>
-  <object id="24" name="19" type="casilla" x="655.667" y="415.667">
+  <object id="120" name="19" type="casilla" x="1085" y="252">
    <point/>
   </object>
-  <object id="29" name="20" type="casilla" x="660" y="355.667">
+  <object id="121" name="20" type="casilla" x="1118" y="323">
    <point/>
   </object>
-  <object id="30" name="21" type="casilla" x="673" y="299">
+  <object id="122" name="21" type="casilla" x="1138" y="396">
    <point/>
   </object>
-  <object id="31" name="22" type="casilla" x="711.667" y="244.667">
+  <object id="123" name="22" type="casilla" x="1122" y="494">
    <point/>
   </object>
-  <object id="32" name="23" type="casilla" x="834" y="196">
+  <object id="125" name="23" type="casilla" x="1088" y="557">
    <point/>
   </object>
-  <object id="33" name="24" type="casilla" x="899" y="192.667">
+  <object id="126" name="24" type="casilla" x="1029" y="602">
    <point/>
   </object>
-  <object id="34" name="25" type="casilla" x="960.333" y="197.667">
+  <object id="127" name="25" type="casilla" x="943" y="616">
    <point/>
   </object>
-  <object id="35" name="26" type="casilla" x="1015" y="212.667">
+  <object id="128" name="26" type="casilla" x="852" y="616">
    <point/>
   </object>
-  <object id="37" name="27" type="casilla" x="1067" y="240">
+  <object id="129" name="27" type="casilla" x="750" y="591">
    <point/>
   </object>
-  <object id="38" name="28" type="casilla" x="1096.33" y="301">
+  <object id="130" name="28" type="casilla" x="681" y="544">
    <point/>
   </object>
-  <object id="40" name="29" type="casilla" x="1128.67" y="347.333">
+  <object id="131" name="29" type="casilla" x="607" y="510">
    <point/>
   </object>
-  <object id="42" name="30" type="casilla" x="1137.67" y="401.333">
+  <object id="132" name="30" type="casilla" x="537" y="470">
    <point/>
   </object>
-  <object id="44" name="31" type="casilla" x="1131.33" y="452">
+  <object id="133" name="31" type="casilla" x="452" y="420">
    <point/>
   </object>
-  <object id="45" name="32" type="casilla" x="1108" y="513.667">
+  <object id="134" name="32" type="casilla" x="381" y="389">
    <point/>
   </object>
-  <object id="46" name="33" type="casilla" x="1083.33" y="564">
+  <object id="135" name="33" type="casilla" x="292" y="380">
    <point/>
   </object>
-  <object id="47" name="34" type="casilla" x="1034.67" y="601">
+  <object id="136" name="34" type="casilla" x="191" y="413">
    <point/>
   </object>
-  <object id="48" name="35" type="casilla" x="977" y="617.667">
+  <object id="137" name="35" type="casilla" x="151" y="470.333">
    <point/>
   </object>
-  <object id="49" name="36" type="casilla" x="916.667" y="619">
+  <object id="138" name="36" type="casilla" x="160" y="540.667">
    <point/>
   </object>
-  <object id="50" name="37" type="casilla" x="855" y="619">
+  <object id="139" name="37" type="casilla" x="222.333" y="578.667">
    <point/>
   </object>
-  <object id="51" name="38" type="casilla" x="791.333" y="612.667">
+  <object id="140" name="38" type="casilla" x="328" y="565">
    <point/>
   </object>
-  <object id="52" name="39" type="casilla" x="727.667" y="588">
-   <point/>
-  </object>
-  <object id="53" name="40" type="casilla" x="675.667" y="548.333">
-   <point/>
-  </object>
-  <object id="54" name="41" type="casilla" x="607.667" y="521.667">
-   <point/>
-  </object>
-  <object id="56" name="42" type="casilla" x="546.667" y="486.333">
-   <point/>
-  </object>
-  <object id="57" name="43" type="casilla" x="488.667" y="446.333">
-   <point/>
-  </object>
-  <object id="59" name="44" type="casilla" x="427.333" y="416.667">
-   <point/>
-  </object>
-  <object id="60" name="45" type="casilla" x="358.833" y="392.5">
-   <point/>
-  </object>
-  <object id="61" name="46" type="casilla" x="289" y="389">
-   <point/>
-  </object>
-  <object id="90" name="47" type="casilla" x="228.667" y="394.667">
-   <point/>
-  </object>
-  <object id="91" name="48" type="casilla" x="170" y="430">
-   <point/>
-  </object>
-  <object id="95" name="49" type="casilla" x="140" y="484.667">
-   <point/>
-  </object>
-  <object id="96" name="50" type="casilla" x="160" y="536.667">
-   <point/>
-  </object>
-  <object id="97" name="51" type="casilla" x="208" y="574">
-   <point/>
-  </object>
-  <object id="98" name="52" type="casilla" x="277.333" y="584">
-   <point/>
-  </object>
-  <object id="99" name="53" type="casilla" x="332" y="560">
-   <point/>
-  </object>
-  <object id="101" name="54" type="casilla" x="387.333" y="490">
+  <object id="141" name="39" type="casilla" x="384" y="485">
    <point/>
   </object>
  </objectgroup>

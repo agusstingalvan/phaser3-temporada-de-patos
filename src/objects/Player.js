@@ -46,11 +46,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     changePosition(numberPositon){
         //Change position
         this.currentPosition += numberPositon;
-        if(this.currentPosition > 54) {
+        if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
         }
         
-        if(this.currentPosition === 54){
+        if(this.currentPosition === 39){
 
             this.#tablero.scene.start('Ganador', this)
             this.#tablero.scene.stop('Interface')
