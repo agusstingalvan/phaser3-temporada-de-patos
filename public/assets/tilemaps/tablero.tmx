@@ -26,22 +26,22 @@
   <object id="66" name="0" type="salida" x="86" y="142">
    <point/>
   </object>
-  <object id="102" name="1" type="casilla" x="126" y="205">
+  <object id="102" name="1" type="bomba" x="126" y="205">
    <point/>
   </object>
-  <object id="103" name="2" type="casilla" x="192" y="245">
+  <object id="103" name="2" type="bomba" x="192" y="245">
    <point/>
   </object>
-  <object id="104" name="3" type="casilla" x="256" y="257">
+  <object id="104" name="3" type="bomba" x="256" y="257">
    <point/>
   </object>
-  <object id="105" name="4" type="casilla" x="335" y="242">
+  <object id="105" name="4" type="bomba" x="335" y="242">
    <point/>
   </object>
-  <object id="106" name="5" type="casilla" x="421" y="198">
+  <object id="106" name="5" type="bomba" x="421" y="198">
    <point/>
   </object>
-  <object id="107" name="6" type="casilla" x="513" y="163">
+  <object id="107" name="6" type="bomba" x="513" y="163">
    <point/>
   </object>
   <object id="108" name="7" type="casilla" x="589" y="166">

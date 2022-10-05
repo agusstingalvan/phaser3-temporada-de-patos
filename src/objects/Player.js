@@ -1,4 +1,5 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
+import PopUpContainer from "./PopupContainer";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     #tablero;
     name;
@@ -31,13 +32,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         if(this.isTurn) {
             this.anims.play(`${this.frameAnimation}-idle-anims`, true);
-            // this.anims.play(`pointer-duck-anims`);
+            // this.anims.play(`pointer-duck-anims`, true);
         }else{
             this.anims.play(`${this.frameAnimation}-idle-anims`, true);
             this.anims.pause();
         }
     }
-
+    addPowerUp(item){
+        this.inventory = [...this.inventory, item];
+    }
     throwDice(){
         let numberDice = Phaser.Math.Between(1, 6);
         //Move
@@ -62,19 +65,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         );
         this.setX(newPositon.x);
         this.setY(newPositon.y);
-        
-        this.changeTurn();
+        this.changeTurn(numberPositon);
     }
-    changeTurn(){
+    changeTurn(numberPositon){
         //Change turn
         this.isTurn = false;
         this.anims.pause();
+        // const data = {
+        //     scene: this.#tablero,
+        //     text: numberPositon,
+        //     btnClose: true,
+        // }
+        // const popup = new PopUpContainer(data);
+        // popup.container.visible = true
+        // console.log(popup)
+
         //Change Player
         const currentIndex = this.#tablero.players.indexOf(this);
         let nextIndex = currentIndex + 1;
         if(nextIndex > 3) nextIndex = 0;
         const nextPlayer = this.#tablero.players[nextIndex];
         nextPlayer.isTurn = true;
-        events.emit('change-turn', nextPlayer);
+        events.emit('change-turn', nextPlayer);    
     }
 }

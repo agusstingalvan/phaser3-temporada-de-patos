@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { shuffle } from 'underscore';
 import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
+import PopUpContainer from '../objects/PopupContainer';
 export default class Tablero extends Phaser.Scene
 {
     #playersData = []; //Data of name with texture of player;
@@ -14,6 +15,7 @@ export default class Tablero extends Phaser.Scene
     #slots; //Contain the power ups
     #timeTurn = 15;
     #startTurnPlayer;
+    #bombas;
     map;
 	constructor()
 	{
@@ -37,14 +39,19 @@ export default class Tablero extends Phaser.Scene
         const meta = objectsBoxesLayer.objects.find((point=> point.name === '54'))
 
         this.#boxes = this.physics.add.group();
+        this.#bombas = this.physics.add.group();
         objectsBoxesLayer.objects.forEach((box) =>{
             const {type, x , y, name} = box;
-
+            const casilla = this.#boxes.create(box.x, box.y, 'invisible')
+            casilla.body.allowGravity = false;
+            casilla.visible = false;
             switch(type){
-                case 'casilla':
-                    const casilla = this.#boxes.create(box.x, box.y, 'invisible')
-                    casilla.body.allowGravity = false;
-                    casilla.visible = false;
+                case 'bomba':
+                    const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
+                    const bomba = this.#bombas.create(x, y, testBomb)
+                    bomba.body.allowGravity = false;
+                    console.log('bomba')
+                    // events.emit('add-bomb', testBomb);
                     break;
             }
         })
@@ -74,6 +81,22 @@ export default class Tablero extends Phaser.Scene
             box.disableBody(true, true);
         }, null, this)
 
+        this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
+            events.emit('add-bomb', box)
+            box.disableBody(true, true);
+        }, null, this)
+
+        // const data = {
+        //     scene: this,
+        //     text: 'Perdiste el turno',
+        //     position: {
+        //         x: 400,
+        //         y: 500,
+        //     },
+        //     btnClose: true
+        // }
+        // this.pop = new PopUpContainer(data);
+        // this.pop.container.visible = true;
     }
     update(){
         for(let player of this.players){
