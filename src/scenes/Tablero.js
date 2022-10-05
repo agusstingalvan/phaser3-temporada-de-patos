@@ -43,20 +43,24 @@ export default class Tablero extends Phaser.Scene
         this.camara = this.cameras.main;
         this.#boxes = this.physics.add.group();
         this.#casillaConsecuenciaGroup = this.physics.add.group();
-        // this.#bombas = this.physics.add.group();
+        //#bombas group is only for test
+        this.#bombas = this.physics.add.group();
+
+
         objectsBoxesLayer.objects.forEach((box) =>{
             const {type, x , y, name} = box;
+            
             const casilla = this.#boxes.create(box.x, box.y, 'invisible')
             casilla.body.allowGravity = false;
             casilla.visible = false;
             switch(type){
-                // case 'bomba':
-                //     const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
-                //     const bomba = this.#bombas.create(x, y, testBomb)
-                //     bomba.body.allowGravity = false;
-                //     console.log('bomba')
-                //     // events.emit('add-bomb', testBomb);
-                //     break;
+                //#bombas group is only for test
+                case 'bomba':
+                    const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
+                    const bomba = this.#bombas.create(x, y, testBomb)
+                    bomba.body.allowGravity = false;
+                    // events.emit('add-bomb', testBomb);
+                    break;
                 case 'consecuencia':
                     console.log('consecuencia')
                     const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
@@ -92,15 +96,15 @@ export default class Tablero extends Phaser.Scene
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             console.log('yunque')
             box.disableBody(true, true);
-            //Posiblemente emitir un evento el cual sea "trigger-consecuencia", el cual, cuando se accione se desactive el boton tirar
-            events.emit('hide-dice', player, this.camara);
-            
+            this.camara.shake(200);
+            setTimeout(()=> player.changePosition(0), 1000)
         }, null, this)
 
-        // this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
-        //     events.emit('add-bomb', box)
-        //     box.disableBody(true, true);
-        // }, null, this)
+        this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
+            // events.emit('add-bomb', box)
+            box.disableBody(true, true);
+            console.log('bomba')
+        }, null, this)
 
         // const data = {
         //     scene: this,

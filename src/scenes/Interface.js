@@ -40,11 +40,8 @@ export default class Interface extends Phaser.Scene{
         this.#buttonDice.visible = true;
         }, this)
 
-       events.on('hide-dice', (player ,camara) => {
-            this.#currentPlayer = player
+       events.on('hide-dice', () => {
             this.#buttonDice.visible = false;
-            camara.shake(200);
-            setTimeout(()=>this.#currentPlayer.move(0), 1000)
         }, this)
 
         events.on('change-turn', (player)=> {

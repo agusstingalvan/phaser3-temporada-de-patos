@@ -46,23 +46,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //Move
         this.changePosition(numberDice);
     }
-    move(position){
-        this.currentPosition = position;
-        let newPositon = this.#map.findObject(
-            "objectsBoxes",
-            (obj) => obj.name === this.currentPosition.toString()
-        );
-        this.setX(newPositon.x);
-        this.setY(newPositon.y);
-
-        setTimeout(()=>{
-            events.emit('show-dice')
-            this.changeTurn();
-        }, 1000)
-    }
     changePosition(numberPositon){
         //Change position
-        this.currentPosition += numberPositon;
+        
+        if(numberPositon === 0){
+            this.currentPosition = numberPositon;
+        }else{
+            this.currentPosition += numberPositon;
+        }
         if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
         }
@@ -73,14 +64,37 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.#tablero.scene.stop('Interface')
         }
         
+        this.move(this.currentPosition);
+    }
+
+    move(position){
+        events.emit('hide-dice');
         let newPositon = this.#map.findObject(
             "objectsBoxes",
-            (obj) => obj.name === this.currentPosition.toString()
+            (obj) => obj.name === position.toString()
         );
-        this.setX(newPositon.x);
-        this.setY(newPositon.y);
-        this.changeTurn();
+        // this.setX(newPositon.x);
+        // this.setY(newPositon.y);
+        
+        this.#tablero.tweens.add({
+            targets: this,
+            x: newPositon.x,
+            y: newPositon.y,
+            ease: "Sine.easeOut",
+            duration: 1000,
+            repeat: 0,
+            yoyo: false,
+            onStart: ()=>{
+                this.#tablero.physics.pause()
+            },
+            onComplete: ()=>{
+                this.#tablero.physics.resume()
+                events.emit('show-dice')
+                this.changeTurn();
+            },
+        })
     }
+
     changeTurn(){
         //Change turn
         this.isTurn = false;
