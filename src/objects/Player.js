@@ -46,6 +46,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //Move
         this.changePosition(numberDice);
     }
+    move(position){
+        this.currentPosition = position;
+        let newPositon = this.#map.findObject(
+            "objectsBoxes",
+            (obj) => obj.name === this.currentPosition.toString()
+        );
+        this.setX(newPositon.x);
+        this.setY(newPositon.y);
+
+        setTimeout(()=>{
+            events.emit('show-dice')
+            this.changeTurn();
+        }, 1000)
+    }
     changePosition(numberPositon){
         //Change position
         this.currentPosition += numberPositon;
@@ -65,20 +79,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         );
         this.setX(newPositon.x);
         this.setY(newPositon.y);
-        this.changeTurn(numberPositon);
+        this.changeTurn();
     }
-    changeTurn(numberPositon){
+    changeTurn(){
         //Change turn
         this.isTurn = false;
         this.anims.pause();
-        // const data = {
-        //     scene: this.#tablero,
-        //     text: numberPositon,
-        //     btnClose: true,
-        // }
-        // const popup = new PopUpContainer(data);
-        // popup.container.visible = true
-        // console.log(popup)
 
         //Change Player
         const currentIndex = this.#tablero.players.indexOf(this);

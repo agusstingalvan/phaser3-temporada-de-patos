@@ -16,6 +16,8 @@ export default class Tablero extends Phaser.Scene
     #timeTurn = 15;
     #startTurnPlayer;
     #bombas;
+    #bombsGroup;
+    #casillaConsecuenciaGroup;
     map;
 	constructor()
 	{
@@ -38,20 +40,27 @@ export default class Tablero extends Phaser.Scene
         const salida = objectsBoxesLayer.objects.find((point=> point.type === 'salida'));
         const meta = objectsBoxesLayer.objects.find((point=> point.name === '54'))
 
+        this.camara = this.cameras.main;
         this.#boxes = this.physics.add.group();
-        this.#bombas = this.physics.add.group();
+        this.#casillaConsecuenciaGroup = this.physics.add.group();
+        // this.#bombas = this.physics.add.group();
         objectsBoxesLayer.objects.forEach((box) =>{
             const {type, x , y, name} = box;
             const casilla = this.#boxes.create(box.x, box.y, 'invisible')
             casilla.body.allowGravity = false;
             casilla.visible = false;
             switch(type){
-                case 'bomba':
-                    const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
-                    const bomba = this.#bombas.create(x, y, testBomb)
-                    bomba.body.allowGravity = false;
-                    console.log('bomba')
-                    // events.emit('add-bomb', testBomb);
+                // case 'bomba':
+                //     const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
+                //     const bomba = this.#bombas.create(x, y, testBomb)
+                //     bomba.body.allowGravity = false;
+                //     console.log('bomba')
+                //     // events.emit('add-bomb', testBomb);
+                //     break;
+                case 'consecuencia':
+                    console.log('consecuencia')
+                    const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
+                    casillaConsecuencia.body.allowGravity = false;
                     break;
             }
         })
@@ -80,11 +89,18 @@ export default class Tablero extends Phaser.Scene
             this.#currentPositionPlayer = player.currentPosition;
             box.disableBody(true, true);
         }, null, this)
-
-        this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
-            events.emit('add-bomb', box)
+        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+            console.log('yunque')
             box.disableBody(true, true);
+            //Posiblemente emitir un evento el cual sea "trigger-consecuencia", el cual, cuando se accione se desactive el boton tirar
+            events.emit('hide-dice', player, this.camara);
+            
         }, null, this)
+
+        // this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
+        //     events.emit('add-bomb', box)
+        //     box.disableBody(true, true);
+        // }, null, this)
 
         // const data = {
         //     scene: this,

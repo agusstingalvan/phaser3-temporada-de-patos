@@ -36,9 +36,20 @@ export default class Interface extends Phaser.Scene{
        .on("pointerover", (btn) => this.#buttonDice.setTint('0xc2c2c2').setScale(1.2))
        .on("pointerout", (btn) => this.#buttonDice.setTint('0xe5e5e5').setScale(1))
 
+       events.on('show-dice', ()=> {
+        this.#buttonDice.visible = true;
+        }, this)
+
+       events.on('hide-dice', (player ,camara) => {
+            this.#currentPlayer = player
+            this.#buttonDice.visible = false;
+            camara.shake(200);
+            setTimeout(()=>this.#currentPlayer.move(0), 1000)
+        }, this)
+
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
-            this.#nameLabel.setText(this.#currentPlayer.name)
+            this.#nameLabel.setText(this.#currentPlayer.name);
         }, this)
         events.on('add-bomb', (item)=> {
             if(this.#currentPlayer.inventory.length >= 2 ) return
