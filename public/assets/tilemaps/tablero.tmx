@@ -26,22 +26,22 @@
   <object id="66" name="0" type="salida" x="86" y="142">
    <point/>
   </object>
-  <object id="102" name="1" type="casilla" x="126" y="205">
+  <object id="102" name="1" type="bomba" x="126" y="205">
    <point/>
   </object>
-  <object id="103" name="2" type="casilla" x="192" y="245">
+  <object id="103" name="2" type="bomba" x="192" y="245">
    <point/>
   </object>
-  <object id="104" name="3" type="casilla" x="256" y="257">
+  <object id="104" name="3" type="bomba" x="256" y="257">
    <point/>
   </object>
-  <object id="105" name="4" type="casilla" x="335" y="242">
+  <object id="105" name="4" type="consecuencia" x="335" y="242">
    <point/>
   </object>
-  <object id="106" name="5" type="casilla" x="421" y="198">
+  <object id="106" name="5" type="bomba" x="421" y="198">
    <point/>
   </object>
-  <object id="107" name="6" type="casilla" x="513" y="163">
+  <object id="107" name="6" type="bomba" x="513" y="163">
    <point/>
   </object>
   <object id="108" name="7" type="casilla" x="589" y="166">
@@ -50,7 +50,7 @@
   <object id="109" name="8" type="casilla" x="671" y="177">
    <point/>
   </object>
-  <object id="110" name="9" type="casilla" x="786" y="190">
+  <object id="110" name="9" type="consecuencia" x="786" y="190">
    <point/>
   </object>
   <object id="111" name="10" type="casilla" x="839" y="291">
@@ -59,7 +59,7 @@
   <object id="112" name="11" type="casilla" x="836" y="372">
    <point/>
   </object>
-  <object id="113" name="12" type="casilla" x="779" y="451">
+  <object id="113" name="12" type="consecuencia" x="779" y="451">
    <point/>
   </object>
   <object id="114" name="13" type="casilla" x="681" y="434">
@@ -83,7 +83,7 @@
   <object id="120" name="19" type="casilla" x="1085" y="252">
    <point/>
   </object>
-  <object id="121" name="20" type="casilla" x="1118" y="323">
+  <object id="121" name="20" type="consecuencia" x="1118" y="323">
    <point/>
   </object>
   <object id="122" name="21" type="casilla" x="1138" y="396">
@@ -104,7 +104,7 @@
   <object id="128" name="26" type="casilla" x="852" y="616">
    <point/>
   </object>
-  <object id="129" name="27" type="casilla" x="750" y="591">
+  <object id="129" name="27" type="consecuencia" x="750" y="591">
    <point/>
   </object>
   <object id="130" name="28" type="casilla" x="681" y="544">
@@ -122,7 +122,7 @@
   <object id="134" name="32" type="casilla" x="381" y="389">
    <point/>
   </object>
-  <object id="135" name="33" type="casilla" x="292" y="380">
+  <object id="135" name="33" type="consecuencia" x="292" y="380">
    <point/>
   </object>
   <object id="136" name="34" type="casilla" x="191" y="413">

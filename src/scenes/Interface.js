@@ -36,22 +36,45 @@ export default class Interface extends Phaser.Scene{
        .on("pointerover", (btn) => this.#buttonDice.setTint('0xc2c2c2').setScale(1.2))
        .on("pointerout", (btn) => this.#buttonDice.setTint('0xe5e5e5').setScale(1))
 
+       events.on('show-dice', ()=> {
+        this.#buttonDice.visible = true;
+        }, this)
+
+       events.on('hide-dice', () => {
+            this.#buttonDice.visible = false;
+        }, this)
+
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
-            this.#nameLabel.setText(this.#currentPlayer.name)
+            this.#nameLabel.setText(this.#currentPlayer.name);
         }, this)
+        events.on('add-bomb', (item)=> {
+            if(this.#currentPlayer.inventory.length >= 2 ) return
+            item.name = 'bomba'
+            this.#currentPlayer.addPowerUp(item);
+            
+            for(let itemInventory of this.#currentPlayer.inventory){
+                if(this.#currentPlayer.inventory.indexOf(itemInventory) === 0){
+                    this.add.image(this.#slot1.x , this.#slot1.y, 'eada');
+                }
+                if(this.#currentPlayer.inventory.indexOf(itemInventory) === 1){
+                    this.add.image(this.#slot2.x , this.#slot2.y, 'eada');
+                }
+            }
+        }, this)
+
     }
     handleDice(){
         this.#currentPlayer.throwDice();
     }
 
-    addPowerUp(){
-        const testPowerUp = {
-            name: 'bomba',
-            texture: 'bomba'
-        }
-        const inventory = this.#currentPlayer.inventory;
-        inventory.push(testPowerUp)
-        console.log(inventory)
-    }
+    // addPowerUp(){
+    //     const testPowerUp = {
+    //         name: 'bomba',
+    //         texture: 'bomba'
+    //     }
+    //     const inventory = this.#currentPlayer.inventory;
+    //     inventory.push(testPowerUp)
+    //     console.log(inventory)
+    // }
 }

@@ -40,11 +40,7 @@ export default class Precarga extends Phaser.Scene
         this.load.image("reloj", 'assets/reloj.png');
 
 
-        //PopUps
-        this.load.image('popup-contenedor', 'assets/popups/popup-contenedor.png');
-        this.load.image('popup-ayuda', 'assets/popups/popup-ayuda.png');
-        this.load.image('popup-opciones', 'assets/popups/popup-opciones.png');
-        this.load.image('popup-creditos', 'assets/popups/popup-creditos.png');
+        
 
 
         //Buttons
@@ -65,6 +61,12 @@ export default class Precarga extends Phaser.Scene
         //Sound Effects
         this.load.audio('movimiento', 'assets/sounds/movimiento3.mp3');
         this.load.audio('tirarDado', 'assets/sounds/sonido-dado.mp3');
+
+        //PopUps
+        this.load.image('popup-contenedor', 'assets/popups/popup-contenedor.png');
+        this.load.image('popup-ayuda', 'assets/popups/popup-ayuda.png');
+        this.load.image('popup-opciones', 'assets/popups/popup-opciones.png');
+        this.load.image('popup-creditos', 'assets/popups/popup-creditos.png');
         
     }
 
