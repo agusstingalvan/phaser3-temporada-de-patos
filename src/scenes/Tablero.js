@@ -97,26 +97,27 @@ export default class Tablero extends Phaser.Scene
         }, null, this)
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             console.log('yunque')
-            this.casillaDesactivada = box.disableBody(true, true);
+            // this.casillaDesactivada = box.disableBody(true, true);
+            console.log('aca')
             this.camara.shake(200);
             setTimeout(()=> {
-                player.onlyMove(1)}, 1000);
+                }, 1000);
                 player.casillaDesactivada = this.casillaDesactivada;
         }, null, this)
 
-        this.physics.add.overlap(this.players, this.#bombas, (player, bomb)=>{
-            this.casillaDesactivada = bomb.disableBody(true, true);
-            console.log('bomba')
-            setTimeout(()=> {
-                if (player.currentPosition <= 5){
-                    player.onlyMove(1)
-                }
-                else
-                {
-                    player.changePosition(-5)
-                }
-            }, 1000)
-        }, null, this)
+        // this.physics.add.overlap(this.players, this.#bombas, (player, bomb)=>{
+        //     this.casillaDesactivada = bomb.disableBody(true, true);
+        //     console.log('bomba')
+        //     setTimeout(()=> {
+        //         if (player.currentPosition <= 5){
+        //             player.onlyMove(1)
+        //         }
+        //         else
+        //         {
+        //             player.changePosition(-5)
+        //         }
+        //     }, 1000)
+        // }, null, this)
 
     }
     update(){

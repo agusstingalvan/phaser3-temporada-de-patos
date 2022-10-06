@@ -19,5 +19,6 @@ export default class Ganador extends Phaser.Scene
         new Button(this, this.sys.game.config.width / 2 - 5, this.sys.game.config.height - 45, 'botones', "boton-volver", () => {
             this.scene.start("Inicio")
         })
+        
     }
 }
