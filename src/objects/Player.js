@@ -11,7 +11,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #canMove;
     #wallet;
     inventory = [];
+    casillaDesactivada;
     #map; //Map of tilemaps for find objects in the tablero.
+
     constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
@@ -38,22 +40,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.anims.pause();
         }
     }
-    addPowerUp(item){
-        this.inventory = [...this.inventory, item];
-    }
+
     throwDice(){
         let numberDice = Phaser.Math.Between(1, 6);
         //Move
         this.changePosition(numberDice);
+        console.log("dado: " + numberDice);
     }
     changePosition(numberPositon){
+        this.currentPosition += numberPositon;
         //Change position
-        
-        if(numberPositon === 0){
-            this.currentPosition = numberPositon;
-        }else{
-            this.currentPosition += numberPositon;
-        }
         if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
         }
@@ -63,11 +59,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.#tablero.scene.start('Ganador', this)
             this.#tablero.scene.stop('Interface')
         }
-        
         this.move(this.currentPosition);
     }
 
     move(position){
+        console.log(this.currentPosition)
         events.emit('hide-dice');
         let newPositon = this.#map.findObject(
             "objectsBoxes",
@@ -89,17 +85,31 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             },
             onComplete: ()=>{
                 this.#tablero.physics.resume()
-                events.emit('show-dice')
+                events.emit('show-dice');
+                if(this.casillaDesactivada !== undefined){
+                    console.log(this.casillaDesactivada)
+                this.casillaDesactivada.enableBody(
+                    true,
+                    this.casillaDesactivada.x,
+                    this.casillaDesactivada.y,
+                    true,
+                    true
+                );
+                }
                 this.changeTurn();
             },
         })
+    }
+    onlyMove(num = 1){
+        this.currentPosition = num;
+        this.move(num)
     }
 
     changeTurn(){
         //Change turn
         this.isTurn = false;
         this.anims.pause();
-
+        
         //Change Player
         const currentIndex = this.#tablero.players.indexOf(this);
         let nextIndex = currentIndex + 1;

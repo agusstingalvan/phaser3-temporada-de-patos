@@ -19,6 +19,7 @@ export default class Tablero extends Phaser.Scene
     #bombsGroup;
     #casillaConsecuenciaGroup;
     map;
+    casillaDesactivada;
 	constructor()
 	{
 		super('Tablero')
@@ -59,6 +60,7 @@ export default class Tablero extends Phaser.Scene
                     const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
                     const bomba = this.#bombas.create(x, y, testBomb)
                     bomba.body.allowGravity = false;
+                    bomba.name = name;
                     // events.emit('add-bomb', testBomb);
                     break;
                 case 'consecuencia':
@@ -95,28 +97,27 @@ export default class Tablero extends Phaser.Scene
         }, null, this)
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             console.log('yunque')
-            box.disableBody(true, true);
+            this.casillaDesactivada = box.disableBody(true, true);
             this.camara.shake(200);
-            setTimeout(()=> player.changePosition(0), 1000)
+            setTimeout(()=> {
+                player.onlyMove(1)}, 1000);
+                player.casillaDesactivada = this.casillaDesactivada;
         }, null, this)
 
-        this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
-            // events.emit('add-bomb', box)
-            box.disableBody(true, true);
+        this.physics.add.overlap(this.players, this.#bombas, (player, bomb)=>{
+            this.casillaDesactivada = bomb.disableBody(true, true);
             console.log('bomba')
+            setTimeout(()=> {
+                if (player.currentPosition <= 5){
+                    player.onlyMove(1)
+                }
+                else
+                {
+                    player.changePosition(-5)
+                }
+            }, 1000)
         }, null, this)
 
-        // const data = {
-        //     scene: this,
-        //     text: 'Perdiste el turno',
-        //     position: {
-        //         x: 400,
-        //         y: 500,
-        //     },
-        //     btnClose: true
-        // }
-        // this.pop = new PopUpContainer(data);
-        // this.pop.container.visible = true;
     }
     update(){
         for(let player of this.players){
@@ -126,6 +127,10 @@ export default class Tablero extends Phaser.Scene
                 events.emit('change-turn',  this.#currentPlayer);
             }
         }
+    }
+    updatePosition(box){
+        this.#currentPlayer.currentPosition = box.name * 1;
+
     }
     cronometer(){
         // #time
