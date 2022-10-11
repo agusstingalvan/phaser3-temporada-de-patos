@@ -9,12 +9,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #timeTurn;
     #position = 0;
     #canMove;
-    #wallet;
+    wallet = 0;
     inventory = [];
     casillaDesactivada;
     #map; //Map of tilemaps for find objects in the tablero.
+    #storeMap = [];
+    #moneyMap = [];
 
-    constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet, invetory = []}){
+    constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
         this.name = name; 
@@ -22,7 +24,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.#position = position;
         this.currentPosition = currentPositon;
         this.#canMove = canMove;
-        this.#wallet = wallet;
+        this.wallet = wallet;
         this.inventory = invetory;
         this.frameAnimation = frame;
         this.#map = this.#tablero.map;
@@ -39,13 +41,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.anims.play(`${this.frameAnimation}-idle-anims`, true);
             this.anims.pause();
         }
+
+        this.searchBoxes();
     }
 
     throwDice(){
         let numberDice = Phaser.Math.Between(1, 6);
         //Move
         this.changePosition(numberDice);
-        console.log("dado: " + numberDice);
     }
     changePosition(numberPositon){
         this.currentPosition += numberPositon;
@@ -63,7 +66,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     move(position){
-        console.log(this.currentPosition)
         events.emit('hide-dice');
         let newPositon = this.#map.findObject(
             "objectsBoxes",
@@ -86,16 +88,28 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             onComplete: ()=>{
                 this.#tablero.physics.resume()
                 events.emit('show-dice');
+                //Reactivar casilla
                 if(this.casillaDesactivada !== undefined){
-                    console.log(this.casillaDesactivada)
-                this.casillaDesactivada.enableBody(
-                    true,
-                    this.casillaDesactivada.x,
-                    this.casillaDesactivada.y,
-                    true,
-                    true
-                );
+                    this.casillaDesactivada.enableBody(
+                        true,
+                        this.casillaDesactivada.x,
+                        this.casillaDesactivada.y,
+                        true,
+                        true
+                    );
+                };
+
+                let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === position.toString());
+                let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
+
+                if(inStoreBox){
+                    console.log('Esta en una tienda');
                 }
+                if(inMoneyBox){
+                    console.log('Esta en una box de dinero');
+                    this.addMoney();
+                }
+
                 this.changeTurn();
             },
         })
@@ -118,4 +132,30 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         nextPlayer.isTurn = true;
         events.emit('change-turn', nextPlayer);    
     }
+
+    searchBoxes(){
+        let objectsLayers = this.#map.getObjectLayer("objectsBoxes")
+        objectsLayers.objects.forEach((box)=> {
+            const {name,type} = box;
+            switch(type){
+                case 'tienda': 
+                    this.#storeMap.push(name)
+                break;
+                case 'dinero': 
+                    this.#moneyMap.push(name)
+                break;
+            }
+        });
+    }
+
+    addMoney(money = 300){
+        this.wallet  += money;
+        events.emit('update-money', this.wallet);
+    }
+    // addPowerUp(){
+    //     const powerup = {
+    //         name: 'bomba'
+    //     }
+    //     this.inventory.push(powerup);
+    // }
 }

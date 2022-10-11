@@ -26,25 +26,25 @@
   <object id="66" name="0" type="salida" x="86" y="142">
    <point/>
   </object>
-  <object id="102" name="1" type="bomba" x="126" y="205">
+  <object id="102" name="1" type="casilla" x="126" y="205">
    <point/>
   </object>
-  <object id="103" name="2" type="bomba" x="192" y="245">
+  <object id="103" name="2" type="tienda" x="192" y="245">
    <point/>
   </object>
-  <object id="104" name="3" type="bomba" x="256" y="257">
+  <object id="104" name="3" type="dinero" x="256" y="257">
    <point/>
   </object>
   <object id="105" name="4" type="consecuencia" x="335" y="242">
    <point/>
   </object>
-  <object id="106" name="5" type="bomba" x="421" y="198">
+  <object id="106" name="5" type="casilla" x="421" y="198">
    <point/>
   </object>
-  <object id="107" name="6" type="bomba" x="513" y="163">
+  <object id="107" name="6" type="dinero" x="513" y="163">
    <point/>
   </object>
-  <object id="108" name="7" type="casilla" x="589" y="166">
+  <object id="108" name="7" type="tienda" x="589" y="166">
    <point/>
   </object>
   <object id="109" name="8" type="casilla" x="671" y="177">
@@ -59,16 +59,16 @@
   <object id="112" name="11" type="casilla" x="836" y="372">
    <point/>
   </object>
-  <object id="113" name="12" type="consecuencia" x="779" y="451">
+  <object id="113" name="12" type="dinero" x="779" y="451">
    <point/>
   </object>
   <object id="114" name="13" type="casilla" x="681" y="434">
    <point/>
   </object>
-  <object id="115" name="14" type="casilla" x="653" y="361">
+  <object id="115" name="14" type="tienda" x="653" y="361">
    <point/>
   </object>
-  <object id="116" name="15" type="casilla" x="676" y="293">
+  <object id="116" name="15" type="dinero" x="676" y="293">
    <point/>
   </object>
   <object id="117" name="16" type="casilla" x="717" y="235">
@@ -77,7 +77,7 @@
   <object id="118" name="17" type="casilla" x="915" y="187">
    <point/>
   </object>
-  <object id="119" name="18" type="casilla" x="1018" y="206">
+  <object id="119" name="18" type="dinero" x="1018" y="206">
    <point/>
   </object>
   <object id="120" name="19" type="casilla" x="1085" y="252">
@@ -86,7 +86,7 @@
   <object id="121" name="20" type="consecuencia" x="1118" y="323">
    <point/>
   </object>
-  <object id="122" name="21" type="casilla" x="1138" y="396">
+  <object id="122" name="21" type="dinero" x="1138" y="396">
    <point/>
   </object>
   <object id="123" name="22" type="casilla" x="1122" y="494">
@@ -95,7 +95,7 @@
   <object id="125" name="23" type="casilla" x="1088" y="557">
    <point/>
   </object>
-  <object id="126" name="24" type="casilla" x="1029" y="602">
+  <object id="126" name="24" type="dinero" x="1029" y="602">
    <point/>
   </object>
   <object id="127" name="25" type="casilla" x="943" y="616">
@@ -113,22 +113,22 @@
   <object id="131" name="29" type="casilla" x="607" y="510">
    <point/>
   </object>
-  <object id="132" name="30" type="casilla" x="537" y="470">
+  <object id="132" name="30" type="dinero" x="537" y="470">
    <point/>
   </object>
-  <object id="133" name="31" type="casilla" x="452" y="420">
+  <object id="133" name="31" type="tienda" x="452" y="420">
    <point/>
   </object>
   <object id="134" name="32" type="casilla" x="381" y="389">
    <point/>
   </object>
-  <object id="135" name="33" type="consecuencia" x="292" y="380">
+  <object id="135" name="33" type="dinero" x="292" y="380">
    <point/>
   </object>
-  <object id="136" name="34" type="casilla" x="191" y="413">
+  <object id="136" name="34" type="tienda" x="191" y="413">
    <point/>
   </object>
-  <object id="137" name="35" type="casilla" x="151" y="470.333">
+  <object id="137" name="35" type="tienda" x="151" y="470.333">
    <point/>
   </object>
   <object id="138" name="36" type="casilla" x="160" y="540.667">

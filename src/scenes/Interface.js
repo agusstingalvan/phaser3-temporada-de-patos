@@ -7,6 +7,7 @@ export default class Interface extends Phaser.Scene{
     #buttonDice;
     #timerLabel;
     #nameLabel;
+    #moneyLabel;
     #currentPlayer;
     constructor(){
         super("Interface")
@@ -23,12 +24,13 @@ export default class Interface extends Phaser.Scene{
        .on("pointerdown", () => console.log('slot2'))
        .on("pointerover", (btn) => this.#slot2.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot2.setTint('0xe5e5e5'))
-
+        //Wallet
+        this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
        //Timer
-       this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontFamily: 'bold'}).setOrigin(0.5)
+       this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontStyle: 'bold'}).setOrigin(0.5)
 
         //TextName
-       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontFamily: 'bold'} ).setOrigin(0.5)
+       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5)
 
        //Button Dice
        this.#buttonDice = this.add.image(this.scale.width - 84, this.scale.height - 94, 'boton-dado').setInteractive({ useHandCursor: true })
@@ -43,11 +45,18 @@ export default class Interface extends Phaser.Scene{
        events.on('hide-dice', () => {
             this.#buttonDice.visible = false;
         }, this)
-
+        events.on('update-money', (money) => {
+            const text = `$:${money}`
+            this.#moneyLabel.setText(text);
+        })
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
             this.#nameLabel.setText(this.#currentPlayer.name);
+            //Change the number of money, when change the turn
+            const text = `$:${this.#currentPlayer.wallet}`;
+            this.#moneyLabel.setText(text);
         }, this)
+        
 
     }
     handleDice(){
