@@ -53,23 +53,7 @@ export default class Tablero extends Phaser.Scene
         this.addPlayers(salida);
         
 
-        this.physics.add.overlap(this.players, this.#boxesGroup,(player, box)=>{
-            this.#currentPositionPlayer = player.currentPosition;
-            box.disableBody(true, true);
-        }, null, this);
-
-        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
-            console.log('yunque')
-            this.casillaDesactivada = box.disableBody(true, true);
-            console.log('aca')
-            this.camara.shake(200);
-            setTimeout(()=> { player.onlyMove(1) }, 1000);
-                player.casillaDesactivada = this.casillaDesactivada;
-        }, null, this)
-
-
-        //#bombsGroup group is only for test, for bomb in the boxes.
-        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
+        this.addOverlaps();
 
     }
     changeTurn(){
@@ -139,6 +123,26 @@ export default class Tablero extends Phaser.Scene
             this.players = [...this.players, new Player(props)];
         }
         console.log(this.players);
+    }
+    
+    addOverlaps(){
+        this.physics.add.overlap(this.players, this.#boxesGroup,(player, box)=>{
+            this.#currentPositionPlayer = player.currentPosition;
+            box.disableBody(true, true);
+        }, null, this);
+
+        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+            console.log('yunque')
+            this.casillaDesactivada = box.disableBody(true, true);
+            console.log('aca')
+            this.camara.shake(200);
+            setTimeout(()=> { player.onlyMove(1) }, 1000);
+                player.casillaDesactivada = this.casillaDesactivada;
+        }, null, this)
+
+
+        //#bombsGroup group is only for test, for bomb in the boxes.
+        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
     }
     cronometer(){
         // #time

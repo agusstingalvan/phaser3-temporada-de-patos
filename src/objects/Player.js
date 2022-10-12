@@ -52,6 +52,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
     changePosition(numberPositon){
         this.currentPosition += numberPositon;
+        
         //Change position
         if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
@@ -87,7 +88,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             },
             onComplete: ()=>{
                 this.#tablero.physics.resume()
-                events.emit('show-dice');
+                
                 //Reactivar casilla
                 if(this.casillaDesactivada !== undefined){
                     this.casillaDesactivada.enableBody(
@@ -109,8 +110,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     console.log('Esta en una box de dinero');
                     this.addMoney();
                 }
-
-                this.changeTurn();
+                const secondsChangeTurn = 3000;
+                setTimeout(()=>this.changeTurn(), secondsChangeTurn)
             },
         })
     }
@@ -130,7 +131,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(nextIndex > 3) nextIndex = 0;
         const nextPlayer = this.#tablero.players[nextIndex];
         nextPlayer.isTurn = true;
-        events.emit('change-turn', nextPlayer);    
+        events.emit('change-turn', nextPlayer);
+        events.emit('show-dice');
     }
 
     searchBoxes(){
@@ -150,7 +152,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     addMoney(money = 300){
         this.wallet  += money;
-        events.emit('update-money', this.wallet);
+        // events.emit('update-money', this.wallet);
     }
     // addPowerUp(){
     //     const powerup = {

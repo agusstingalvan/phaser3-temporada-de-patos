@@ -45,14 +45,17 @@ export default class Interface extends Phaser.Scene{
        events.on('hide-dice', () => {
             this.#buttonDice.visible = false;
         }, this)
+        
         events.on('update-money', (money) => {
             const text = `$:${money}`
             this.#moneyLabel.setText(text);
         })
+
         events.on('change-turn', (player)=> {
+            //Change the interfaces with own properties of player, when change the turn
             this.#currentPlayer = player;
             this.#nameLabel.setText(this.#currentPlayer.name);
-            //Change the number of money, when change the turn
+            
             const text = `$:${this.#currentPlayer.wallet}`;
             this.#moneyLabel.setText(text);
         }, this)
