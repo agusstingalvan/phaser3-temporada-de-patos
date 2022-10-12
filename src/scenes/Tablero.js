@@ -43,14 +43,56 @@ export default class Tablero extends Phaser.Scene
 
         this.camara = this.cameras.main;
 
+        //Create groups for Boxes layers.
+        this.addGroups();
+
+        //Create Boxes layer on the tablero.
+        this.addBoxes(objectsBoxesLayer)
+
+        //Create the players on the tablero.
+        this.addPlayers(salida);
+        
+
+        this.physics.add.overlap(this.players, this.#boxesGroup,(player, box)=>{
+            this.#currentPositionPlayer = player.currentPosition;
+            box.disableBody(true, true);
+        }, null, this);
+
+        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+            console.log('yunque')
+            this.casillaDesactivada = box.disableBody(true, true);
+            console.log('aca')
+            this.camara.shake(200);
+            setTimeout(()=> { player.onlyMove(1) }, 1000);
+                player.casillaDesactivada = this.casillaDesactivada;
+        }, null, this)
+
+
+        //#bombsGroup group is only for test, for bomb in the boxes.
+        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
+
+    }
+    changeTurn(){
+        for(let player of this.players){
+            if(player.isTurn){
+                player.anims.resume();
+                this.#currentPlayer = player;
+                events.emit('change-turn',  this.#currentPlayer);
+            }
+        }
+    }
+    update(){
+        this.changeTurn();
+    }
+    addGroups(){
         this.#boxesGroup = this.physics.add.group();
         this.#casillaConsecuenciaGroup = this.physics.add.group();
         this.#storeBoxesGroup = this.physics.add.group();
 
         //#bombsGroup group is only for test
         this.#bombsGroup = this.physics.add.group();
-
-
+    }
+    addBoxes(objectsBoxesLayer){
         objectsBoxesLayer.objects.forEach((box) =>{
             const {type, x , y, name} = box;
             
@@ -78,8 +120,8 @@ export default class Tablero extends Phaser.Scene
                 // break;
             }
         })
-
-        //Create the players on the tablero.
+    }
+    addPlayers(salida){
         for(let player of this.#playersData){
             const index = this.#playersData.indexOf(player);
             const props = {
@@ -97,35 +139,6 @@ export default class Tablero extends Phaser.Scene
             this.players = [...this.players, new Player(props)];
         }
         console.log(this.players);
-        
-
-        this.physics.add.overlap(this.players, this.#boxesGroup,(player, box)=>{
-            this.#currentPositionPlayer = player.currentPosition;
-            box.disableBody(true, true);
-        }, null, this);
-
-        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
-            console.log('yunque')
-            this.casillaDesactivada = box.disableBody(true, true);
-            console.log('aca')
-            this.camara.shake(200);
-            setTimeout(()=> { player.onlyMove(1) }, 1000);
-                player.casillaDesactivada = this.casillaDesactivada;
-        }, null, this)
-
-
-        //#bombsGroup group is only for test, for bomb in the boxes.
-        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
-
-    }
-    update(){
-        for(let player of this.players){
-            if(player.isTurn){
-                player.anims.resume();
-                this.#currentPlayer = player;
-                events.emit('change-turn',  this.#currentPlayer);
-            }
-        }
     }
     cronometer(){
         // #time
