@@ -4,6 +4,7 @@ import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
 import PopUpContainer from '../objects/PopupContainer';
 import Bomb from '../objects/powerups/Bomb';
+import NuclearBomb from '../objects/powerups/NuclearBomb';
 export default class Tablero extends Phaser.Scene
 {
     #playersData = []; //Data of name with texture of player;
@@ -19,6 +20,7 @@ export default class Tablero extends Phaser.Scene
     #boxesGroup; //Group of casillas
     #storeBoxesGroup;
     bombsGroup;
+    nuclearBombsGroup;
     map;
     casillaDesactivada;
 	constructor()
@@ -26,7 +28,9 @@ export default class Tablero extends Phaser.Scene
 		super('Tablero')
 	}
     init({players, sonidos}){
+        console.log('tablero');
         this.#playersData = shuffle(players);
+        this.players = [];
         this.sonidos = sonidos;
     }
 
@@ -76,6 +80,7 @@ export default class Tablero extends Phaser.Scene
 
         //#bombsGroup group is only for test
         this.bombsGroup = this.physics.add.group({allowGravity: false, classType: Bomb})
+        this.nuclearBombsGroup = this.physics.add.group({allowGravity: false, classType: NuclearBomb})
     }
     addBoxes(objectsBoxesLayer){
         objectsBoxesLayer.objects.forEach((box) =>{
@@ -127,7 +132,7 @@ export default class Tablero extends Phaser.Scene
             const bomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player});
             const nuclearBomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player});
             player.addPowerUp(bomb);
-            player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(nuclearBomb);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];

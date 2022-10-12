@@ -84,13 +84,14 @@ export default class Interface extends Phaser.Scene{
     }
 
     updateSlots(inventory, player){
+        this.#slots.map((s)=> s?.image?.destroy());
         inventory.map((item, index)=> {
             const {x, y} = this.#slots[index];
             const {key} = item.texture;
-            const image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
+            this.#slots[index].image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
             events.on('delete-item', (element)=> {
                 if(element === item){
-                    image.destroy();
+                    this.#slots[index].image.destroy();
                 }
             })
             this.#slots[index].useEffect = () =>{

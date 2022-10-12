@@ -5,32 +5,33 @@ let stringName = ""
 
 export default class SeleccionPersonajes extends Phaser.Scene
 {
-    #players =  [
-        {
-            name: 'Jugador 1',
-            texture: "pato-bruja",
-            x: 300,
-            y: 300,
-        },
-        {
-            name: 'Jugador 2',
-            texture: "pato-recibido",
-            x: 525,
-            y: 300,
-        },
-        {
-            name: 'Jugador 3',
-            texture: "pato-verde",
-            x: 700,
-            y: 300,
-        },
-        {
-            name: 'Jugador 4',
-            texture: "pato-galera",
-            x: 900,
-            y: 300,
-        }
-    ];
+    #players
+    // #players =  [
+    //     {
+    //         name: 'Jugador 1',
+    //         texture: "pato-bruja",
+    //         x: 300,
+    //         y: 300,
+    //     },
+    //     {
+    //         name: 'Jugador 2',
+    //         texture: "pato-recibido",
+    //         x: 525,
+    //         y: 300,
+    //     },
+    //     {
+    //         name: 'Jugador 3',
+    //         texture: "pato-verde",
+    //         x: 700,
+    //         y: 300,
+    //     },
+    //     {
+    //         name: 'Jugador 4',
+    //         texture: "pato-galera",
+    //         x: 900,
+    //         y: 300,
+    //     }
+    // ];
 
     canEdit = true;
 
@@ -41,10 +42,36 @@ export default class SeleccionPersonajes extends Phaser.Scene
         console.log('estas en pjs')
         this.canEdit = true
         stringName = "";
-        this.#players[0].name = 'Jugador 1';
-        this.#players[1].name = 'Jugador 2';
-        this.#players[2].name = 'Jugador 3';
-        this.#players[3].name = 'Jugador 4';
+        this.#players =  [
+            {
+                name: 'Jugador 1',
+                texture: "pato-bruja",
+                x: 300,
+                y: 300,
+            },
+            {
+                name: 'Jugador 2',
+                texture: "pato-recibido",
+                x: 525,
+                y: 300,
+            },
+            {
+                name: 'Jugador 3',
+                texture: "pato-verde",
+                x: 700,
+                y: 300,
+            },
+            {
+                name: 'Jugador 4',
+                texture: "pato-galera",
+                x: 900,
+                y: 300,
+            }
+        ];
+        // this.#players[0].name = 'Jugador 1';
+        // this.#players[1].name = 'Jugador 2';
+        // this.#players[2].name = 'Jugador 3';
+        // this.#players[3].name = 'Jugador 4';
         this.sonidos = data.sonidos;
     }
     create() {
@@ -72,6 +99,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
         }, 0.5);
 
         const btnListo = new Button(this, width / 2, height - 100, 'botones', "boton-listo", () => {
+            console.log(this.#players);
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
         });

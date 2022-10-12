@@ -4,12 +4,14 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
     #scene;
     currentPlayer;
     #position;
+    type = 'bomb'
     constructor({scene, x, y, texture, position, currentPlayer}){
         super(scene, x, y, texture)
         this.#position = position;
         this.currentPlayer = currentPlayer;
         this.#scene = scene;
         this.setScale(0.5);
+        console.log(this.texture.key);
     }
     add(player){
         this.#scene.add.existing(this);
@@ -27,7 +29,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
         // }, 3000)
     }
     delete(){
-        this.currentPlayer.inventory = this.currentPlayer.inventory.filter((item) => item !== this);
+        this.currentPlayer.inventory = this.currentPlayer.inventory.filter((item) => item.texture.key !== this.texture.key);
         events.emit('delete-item', this);
     }
     effect(){

@@ -1,5 +1,7 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
 import PopUpContainer from "./PopupContainer";
+import Bomb from "./powerups/Bomb";
+import NuclearBomb from "./powerups/NuclearBomb";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     #tablero;
     name;
@@ -62,6 +64,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
             this.#tablero.scene.start('Ganador', this)
             this.#tablero.scene.stop('Interface')
+            this.#tablero.scene.stop('Tablero')
         }
         this.move(this.currentPosition);
     }
@@ -104,14 +107,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
 
                 if(inStoreBox){
-                    console.log('Esta en una tienda');
+                    const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+                    this.addPowerUp(nuclearBomb);
                 }
                 if(inMoneyBox){
                     this.addMoney();
                 }
-                this.changeTurn()
-                // const secondsChangeTurn = 3000;
-                // setTimeout(()=>this.changeTurn(), secondsChangeTurn)
+                // this.changeTurn()
+                const secondsChangeTurn = 3000;
+                console.log(this.name);
+                setTimeout(()=>this.changeTurn(), secondsChangeTurn)
             },
         })
     }
@@ -131,6 +136,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(nextIndex > 3) nextIndex = 0;
         const nextPlayer = this.#tablero.players[nextIndex];
         nextPlayer.isTurn = true;
+        console.log(nextPlayer.name);
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');
     }
@@ -157,6 +163,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     addPowerUp(powerup){
         if(this.inventory.length === 2) return;
         this.inventory.push(powerup);
+        console.log(this.inventory);
         return this.inventory;
     }
 }

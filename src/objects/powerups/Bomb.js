@@ -15,17 +15,20 @@ export default class Bomb extends PowerUp{
         this.setData('owner', player.name)
         events.emit('hide-dice');
         this.delete()
-        player.changeTurn()
-        // setTimeout(()=>{
-        // }, 3000)
+        
+        setTimeout(()=>{
+            player.changeTurn()
+        }, 3000)
     }
     effect(playerCollide){
+        //Is call for the tablero.
         this.currentPlayer = playerCollide
         if (this.currentPlayer.currentPosition <= 5){
             this.currentPlayer.onlyMove(1)
         }
         else{
             this.currentPlayer.changePosition(-5)
+            ///CAMBIAR LA LOGICA DEL CAMBIAR TURNO
         }
         this.destroy()
         // setTimeout(()=>, 1000)
