@@ -35,6 +35,9 @@ export default class Precarga extends Phaser.Scene
         this.load.spritesheet("pato-galera-idle", 'assets/patos/spritesheets/pato-galera-idle.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("pato-galera-move", 'assets/patos/spritesheets/pato-galera-move.png', {frameWidth: 64, frameHeight: 64})
 
+        //PowerUps
+        this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
+        this.load.image("nuclear-bomb", 'assets/powerups/nuclear-bomb/nuclear-bomb.png');
         //Utils
         this.load.image("pointer", 'assets/patos/spritesheets/pointer-spritesheet.png')
         this.load.image("reloj", 'assets/reloj.png');

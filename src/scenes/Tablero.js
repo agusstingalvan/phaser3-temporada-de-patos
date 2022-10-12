@@ -3,6 +3,7 @@ import { shuffle } from 'underscore';
 import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
 import PopUpContainer from '../objects/PopupContainer';
+import Bomb from '../objects/powerups/Bomb';
 export default class Tablero extends Phaser.Scene
 {
     #playersData = []; //Data of name with texture of player;
@@ -17,7 +18,7 @@ export default class Tablero extends Phaser.Scene
     #casillaConsecuenciaGroup;
     #boxesGroup; //Group of casillas
     #storeBoxesGroup;
-    #bombsGroup;
+    bombsGroup;
     map;
     casillaDesactivada;
 	constructor()
@@ -74,7 +75,7 @@ export default class Tablero extends Phaser.Scene
         this.#storeBoxesGroup = this.physics.add.group();
 
         //#bombsGroup group is only for test
-        this.#bombsGroup = this.physics.add.group();
+        this.bombsGroup = this.physics.add.group({allowGravity: false, classType: Bomb})
     }
     addBoxes(objectsBoxesLayer){
         objectsBoxesLayer.objects.forEach((box) =>{
@@ -120,11 +121,20 @@ export default class Tablero extends Phaser.Scene
                 isTurn: false
             }
             if(index === 0) props.isTurn = true;
-            this.players = [...this.players, new Player(props)];
+            
+            //Only test powerup of bomb. Each player starts with a bomb.
+            player = new Player(props);
+            const bomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player});
+            const nuclearBomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player});
+            player.addPowerUp(bomb);
+            player.addPowerUp(nuclearBomb);
+            this.players = [...this.players, player];
+
+            // this.players = [...this.players, new Player(props)];
         }
         console.log(this.players);
     }
-    
+
     addOverlaps(){
         this.physics.add.overlap(this.players, this.#boxesGroup,(player, box)=>{
             this.#currentPositionPlayer = player.currentPosition;
@@ -134,13 +144,17 @@ export default class Tablero extends Phaser.Scene
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             console.log('yunque')
             this.casillaDesactivada = box.disableBody(true, true);
-            console.log('aca')
             this.camara.shake(200);
             setTimeout(()=> { player.onlyMove(1) }, 1000);
                 player.casillaDesactivada = this.casillaDesactivada;
         }, null, this)
 
+        this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
+            const owner = bomb.getData('owner');
+            if(player.name === owner) return 
 
+            bomb.effect(player);
+        }, null, this);
         //#bombsGroup group is only for test, for bomb in the boxes.
         // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
     }

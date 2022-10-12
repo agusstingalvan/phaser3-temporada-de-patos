@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { sharedInstance as events } from './EventCenter';
 
 export default class Interface extends Phaser.Scene{
+    #slots = [];
     #slot1;
     #slot2;
     #buttonDice;
@@ -16,14 +17,16 @@ export default class Interface extends Phaser.Scene{
         
         //Slots
        this.#slot1 = this.add.image(100, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
-       .on("pointerdown", () => this.addPowerUp())
+       .on("pointerdown", () => this.#slot1.useEffect())
        .on("pointerover", (btn) => this.#slot1.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot1.setTint('0xe5e5e5'))
 
        this.#slot2 = this.add.image(174, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
-       .on("pointerdown", () => console.log('slot2'))
+       .on("pointerdown", () => this.#slot2.useEffect())
        .on("pointerover", (btn) => this.#slot2.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot2.setTint('0xe5e5e5'))
+
+       this.#slots = [this.#slot1, this.#slot2];
         //Wallet
         this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
        //Timer
@@ -40,10 +43,16 @@ export default class Interface extends Phaser.Scene{
 
        events.on('show-dice', ()=> {
         this.#buttonDice.visible = true;
+        this.#slots.map((slot, index)=>{
+            slot.visible = true
+           })
         }, this)
 
        events.on('hide-dice', () => {
-            this.#buttonDice.visible = false;
+           this.#buttonDice.visible = false;
+           this.#slots.map((slot, index)=>{
+            slot.visible = false
+           })
         }, this)
         
         events.on('update-money', (money) => {
@@ -53,17 +62,41 @@ export default class Interface extends Phaser.Scene{
 
         events.on('change-turn', (player)=> {
             //Change the interfaces with own properties of player, when change the turn
-            this.#currentPlayer = player;
-            this.#nameLabel.setText(this.#currentPlayer.name);
-            
-            const text = `$:${this.#currentPlayer.wallet}`;
-            this.#moneyLabel.setText(text);
-        }, this)
-        
+            this.updateName(player)
 
+            const wallet = player.wallet;
+            this.updateWallet(wallet);
+
+            const inventory = player.inventory;
+            this.updateSlots(inventory, player)
+        }, this)
     }
     handleDice(){
         this.#currentPlayer.throwDice();
+    }
+    updateName(player){
+        this.#currentPlayer = player;
+        this.#nameLabel.setText(this.#currentPlayer.name);
+    }
+    updateWallet(wallet){
+        const text = `$:${wallet}`;
+        this.#moneyLabel.setText(text);
+    }
+
+    updateSlots(inventory, player){
+        inventory.map((item, index)=> {
+            const {x, y} = this.#slots[index];
+            const {key} = item.texture;
+            const image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
+            events.on('delete-item', (element)=> {
+                if(element === item){
+                    image.destroy();
+                }
+            })
+            this.#slots[index].useEffect = () =>{
+                item.add(player);
+            }
+        })
     }
 
 }
