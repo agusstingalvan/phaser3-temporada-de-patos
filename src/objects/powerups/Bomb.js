@@ -24,10 +24,10 @@ export default class Bomb extends PowerUp{
         //Is call for the tablero.
         this.currentPlayer = playerCollide
         if (this.currentPlayer.currentPosition <= 5){
-            this.currentPlayer.onlyMove(1)
+            this.currentPlayer.soloMover(1)
         }
         else{
-            this.currentPlayer.changePosition(-5)
+            this.currentPlayer.mover(-5)
             ///CAMBIAR LA LOGICA DEL CAMBIAR TURNO
         }
         this.destroy()

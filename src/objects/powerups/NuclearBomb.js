@@ -14,21 +14,22 @@ export default class NuclearBomb extends PowerUp{
         // this.setY(player.y)
         // this.setData('owner', player.name)
         // events.emit('hide-dice');
-        this.delete()
-        // player.changeTurn()
-        // setTimeout(()=>{
-        // }, 3000)
+        this.delete();
         this.effect();
+        setTimeout(()=>{
+            player.changeTurn()
+        }, 3000)
     }
     effect(){
         const players = this.#scene.players.filter((player)=> player.name !== this.currentPlayer.name);
 
         for(let player of players){
             if (player.currentPosition <= 4){
-                player.onlyMove(1)
+                console.log(player.name);
+                player.soloMover(1)
             }
             else{
-                player.changePosition(-4)
+                player.mover(-4)
             }
         }
     }

@@ -5,6 +5,7 @@ import { sharedInstance as events } from './EventCenter';
 import PopUpContainer from '../objects/PopupContainer';
 import Bomb from '../objects/powerups/Bomb';
 import NuclearBomb from '../objects/powerups/NuclearBomb';
+
 export default class Tablero extends Phaser.Scene
 {
     #playersData = []; //Data of name with texture of player;
@@ -130,9 +131,11 @@ export default class Tablero extends Phaser.Scene
             //Only test powerup of bomb. Each player starts with a bomb.
             player = new Player(props);
             const bomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player});
-            const nuclearBomb = new Bomb({scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player});
+            const nuclearBomb = new NuclearBomb({scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player});
+            // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
-            // player.addPowerUp(nuclearBomb);
+            player.addPowerUp(nuclearBomb);
+            console.log(this.players);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];
@@ -150,7 +153,7 @@ export default class Tablero extends Phaser.Scene
             console.log('yunque')
             this.casillaDesactivada = box.disableBody(true, true);
             this.camara.shake(200);
-            setTimeout(()=> { player.onlyMove(1) }, 1000);
+            setTimeout(()=> { player.soloMover(1) }, 1000);
                 player.casillaDesactivada = this.casillaDesactivada;
         }, null, this)
 
