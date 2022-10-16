@@ -163,6 +163,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.wallet  += money;
         // events.emit('update-money', this.wallet);
     }
+    deleteMoney(){
+        this.wallet = 0; 
+    }
     addPowerUp(powerup){
         if(this.inventory.length === 2) return;
         this.inventory.push(powerup);
