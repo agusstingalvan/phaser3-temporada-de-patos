@@ -3,7 +3,7 @@ import PopUpContainer from "./PopupContainer";
 import Bomb from "./powerups/Bomb";
 import NuclearBomb from "./powerups/NuclearBomb";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    #tablero;
+    tablero;
     name;
     isTurn;
     currentPosition = 0;
@@ -20,7 +20,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
-        this.#tablero = tablero;
+        this.tablero = tablero;
         this.name = name; 
         this.isTurn = isTurn;
         this.#position = position;
@@ -29,10 +29,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.wallet = wallet;
         this.inventory = invetory;
         this.frameAnimation = frame;
-        this.#map = this.#tablero.map;
+        this.#map = this.tablero.map;
 
-        this.#tablero.add.existing(this);
-        this.#tablero.physics.add.existing(this);
+        this.tablero.add.existing(this);
+        this.tablero.physics.add.existing(this);
         this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         
@@ -50,11 +50,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         let numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(4);
+        this.changePosition(numberDice);
     }
-    changePosition(numberPositon){
-        this.currentPosition += numberPositon;
+    changePosition(numberPositon, canChangeTurn = true){
 
+        if(numberPositon === 1000){
+            //The number 1000, is for init position one
+            this.currentPosition = 1;
+        }else{
+            this.currentPosition += numberPositon;
+        }
         //Change position
         if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
@@ -62,76 +67,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         if(this.currentPosition === 39){
 
-            this.#tablero.scene.start('Ganador', this)
-            this.#tablero.scene.stop('Interface')
-            this.#tablero.scene.stop('Tablero')
+            this.tablero.scene.stop('Tablero')
+            this.tablero.scene.stop('Interface')
+            this.tablero.scene.start('Ganador', this)
         }
-        this.move(this.currentPosition);
+        this.move(this.currentPosition, canChangeTurn);
     }
-
-    mover(numberPositon){
-        this.currentPosition = numberPositon < 0 ? this.currentPosition + numberPositon : numberPositon;
-
-        let newPositon = this.#map.findObject(
-            "objectsBoxes",
-            (obj) => obj.name === this.currentPosition.toString()
-        );
-        // this.setX(newPositon.x);
-        // this.setY(newPositon.y);
-        console.log(newPositon);
-        console.log(this.name + ' se mvio');
-        this.#tablero.tweens.add({
-            targets: this,
-            x: newPositon.x,
-            y: newPositon.y,
-            ease: "Sine.easeOut",
-            duration: 1000,
-            repeat: 0,
-            yoyo: false,
-            onStart: ()=>{
-                this.#tablero.physics.pause()
-            },
-            onComplete: ()=>{
-                this.#tablero.physics.resume()
-                
-                //Reactivar casilla
-                if(this.casillaDesactivada !== undefined){
-                    this.casillaDesactivada.enableBody(
-                        true,
-                        this.casillaDesactivada.x,
-                        this.casillaDesactivada.y,
-                        true,
-                        true
-                    );
-                };
-
-                let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === this.currentPosition.toString());
-                let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === this.currentPosition.toString());
-
-                if(inStoreBox){
-                    const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-                    this.addPowerUp(nuclearBomb);
-                }
-                if(inMoneyBox){
-                    this.addMoney();
-                }
-            },
-        })
-    }
-    soloMover(num = 1){
-        //this.currentPosition = num;
-        this.mover(num)
-    }
-    move(position){
+    move(position, canChangeTurn){
+        
         events.emit('hide-dice');
         let newPositon = this.#map.findObject(
             "objectsBoxes",
             (obj) => obj.name === position.toString()
         );
-        // this.setX(newPositon.x);
-        // this.setY(newPositon.y);
         
-        this.#tablero.tweens.add({
+        this.tablero.tweens.add({
             targets: this,
             x: newPositon.x,
             y: newPositon.y,
@@ -140,10 +90,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: 0,
             yoyo: false,
             onStart: ()=>{
-                this.#tablero.physics.pause()
+                this.tablero.physics.pause()
             },
             onComplete: ()=>{
-                this.#tablero.physics.resume()
+                this.tablero.physics.resume()
                 
                 //Reactivar casilla
                 if(this.casillaDesactivada !== undefined){
@@ -160,22 +110,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
 
                 if(inStoreBox){
-                    const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+                    const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
                     this.addPowerUp(nuclearBomb);
                 }
                 if(inMoneyBox){
                     this.addMoney();
                 }
                 // this.changeTurn()
+               if(canChangeTurn){
                 const secondsChangeTurn = 3000;
-                console.log(this.name);
                 setTimeout(()=>this.changeTurn(), secondsChangeTurn)
+               }
             },
         })
     }
-    onlyMove(num = 1){
-        this.currentPosition = num;
-        this.move(num)
+    onlyMove(num = 1, canChangeTurn = false){
+        this.changePosition(num, canChangeTurn)
     }
 
     changeTurn(){
@@ -184,12 +134,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.pause();
         
         //Change Player
-        const currentIndex = this.#tablero.players.indexOf(this);
+
+        const currentIndex = this.tablero.players.indexOf(this);
         let nextIndex = currentIndex + 1;
         if(nextIndex > 3) nextIndex = 0;
-        const nextPlayer = this.#tablero.players[nextIndex];
+        const nextPlayer = this.tablero.players[nextIndex];
         nextPlayer.isTurn = true;
-        console.log(nextPlayer.name);
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');
     }
@@ -216,7 +166,61 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     addPowerUp(powerup){
         if(this.inventory.length === 2) return;
         this.inventory.push(powerup);
-        console.log(this.inventory);
         return this.inventory;
     }
+
+
+        // mover(numberPositon){
+    //     this.currentPosition = numberPositon < 0 ? this.currentPosition + numberPositon : numberPositon;
+
+    //     let newPositon = this.#map.findObject(
+    //         "objectsBoxes",
+    //         (obj) => obj.name === this.currentPosition.toString()
+    //     );
+    //     // this.setX(newPositon.x);
+    //     // this.setY(newPositon.y);
+    //     console.log(newPositon);
+    //     console.log(this.name + ' se mvio');
+    //     this.#tablero.tweens.add({
+    //         targets: this,
+    //         x: newPositon.x,
+    //         y: newPositon.y,
+    //         ease: "Sine.easeOut",
+    //         duration: 1000,
+    //         repeat: 0,
+    //         yoyo: false,
+    //         onStart: ()=>{
+    //             this.#tablero.physics.pause()
+    //         },
+    //         onComplete: ()=>{
+    //             this.#tablero.physics.resume()
+                
+    //             //Reactivar casilla
+    //             if(this.casillaDesactivada !== undefined){
+    //                 this.casillaDesactivada.enableBody(
+    //                     true,
+    //                     this.casillaDesactivada.x,
+    //                     this.casillaDesactivada.y,
+    //                     true,
+    //                     true
+    //                 );
+    //             };
+
+    //             let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === this.currentPosition.toString());
+    //             let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === this.currentPosition.toString());
+
+    //             if(inStoreBox){
+    //                 const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+    //                 this.addPowerUp(nuclearBomb);
+    //             }
+    //             if(inMoneyBox){
+    //                 this.addMoney();
+    //             }
+    //         },
+    //     })
+    // }
+    // soloMover(num = 1){
+    //     //this.currentPosition = num;
+    //     this.mover(num)
+    // }
 }

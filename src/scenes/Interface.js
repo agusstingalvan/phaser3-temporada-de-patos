@@ -61,6 +61,7 @@ export default class Interface extends Phaser.Scene{
         })
 
         events.on('change-turn', (player)=> {
+            this.#currentPlayer = player;
             //Change the interfaces with own properties of player, when change the turn
             this.updateName(player)
 
@@ -75,7 +76,6 @@ export default class Interface extends Phaser.Scene{
         this.#currentPlayer.throwDice();
     }
     updateName(player){
-        this.#currentPlayer = player;
         this.#nameLabel.setText(this.#currentPlayer.name);
     }
     updateWallet(wallet){
@@ -84,7 +84,13 @@ export default class Interface extends Phaser.Scene{
     }
 
     updateSlots(inventory, player){
-        this.#slots.map((s)=> s?.image?.destroy());
+        this.#slots.map((slot)=> {
+            slot?.image?.destroy();
+            slot.useEffect = ()=>{
+                console.log('vacio')
+            }
+        });
+        // this.#slots.map((s)=> s?.useEffect);
         inventory.map((item, index)=> {
             const {x, y} = this.#slots[index];
             const {key} = item.texture;

@@ -21,16 +21,16 @@ export default class Bomb extends PowerUp{
         }, 3000)
     }
     effect(playerCollide){
-        //Is call for the tablero.
+        //He us call for the tablero.
         this.currentPlayer = playerCollide
-        if (this.currentPlayer.currentPosition <= 5){
-            this.currentPlayer.soloMover(1)
-        }
-        else{
-            this.currentPlayer.mover(-5)
-            ///CAMBIAR LA LOGICA DEL CAMBIAR TURNO
-        }
-        this.destroy()
-        // setTimeout(()=>, 1000)
+        this.anims.play('bomb-anims', true).on('animationcomplete', ()=> {
+            if (this.currentPlayer.currentPosition <= 5){
+                this.currentPlayer.onlyMove(1000)
+            }
+            else{
+                this.currentPlayer.changePosition(-5, false)
+            }
+            this.destroy()
+        })
     }
 }

@@ -29,7 +29,6 @@ export default class Tablero extends Phaser.Scene
 		super('Tablero')
 	}
     init({players, sonidos}){
-        console.log('tablero');
         this.#playersData = shuffle(players);
         this.players = [];
         this.sonidos = sonidos;
@@ -135,7 +134,6 @@ export default class Tablero extends Phaser.Scene
             // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
             player.addPowerUp(nuclearBomb);
-            console.log(this.players);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];
@@ -152,9 +150,29 @@ export default class Tablero extends Phaser.Scene
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             console.log('yunque')
             this.casillaDesactivada = box.disableBody(true, true);
-            this.camara.shake(200);
-            setTimeout(()=> { player.soloMover(1) }, 1000);
-                player.casillaDesactivada = this.casillaDesactivada;
+            const yunque = this.add.image(Phaser.Math.Between(player.x, 700), 0, 'yunque');
+            yunque.visible = false;
+            this.tweens.add({
+                targets: yunque,
+                x: Phaser.Math.Between(player.x - 15, player.x + 15),
+                y: Phaser.Math.Between(player.y - 15, player.y + 15),
+                ease: "Sine.easeIn",
+                duration: 600,
+                repeat: 0,
+                yoyo: false,
+                onStart: ()=> {
+                    yunque.visible = true;
+                },
+                onComplete: ()=>{
+                    this.camara.shake(400, 0.015, false, ()=>{
+                        yunque.visible = false;
+                        yunque.destroy();
+                        player.onlyMove(1000)
+                        player.casillaDesactivada = this.casillaDesactivada;
+                    })
+                    
+                },
+            })
         }, null, this)
 
         this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
@@ -171,7 +189,6 @@ export default class Tablero extends Phaser.Scene
     }
     effectBomb(player, bomb){
         this.casillaDesactivada = bomb.disableBody(true, true);
-            console.log('bomba')
             setTimeout(()=> {
                 if (player.currentPosition <= 5){
                     player.onlyMove(1)

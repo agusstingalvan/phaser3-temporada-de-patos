@@ -1,5 +1,6 @@
 import PowerUp from "../PowerUp";
 import { sharedInstance as events } from "../../scenes/EventCenter";
+import Postal from "../Postal";
 
 export default class NuclearBomb extends PowerUp{
     #scene;
@@ -14,22 +15,29 @@ export default class NuclearBomb extends PowerUp{
         // this.setY(player.y)
         // this.setData('owner', player.name)
         // events.emit('hide-dice');
+        const props = {
+            scene: this.#scene,
+            animsName: 'nuclear-bomb-anims'
+        }
+        const postal = new Postal(props);
+       
         this.delete();
         this.effect();
         setTimeout(()=>{
+            postal.container.visible = false;
             player.changeTurn()
         }, 3000)
+        
     }
     effect(){
         const players = this.#scene.players.filter((player)=> player.name !== this.currentPlayer.name);
 
         for(let player of players){
             if (player.currentPosition <= 4){
-                console.log(player.name);
-                player.soloMover(1)
+                player.onlyMove(1000)
             }
             else{
-                player.mover(-4)
+                player.changePosition(-4, false)
             }
         }
     }

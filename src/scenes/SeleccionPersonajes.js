@@ -39,7 +39,6 @@ export default class SeleccionPersonajes extends Phaser.Scene
         super("SeleccionPersonajes");
     }
     init(data) {
-        console.log('estas en pjs')
         this.canEdit = true
         stringName = "";
         this.#players =  [
@@ -99,7 +98,6 @@ export default class SeleccionPersonajes extends Phaser.Scene
         }, 0.5);
 
         const btnListo = new Button(this, width / 2, height - 100, 'botones', "boton-listo", () => {
-            console.log(this.#players);
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
         });
@@ -150,7 +148,6 @@ export default class SeleccionPersonajes extends Phaser.Scene
 
         function writeName(e) {
             if (stringName === undefined) {
-                console.log('Es igual a undefined')
                 //Lo reseteo y luego le agrego la letra.
                 stringName = '';
                 stringName += e.key;

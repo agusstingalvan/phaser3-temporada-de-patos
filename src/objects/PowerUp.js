@@ -11,7 +11,6 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
         this.currentPlayer = currentPlayer;
         this.#scene = scene;
         this.setScale(0.5);
-        console.log(this.texture.key);
     }
     add(player){
         this.#scene.add.existing(this);
@@ -33,7 +32,6 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
         events.emit('delete-item', this);
     }
     effect(){
-        console.log('No hay efecto')
         this.destroy();
     }
 }
