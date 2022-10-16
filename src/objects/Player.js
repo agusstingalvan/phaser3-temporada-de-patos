@@ -17,6 +17,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #map; //Map of tilemaps for find objects in the tablero.
     #storeMap = [];
     #moneyMap = [];
+    waitTurn = false;
 
     constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
@@ -171,7 +172,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.inventory.push(powerup);
         return this.inventory;
     }
-
+    loseTurn(){
+        this.waitTurn = true;
+        this.changeTurn();
+    }
 
         // mover(numberPositon){
     //     this.currentPosition = numberPositon < 0 ? this.currentPosition + numberPositon : numberPositon;

@@ -62,6 +62,12 @@ export default class Tablero extends Phaser.Scene {
     changeTurn() {
         for (let player of this.players) {
             if (player.isTurn) {
+                if(player.waitTurn){
+                    console.log(`${player.name} en la proxima jugada podra jugar.`);
+                    player.changeTurn()
+                    player.waitTurn = false;
+                    return;
+                }
                 player.anims.resume();
                 this.#currentPlayer = player;
                 events.emit('change-turn', this.#currentPlayer);
@@ -149,7 +155,7 @@ export default class Tablero extends Phaser.Scene {
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             this.casillaDesactivada = box.disableBody(true, true);
             const numberRandom = Phaser.Math.Between(1,2);
-            switch(2){
+            switch(3){
                 case 1:
                     console.log('yunque')
                     const yunque = this.add.image(Phaser.Math.Between(player.x, 700), 0, 'yunque');
@@ -179,6 +185,10 @@ export default class Tablero extends Phaser.Scene {
                 case 2:
                         console.log('Cerdito');
                         player.deleteMoney();
+                    break;
+                case 3:
+                        console.log('Se le lanza un pan y pierde el turno');
+                        player.loseTurn();
                     break;
             }
         }, null, this)
