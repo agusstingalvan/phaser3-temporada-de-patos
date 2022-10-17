@@ -69,6 +69,9 @@ export default class Tablero extends Phaser.Scene {
                     return;
                 }
                 player.anims.resume();
+                player.pointerEntity.visible = true;
+                player.pointerEntity.anims.resume();
+
                 this.#currentPlayer = player;
                 events.emit('change-turn', this.#currentPlayer);
             }
@@ -153,6 +156,7 @@ export default class Tablero extends Phaser.Scene {
         }, null, this);
 
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+            //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
             this.casillaDesactivada = box.disableBody(true, true);
             const numberRandom = Phaser.Math.Between(1,2);
             switch(3){
@@ -196,7 +200,6 @@ export default class Tablero extends Phaser.Scene {
         this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
             const owner = bomb.getData('owner');
             if(player.name === owner) return 
-
             bomb.effect(player);
         }, null, this);
         //#bombsGroup group is only for test, for bomb in the boxes.
@@ -204,17 +207,5 @@ export default class Tablero extends Phaser.Scene {
     }
     cronometer() {
         // #time
-    }
-    effectBomb(player, bomb) {
-        this.casillaDesactivada = bomb.disableBody(true, true);
-        console.log('bomba')
-        setTimeout(() => {
-            if (player.currentPosition <= 5) {
-                player.onlyMove(1)
-            }
-            else {
-                player.changePosition(-5)
-            }
-        }, 1000)
     }
 }
