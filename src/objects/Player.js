@@ -18,6 +18,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #storeMap = [];
     #moneyMap = [];
     waitTurn = false;
+    pointerEntity;
 
     constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
@@ -37,10 +38,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         
+        this.pointerEntity = this.tablero.add.sprite(position.x, position.y, 'point');
+        this.pointerEntity.visible = false;
         if(this.isTurn) {
+            this.pointerEntity.visible = true;
+            this.pointerEntity.anims.play(`pointer-duck-anims`, true)
             this.anims.play(`${this.frameAnimation}-idle-anims`, true);
-            // this.anims.play(`pointer-duck-anims`, true);
         }else{
+            this.pointerEntity.visible = false;
+            this.pointerEntity.anims.play(`pointer-duck-anims`, true)
+            this.pointerEntity.anims.pause();
             this.anims.play(`${this.frameAnimation}-idle-anims`, true);
             this.anims.pause();
         }
@@ -81,7 +88,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             "objectsBoxes",
             (obj) => obj.name === position.toString()
         );
-        
+        this.tablero.tweens.add({
+            targets: this.pointerEntity,
+            x: newPositon.x,
+            y: newPositon.y,
+            ease: "Sine.easeOut",
+            duration: 1100,
+            repeat: 0,
+            yoyo: false,
+        })
         this.tablero.tweens.add({
             targets: this,
             x: newPositon.x,
@@ -132,13 +147,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     changeTurn(){
         //Change turn
         this.isTurn = false;
+        //Stop the animations of pointers and player
         this.anims.pause();
-        
-        //Change Player
+        this.pointerEntity.anims.pause();
+        this.pointerEntity.visible = false;
 
+        //Change Player
         const currentIndex = this.tablero.players.indexOf(this);
         let nextIndex = currentIndex + 1;
-        if(nextIndex > 3) nextIndex = 0;
+        if(nextIndex > this.tablero.players.length - 1) nextIndex = 0;
         const nextPlayer = this.tablero.players[nextIndex];
         nextPlayer.isTurn = true;
         events.emit('change-turn', nextPlayer);

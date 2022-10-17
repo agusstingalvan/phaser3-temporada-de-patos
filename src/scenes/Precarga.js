@@ -19,8 +19,6 @@ export default class Precarga extends Phaser.Scene
         this.load.atlas("atlas-backgrounds", 'assets/escenas/atlas-backgrounds.png', 'assets/escenas/atlas-backgrounds.json');
 
         this.load.image("invisible", 'assets/capa-invisible.png');
-        //Pointer of ducks
-        this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
 
         //Statics sprites of "ducks"
         this.load.atlas('atlas-patos-statics', 'assets/patos/atlas-patos-statics.png', 'assets/patos/atlas-patos-statics.json')
@@ -35,6 +33,10 @@ export default class Precarga extends Phaser.Scene
         this.load.spritesheet("pato-galera-idle", 'assets/patos/spritesheets/pato-galera-idle.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("pato-galera-move", 'assets/patos/spritesheets/pato-galera-move.png', {frameWidth: 64, frameHeight: 64})
 
+        //Pointer of ducks
+        this.load.image("point", 'assets/pointers/point.png');
+        this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
+
         //PowerUps
         this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
         this.load.image("nuclear-bomb", 'assets/powerups/nuclear-bomb/nuclear-bomb.png');
@@ -45,7 +47,6 @@ export default class Precarga extends Phaser.Scene
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         //Utils
-        this.load.image("pointer", 'assets/patos/spritesheets/pointer-spritesheet.png')
         this.load.image("reloj", 'assets/reloj.png');
 
 
@@ -81,15 +82,7 @@ export default class Precarga extends Phaser.Scene
 
     create()
     {
-        this.anims.create({
-            key: "pointer-duck-anims",
-            frames: this.anims.generateFrameNumbers("pointer-duck", {
-                start: 0,
-                end: 2,
-            }),
-            frameRate: 3,
-            repeat: -1,
-        });
+        
         this.anims.create({
             key: "pato-bruja-idle-anims",
             frames: this.anims.generateFrameNumbers("pato-bruja-idle", {
@@ -127,6 +120,15 @@ export default class Precarga extends Phaser.Scene
             repeat: -1,
         });
         this.anims.create({
+            key: "pointer-duck-anims",
+            frames: this.anims.generateFrameNumbers("pointer-duck", {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
             key: "nuclear-bomb-anims",
             frames: this.anims.generateFrameNumbers("nuclear-bomb-spritesheet", {
                 start: 0,
@@ -134,7 +136,7 @@ export default class Precarga extends Phaser.Scene
             }),
             delay: 1000,
             frameRate: 4,
-            repeat: -1,
+            repeat: 1,
         });
         this.anims.create({
             key: "bomb-anims",
@@ -142,9 +144,9 @@ export default class Precarga extends Phaser.Scene
                 start: 0,
                 end: 6,
             }),
-            delay: 1000,
-            frameRate: 4,
+            frameRate: 6,
             repeat: 0,
+            yoyo: false
         });
         this.scene.start("Inicio");
     }
