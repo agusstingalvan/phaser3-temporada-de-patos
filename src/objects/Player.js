@@ -17,6 +17,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #map; //Map of tilemaps for find objects in the tablero.
     #storeMap = [];
     #moneyMap = [];
+    numberDice;
     waitTurn = false;
     pointerEntity;
 
@@ -56,9 +57,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     throwDice(){
-        let numberDice = Phaser.Math.Between(1, 6);
+        this.numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(numberDice);
+        this.changePosition(this.numberDice);
     }
     changePosition(numberPositon, canChangeTurn = true){
 

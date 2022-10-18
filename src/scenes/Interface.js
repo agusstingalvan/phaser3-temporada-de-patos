@@ -8,6 +8,8 @@ export default class Interface extends Phaser.Scene{
     #buttonDice;
     #timerLabel;
     #nameLabel;
+    #numberDiceLabel;
+    #imageDice;
     #moneyLabel;
     #currentPlayer;
     constructor(){
@@ -33,7 +35,13 @@ export default class Interface extends Phaser.Scene{
        this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontStyle: 'bold'}).setOrigin(0.5)
 
         //TextName
-       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5)
+       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5);
+
+       //Number of dice
+       this.#imageDice = this.add.image(this.scale.width / 2, -32, 'ticket-dice')
+       this.#numberDiceLabel = this.add.text(this.scale.width / 2, -32, '0', {fontSize: 32, fontStyle: 'bold', color: '242424'} ).setOrigin(0.5);
+       this.#imageDice.visible = true;
+       this.#numberDiceLabel.visible = false;
 
        //Button Dice
        this.#buttonDice = this.add.image(this.scale.width - 84, this.scale.height - 94, 'boton-dado').setInteractive({ useHandCursor: true })
@@ -74,6 +82,37 @@ export default class Interface extends Phaser.Scene{
     }
     handleDice(){
         this.#currentPlayer.throwDice();
+        this.#numberDiceLabel.setText(this.#currentPlayer.numberDice);
+        const height = (this.scale.height / 2) - 320;
+        this.#imageDice.setY(-32)
+        this.#numberDiceLabel.setY(-32)
+
+        this.tweens.add({
+            targets: this.#imageDice,
+            x: this.scale.width / 2,
+            y: height,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            repeat: 0,
+            yoyo: true,
+        })
+        this.tweens.add({
+            targets: this.#numberDiceLabel,
+            x: this.scale.width / 2,
+            y: height,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            repeat: 0,
+            yoyo: true,
+            onStart: () =>{
+                this.#imageDice.visible = true;
+                this.#numberDiceLabel.visible = true;
+            },
+            onComplete: () =>{
+                this.#imageDice.visible = false;
+                this.#numberDiceLabel.visible = false;
+            }
+        })
     }
     updateName(player){
         this.#nameLabel.setText(this.#currentPlayer.name);
@@ -90,7 +129,6 @@ export default class Interface extends Phaser.Scene{
                 console.log('vacio')
             }
         });
-        // this.#slots.map((s)=> s?.useEffect);
         inventory.map((item, index)=> {
             const {x, y} = this.#slots[index];
             const {key} = item.texture;

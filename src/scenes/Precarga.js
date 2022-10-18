@@ -46,8 +46,10 @@ export default class Precarga extends Phaser.Scene
         this.load.image("postal", 'assets/postal/postal.png');
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+
         //Utils
         this.load.image("reloj", 'assets/reloj.png');
+        this.load.image("ticket-dice", 'assets/pointers/ticket-dice.png');
 
 
         

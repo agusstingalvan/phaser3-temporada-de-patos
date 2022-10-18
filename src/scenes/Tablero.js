@@ -158,8 +158,8 @@ export default class Tablero extends Phaser.Scene {
         this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
             //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
             this.casillaDesactivada = box.disableBody(true, true);
-            const numberRandom = Phaser.Math.Between(1,2);
-            switch(3){
+            const numberRandom = Phaser.Math.Between(1,3);
+            switch(numberRandom){
                 case 1:
                     console.log('yunque')
                     const yunque = this.add.image(Phaser.Math.Between(player.x, 700), 0, 'yunque');

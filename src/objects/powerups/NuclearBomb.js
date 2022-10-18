@@ -22,9 +22,10 @@ export default class NuclearBomb extends PowerUp{
         const postal = new Postal(props);
        
         this.delete();
-        this.effect();
+       
         setTimeout(()=>{
             postal.container.visible = false;
+            this.effect();
             player.changeTurn()
         }, 3000)
         

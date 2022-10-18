@@ -15,7 +15,6 @@ export default class Postal{
         // entidad.setY(entidad.anims.currentFrame.frame.height)
         entidad.anims.play(animsName).setOrigin(0.5, 1).on('animationstart', ()=>{
             this.scene.camara.shake(400, 0.03, false, ()=>{
-                
             })
             
         })
