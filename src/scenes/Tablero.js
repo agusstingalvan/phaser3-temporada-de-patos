@@ -5,6 +5,7 @@ import { sharedInstance as events } from './EventCenter';
 import PopUpContainer from '../objects/PopupContainer';
 import Bomb from '../objects/powerups/Bomb';
 import NuclearBomb from '../objects/powerups/NuclearBomb';
+import Postal from '../objects/Postal';
 
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
@@ -101,6 +102,7 @@ export default class Tablero extends Phaser.Scene {
                     console.log('consecuencia')
                     const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
                     casillaConsecuencia.body.allowGravity = false;
+                    casillaConsecuencia.visible = false;
                     break;
                 case 'tienda':
                     const storeBox = this.#storeBoxesGroup.create(x, y, 'invisible')
@@ -155,47 +157,33 @@ export default class Tablero extends Phaser.Scene {
             box.disableBody(true, true);
         }, null, this);
 
-        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
-            //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
-            this.casillaDesactivada = box.disableBody(true, true);
-            const numberRandom = Phaser.Math.Between(1,3);
-            switch(numberRandom){
-                case 1:
-                    console.log('yunque')
-                    const yunque = this.add.image(Phaser.Math.Between(player.x, 700), 0, 'yunque');
-                    yunque.visible = false;
-                    this.tweens.add({
-                        targets: yunque,
-                        x: Phaser.Math.Between(player.x - 15, player.x + 15),
-                        y: Phaser.Math.Between(player.y - 15, player.y + 15),
-                        ease: "Sine.easeIn",
-                        duration: 600,
-                        repeat: 0,
-                        yoyo: false,
-                        onStart: ()=> {
-                            yunque.visible = true;
-                        },
-                        onComplete: ()=>{
-                            this.camara.shake(400, 0.015, false, ()=>{
-                                yunque.visible = false;
-                                yunque.destroy();
-                                player.onlyMove(1000)
-                                player.casillaDesactivada = this.casillaDesactivada;
-                            })
-                            
-                        },
-                    })
-                    break;
-                case 2:
-                        console.log('Cerdito');
-                        player.deleteMoney();
-                    break;
-                case 3:
-                        console.log('Se le lanza un pan y pierde el turno');
-                        player.loseTurn();
-                    break;
-            }
-        }, null, this)
+        // this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+        //     //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
+        //     this.casillaDesactivada = box.disableBody(true, true);
+        //     const numberRandom = Phaser.Math.Between(1,2);
+        //     switch(numberRandom){
+        //         case 1:
+        //             console.log('Cerdito');
+        //             const propsCerdo = {
+        //                 scene: this,
+        //                 animsName: 'cerdo-anims',
+        //                 text: 'Cerdo banquero te cobra los impuestos.'
+        //             }
+        //             const postalCerdo = new Postal(propsCerdo);
+        //             player.deleteMoney();
+        //             break;
+        //         case 2:
+        //             console.log('Se le lanza un pan y pierde el turno');
+        //             const propsPato = {
+        //                 scene: this,
+        //                 animsName: 'pan-anims',
+        //                 text: 'Te lanzan un pan y pierdes el siguiente turno.'
+        //             }
+        //             const postalPan = new Postal(propsPato);
+        //             player.loseTurn();
+        //             break;
+        //     }
+        // }, null, this)
 
         this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
             const owner = bomb.getData('owner');

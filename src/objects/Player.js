@@ -1,5 +1,6 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
 import PopUpContainer from "./PopupContainer";
+import Postal from "./Postal";
 import Bomb from "./powerups/Bomb";
 import NuclearBomb from "./powerups/NuclearBomb";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -17,6 +18,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #map; //Map of tilemaps for find objects in the tablero.
     #storeMap = [];
     #moneyMap = [];
+    #yunqueMap = [];
+    #impactsMap = [];
     numberDice;
     waitTurn = false;
     pointerEntity;
@@ -59,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(this.numberDice);
+        this.changePosition(4);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -125,13 +128,64 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
                 let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === position.toString());
                 let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
-
+                let inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
+                let inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
                 if(inStoreBox){
                     const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
                     this.addPowerUp(nuclearBomb);
                 }
                 if(inMoneyBox){
                     this.addMoney();
+                }
+                if(inYunqueBox){
+                    console.log('yunque')
+                    const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
+                    yunque.visible = false;
+                    this.tablero.tweens.add({
+                        targets: yunque,
+                        x: Phaser.Math.Between(this.x - 15, this.x + 15),
+                        y: Phaser.Math.Between(this.y - 15, this.y + 15),
+                        ease: "Sine.easeIn",
+                        duration: 600,
+                        repeat: 0,
+                        yoyo: false,
+                        onStart: ()=> {
+                            yunque.visible = true;
+                        },
+                        onComplete: ()=>{
+                            this.tablero.camara.shake(400, 0.015, false, ()=>{
+                                yunque.visible = false;
+                                yunque.destroy();
+                                this.onlyMove(1000)
+                                this.casillaDesactivada = this.casillaDesactivada;
+                            })
+                        },
+                    })
+                }
+                if(inImpactsBox){
+                    const numberRandom = Phaser.Math.Between(1,2);
+                    switch(numberRandom){
+                        case 1:
+                            console.log('Cerdito');
+                            const propsCerdo = {
+                                scene: this.tablero,
+                                animsName: 'cerdo-anims',
+                                text: 'El cerdo banquero te cobra los impuestos.'
+                            }
+                            const postalCerdo = new Postal(propsCerdo);
+                            this.deleteMoney();
+                            break;
+                        case 2:
+                            console.log('Se le lanza un pan y pierde el turno');
+                            const propsPato = {
+                                scene: this.tablero,
+                                animsName: 'pan-anims',
+                                text: 'Te lanzan un pan y pierdes el siguiente turno.'
+                            }
+                            const postalPan = new Postal(propsPato);
+                            this.loseTurn();
+                            break;
+                    }
                 }
                 // this.changeTurn()
                if(canChangeTurn){
@@ -173,6 +227,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
                 case 'dinero': 
                     this.#moneyMap.push(name)
+                break;
+                case 'yunque': 
+                    this.#yunqueMap.push(name)
+                break;
+                case 'consecuencia': 
+                    this.#impactsMap.push(name)
                 break;
             }
         });

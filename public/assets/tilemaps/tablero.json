@@ -136,7 +136,7 @@
                  "visible":true,
                  "width":0,
                  "x":671,
-                 "y":177
+                 "y":175
                 }, 
                 {
                  "height":0,
@@ -192,11 +192,11 @@
                  "name":"13",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"yunque",
                  "visible":true,
                  "width":0,
-                 "x":681,
-                 "y":434
+                 "x":683.666666666667,
+                 "y":447.333333333333
                 }, 
                 {
                  "height":0,
@@ -361,7 +361,7 @@
                  "name":"27",
                  "point":true,
                  "rotation":0,
-                 "type":"consecuencia",
+                 "type":"yunque",
                  "visible":true,
                  "width":0,
                  "x":750,
@@ -385,7 +385,7 @@
                  "name":"29",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"consecuencia",
                  "visible":true,
                  "width":0,
                  "x":607,
@@ -445,7 +445,7 @@
                  "name":"34",
                  "point":true,
                  "rotation":0,
-                 "type":"tienda",
+                 "type":"casilla",
                  "visible":true,
                  "width":0,
                  "x":191,
@@ -469,7 +469,7 @@
                  "name":"36",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"yunque",
                  "visible":true,
                  "width":0,
                  "x":160,

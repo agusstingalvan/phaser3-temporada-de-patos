@@ -17,7 +17,9 @@ export default class NuclearBomb extends PowerUp{
         // events.emit('hide-dice');
         const props = {
             scene: this.#scene,
-            animsName: 'nuclear-bomb-anims'
+            animsName: 'nuclear-bomb-anims',
+            shake: true,
+            autoClose: false,
         }
         const postal = new Postal(props);
        
