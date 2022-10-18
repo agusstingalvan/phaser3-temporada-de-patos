@@ -53,13 +53,19 @@ export default class Interface extends Phaser.Scene{
         this.#buttonDice.visible = true;
         this.#slots.map((slot, index)=>{
             slot.visible = true
+            //Esta logica es sobreescrita en algun lugar
+            const image = slot?.image;
+            if(image) slot.image.visible = true; 
            })
         }, this)
 
        events.on('hide-dice', () => {
            this.#buttonDice.visible = false;
            this.#slots.map((slot, index)=>{
-            slot.visible = false
+            slot.visible = false;
+            //Esta logica es sobreescrita en algun lugar
+            const image = slot?.image;
+            if(image) slot.image.visible = false; 
            })
         }, this)
         

@@ -62,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(4);
+        this.changePosition(this.numberDice);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -72,7 +72,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }else{
             this.currentPosition += numberPositon;
         }
-        //Change position
+        //Change position and the postions is evaluated
         if(this.currentPosition > 39) {
             this.currentPosition -= numberPositon;
         }
@@ -254,58 +254,4 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.waitTurn = true;
         this.changeTurn();
     }
-
-        // mover(numberPositon){
-    //     this.currentPosition = numberPositon < 0 ? this.currentPosition + numberPositon : numberPositon;
-
-    //     let newPositon = this.#map.findObject(
-    //         "objectsBoxes",
-    //         (obj) => obj.name === this.currentPosition.toString()
-    //     );
-    //     // this.setX(newPositon.x);
-    //     // this.setY(newPositon.y);
-    //     console.log(newPositon);
-    //     console.log(this.name + ' se mvio');
-    //     this.#tablero.tweens.add({
-    //         targets: this,
-    //         x: newPositon.x,
-    //         y: newPositon.y,
-    //         ease: "Sine.easeOut",
-    //         duration: 1000,
-    //         repeat: 0,
-    //         yoyo: false,
-    //         onStart: ()=>{
-    //             this.#tablero.physics.pause()
-    //         },
-    //         onComplete: ()=>{
-    //             this.#tablero.physics.resume()
-                
-    //             //Reactivar casilla
-    //             if(this.casillaDesactivada !== undefined){
-    //                 this.casillaDesactivada.enableBody(
-    //                     true,
-    //                     this.casillaDesactivada.x,
-    //                     this.casillaDesactivada.y,
-    //                     true,
-    //                     true
-    //                 );
-    //             };
-
-    //             let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === this.currentPosition.toString());
-    //             let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === this.currentPosition.toString());
-
-    //             if(inStoreBox){
-    //                 const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-    //                 this.addPowerUp(nuclearBomb);
-    //             }
-    //             if(inMoneyBox){
-    //                 this.addMoney();
-    //             }
-    //         },
-    //     })
-    // }
-    // soloMover(num = 1){
-    //     //this.currentPosition = num;
-    //     this.mover(num)
-    // }
 }

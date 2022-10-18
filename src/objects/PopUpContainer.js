@@ -18,7 +18,7 @@ export default class PopUpContainer{
         const rightPosition = background.width / 2;
         const topPosition = background.texture.frames.__BASE.height / 2;
 
-        const buttonClose = this.scene.add.text( rightPosition - 50, -topPosition + 50, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>this.hide());
+        const buttonClose = this.scene.add.text( rightPosition - 50, -topPosition + 20, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>this.hide());
         
         //If exist the button, then create one in the container.
         (btnClose)? this.#elements = [background, txt, buttonClose] : this.#elements = [background, txt];

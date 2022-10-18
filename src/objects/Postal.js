@@ -12,7 +12,7 @@ export default class Postal{
         const textureSprite = animsName.slice(0, -6)
         const background = this.scene.add.image(0, 0, texture);
         const entidad = this.scene.add.sprite(0, (background.height / 2) - 90 , textureSprite)
-        const textLabel = this.scene.add.text(0, (background.height / 2) - 100, (text)? text: null, {fontSize: 18, fontStyle: 'bold', color: '242424'}).setOrigin(0.5)
+        const textLabel = this.scene.add.text(0, (background.height / 2) - 100, (text)? text: null, {fontSize: 18, fontStyle: 'bold', color: '242424', fontFamily: 'Montserrat'}).setOrigin(0.5)
 
         
         entidad.anims.play(animsName).setOrigin(0.5, 1).on('animationstart', ()=>{

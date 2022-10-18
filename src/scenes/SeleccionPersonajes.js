@@ -5,8 +5,9 @@ let stringName = ""
 
 export default class SeleccionPersonajes extends Phaser.Scene
 {
-    #players
-
+    #players;
+    #imageDice;
+    #textLabel;
     canEdit = true;
 
 	constructor() {
@@ -44,6 +45,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
         this.sonidos = data.sonidos;
     }
     create() {
+        
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -56,7 +58,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.add.rectangle(x + 20, y + 5, 84, 84, '0x0B4551');
             this.add.image(x + 20, y, 'atlas-patos-statics', texture, { frameWidth: 64, frameHeight: 64 });
             let nameText = this.add.text(x, y + 70, name, {
-                fontFamily: 'Lsans',
+                fontFamily: 'Montserrat',
                 fontSize: 18,
             }).setOrigin(0.5);
             this.createInputs(nameText, player);
@@ -71,6 +73,41 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
         });
+        
+        //Number of dice
+        this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)
+        this.#textLabel = this.add.text(this.scale.width + 160, 128, 'Recuerda leer\n el tutorial.', {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
+        this.#imageDice.visible = true;
+        this.#textLabel.visible = false;
+        const altura = 128;
+        this.tweens.add({
+            targets: this.#imageDice,
+            x: this.scale.width - 150,
+            y: altura,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            hold: 2000,
+            repeat: 0,
+            yoyo: true,
+        })
+        this.tweens.add({
+            targets: this.#textLabel,
+            x: this.scale.width - 140,
+            y: altura,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            hold: 2000,
+            repeat: 0,
+            yoyo: true,
+            onStart: () =>{
+                this.#imageDice.visible = true;
+                this.#textLabel.visible = true;
+            },
+            onComplete: () =>{
+                this.#imageDice.visible = false;
+                this.#textLabel.visible = false;
+            }
+        })
     }
 
     createInputs(nameText, playerObj) {

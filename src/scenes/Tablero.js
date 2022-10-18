@@ -142,8 +142,7 @@ export default class Tablero extends Phaser.Scene {
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
             // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
-            player.addPowerUp(nuclearBomb);
-            console.log(this.players);
+            // player.addPowerUp(nuclearBomb);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];
