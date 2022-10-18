@@ -3,131 +3,196 @@ import { shuffle } from 'underscore';
 import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
 import PopUpContainer from '../objects/PopupContainer';
-export default class Tablero extends Phaser.Scene
-{
+import Bomb from '../objects/powerups/Bomb';
+import NuclearBomb from '../objects/powerups/NuclearBomb';
+import Postal from '../objects/Postal';
+
+export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
     players = []; //Intances of class Player 
     #currentPositionPlayer;
     #currentPlayer;
     #time;
-    #boxes; //Group of casillas
     #interfaces;
     #slots; //Contain the power ups
     #timeTurn = 15;
     #startTurnPlayer;
-    #bombas;
-    #bombsGroup;
     #casillaConsecuenciaGroup;
+    #boxesGroup; //Group of casillas
+    #storeBoxesGroup;
+    bombsGroup;
+    nuclearBombsGroup;
     map;
-	constructor()
-	{
-		super('Tablero')
-	}
-    init({players, sonidos}){
+    casillaDesactivada;
+    constructor() {
+        super('Tablero')
+    }
+    init({ players, sonidos }) {
+        console.log('tablero');
         this.#playersData = shuffle(players);
+        this.players = [];
         this.sonidos = sonidos;
     }
 
-    create()
-    {
+    create() {
         this.scene.launch('Interface')
-        this.map = this.make.tilemap({key: "tableroTile"});
+        this.map = this.make.tilemap({ key: "tableroTile" });
         const tiledBackground = this.map.addTilesetImage("background", "fondo-tablero");
         const backgroundLayer = this.map.createLayer("background", tiledBackground)
 
         const objectsBoxesLayer = this.map.getObjectLayer("objectsBoxes");
 
-        const salida = objectsBoxesLayer.objects.find((point=> point.type === 'salida'));
-        const meta = objectsBoxesLayer.objects.find((point=> point.name === '54'))
+        const salida = objectsBoxesLayer.objects.find((point => point.type === 'salida'));
+        const meta = objectsBoxesLayer.objects.find((point => point.name === '54'))
 
         this.camara = this.cameras.main;
-        this.#boxes = this.physics.add.group();
+
+        //Create groups for Boxes layers.
+        this.addGroups();
+
+        //Create Boxes layer on the tablero.
+        this.addBoxes(objectsBoxesLayer)
+
+        //Create the players on the tablero.
+        this.addPlayers(salida);
+
+
+        this.addOverlaps();
+
+    }
+    changeTurn() {
+        for (let player of this.players) {
+            if (player.isTurn) {
+                if(player.waitTurn){
+                    console.log(`${player.name} en la proxima jugada podra jugar.`);
+                    player.changeTurn()
+                    player.waitTurn = false;
+                    return;
+                }
+                player.anims.resume();
+                player.pointerEntity.visible = true;
+                player.pointerEntity.anims.resume();
+
+                this.#currentPlayer = player;
+                events.emit('change-turn', this.#currentPlayer);
+            }
+        }
+    }
+    update() {
+        this.changeTurn();
+    }
+    addGroups() {
+        this.#boxesGroup = this.physics.add.group();
         this.#casillaConsecuenciaGroup = this.physics.add.group();
-        //#bombas group is only for test
-        this.#bombas = this.physics.add.group();
+        this.#storeBoxesGroup = this.physics.add.group();
 
+        //#bombsGroup group is only for test
+        this.bombsGroup = this.physics.add.group({ allowGravity: false, classType: Bomb })
+        this.nuclearBombsGroup = this.physics.add.group({ allowGravity: false, classType: NuclearBomb })
+    }
+    addBoxes(objectsBoxesLayer) {
+        objectsBoxesLayer.objects.forEach((box) => {
+            const { type, x, y, name } = box;
 
-        objectsBoxesLayer.objects.forEach((box) =>{
-            const {type, x , y, name} = box;
-            
-            const casilla = this.#boxes.create(box.x, box.y, 'invisible')
+            const casilla = this.#boxesGroup.create(box.x, box.y, 'invisible')
             casilla.body.allowGravity = false;
             casilla.visible = false;
-            switch(type){
-                //#bombas group is only for test
-                case 'bomba':
-                    const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
-                    const bomba = this.#bombas.create(x, y, testBomb)
-                    bomba.body.allowGravity = false;
-                    // events.emit('add-bomb', testBomb);
-                    break;
+            switch (type) {
                 case 'consecuencia':
                     console.log('consecuencia')
                     const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
                     casillaConsecuencia.body.allowGravity = false;
+                    casillaConsecuencia.visible = false;
                     break;
+                case 'tienda':
+                    const storeBox = this.#storeBoxesGroup.create(x, y, 'invisible')
+                    storeBox.body.allowGravity = false;
+                    storeBox.visible = false;
+                    break;
+                //#bombsGroup group is only for test
+                // case 'bomba':
+                //     const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
+                //     const bomb = this.#bombsGroup.create(x, y, testBomb)
+                //     bomb.body.allowGravity = false;
+                //     bomb.name = name;
+                //     // events.emit('add-bomb', testBomb);
+                // break;
             }
         })
-
-        //Create the players in the tablero.
-        for(let player of this.#playersData){
+    }
+    addPlayers(salida) {
+        for (let player of this.#playersData) {
             const index = this.#playersData.indexOf(player);
             const props = {
                 tablero: this,
                 name: player.name,
                 position: {
-                    x:  salida.x + Phaser.Math.Between(-32, 32),
+                    x: salida.x + Phaser.Math.Between(-32, 32),
                     y: salida.y + Phaser.Math.Between(-74, 64)
                 },
                 texture: 'atlas-patos-statics',
                 frame: player.texture,
                 isTurn: false
             }
-            if(index === 0) props.isTurn = true;
-            this.players = [...this.players, new Player(props)];
+            if (index === 0) props.isTurn = true;
+
+            //Only test powerup of bomb. Each player starts with a bomb.
+            player = new Player(props);
+            const bomb = new Bomb({ scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
+            const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
+            // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+            player.addPowerUp(bomb);
+            // player.addPowerUp(nuclearBomb);
+            this.players = [...this.players, player];
+
+            // this.players = [...this.players, new Player(props)];
         }
         console.log(this.players);
-        
+    }
 
-        this.physics.add.overlap(this.players, this.#boxes,(player, box)=>{
+    addOverlaps() {
+        this.physics.add.overlap(this.players, this.#boxesGroup, (player, box) => {
             this.#currentPositionPlayer = player.currentPosition;
             box.disableBody(true, true);
-        }, null, this)
-        this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
-            console.log('yunque')
-            box.disableBody(true, true);
-            this.camara.shake(200);
-            setTimeout(()=> player.changePosition(0), 1000)
-        }, null, this)
+        }, null, this);
 
-        this.physics.add.overlap(this.players, this.#bombas, (player, box)=>{
-            // events.emit('add-bomb', box)
-            box.disableBody(true, true);
-            console.log('bomba')
-        }, null, this)
+        // this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
+        //     //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
+        //     this.casillaDesactivada = box.disableBody(true, true);
+        //     const numberRandom = Phaser.Math.Between(1,2);
+        //     switch(numberRandom){
+        //         case 1:
+        //             console.log('Cerdito');
+        //             const propsCerdo = {
+        //                 scene: this,
+        //                 animsName: 'cerdo-anims',
+        //                 text: 'Cerdo banquero te cobra los impuestos.'
+        //             }
+        //             const postalCerdo = new Postal(propsCerdo);
+        //             player.deleteMoney();
+        //             break;
+        //         case 2:
+        //             console.log('Se le lanza un pan y pierde el turno');
+        //             const propsPato = {
+        //                 scene: this,
+        //                 animsName: 'pan-anims',
+        //                 text: 'Te lanzan un pan y pierdes el siguiente turno.'
+        //             }
+        //             const postalPan = new Postal(propsPato);
+        //             player.loseTurn();
+        //             break;
+        //     }
+        // }, null, this)
 
-        // const data = {
-        //     scene: this,
-        //     text: 'Perdiste el turno',
-        //     position: {
-        //         x: 400,
-        //         y: 500,
-        //     },
-        //     btnClose: true
-        // }
-        // this.pop = new PopUpContainer(data);
-        // this.pop.container.visible = true;
+        this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
+            const owner = bomb.getData('owner');
+            if(player.name === owner) return 
+            bomb.effect(player);
+        }, null, this);
+        //#bombsGroup group is only for test, for bomb in the boxes.
+        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
     }
-    update(){
-        for(let player of this.players){
-            if(player.isTurn){
-                player.anims.resume();
-                this.#currentPlayer = player;
-                events.emit('change-turn',  this.#currentPlayer);
-            }
-        }
-    }
-    cronometer(){
+    cronometer() {
         // #time
     }
 }

@@ -5,49 +5,47 @@ let stringName = ""
 
 export default class SeleccionPersonajes extends Phaser.Scene
 {
-    #players =  [
-        {
-            name: 'Jugador 1',
-            texture: "pato-bruja",
-            x: 300,
-            y: 300,
-        },
-        {
-            name: 'Jugador 2',
-            texture: "pato-recibido",
-            x: 525,
-            y: 300,
-        },
-        {
-            name: 'Jugador 3',
-            texture: "pato-verde",
-            x: 700,
-            y: 300,
-        },
-        {
-            name: 'Jugador 4',
-            texture: "pato-galera",
-            x: 900,
-            y: 300,
-        }
-    ];
-
+    #players;
+    #imageDice;
+    #textLabel;
     canEdit = true;
 
 	constructor() {
         super("SeleccionPersonajes");
     }
     init(data) {
-        console.log('estas en pjs')
         this.canEdit = true
         stringName = "";
-        this.#players[0].name = 'Jugador 1';
-        this.#players[1].name = 'Jugador 2';
-        this.#players[2].name = 'Jugador 3';
-        this.#players[3].name = 'Jugador 4';
+        this.#players =  [
+            {
+                name: 'Jugador 1',
+                texture: "pato-bruja",
+                x: 300,
+                y: 300,
+            },
+            {
+                name: 'Jugador 2',
+                texture: "pato-recibido",
+                x: 525,
+                y: 300,
+            },
+            {
+                name: 'Jugador 3',
+                texture: "pato-verde",
+                x: 700,
+                y: 300,
+            },
+            {
+                name: 'Jugador 4',
+                texture: "pato-galera",
+                x: 900,
+                y: 300,
+            }
+        ];
         this.sonidos = data.sonidos;
     }
     create() {
+        
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -60,7 +58,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.add.rectangle(x + 20, y + 5, 84, 84, '0x0B4551');
             this.add.image(x + 20, y, 'atlas-patos-statics', texture, { frameWidth: 64, frameHeight: 64 });
             let nameText = this.add.text(x, y + 70, name, {
-                fontFamily: 'Lsans',
+                fontFamily: 'Montserrat',
                 fontSize: 18,
             }).setOrigin(0.5);
             this.createInputs(nameText, player);
@@ -75,6 +73,41 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
         });
+        
+        //Number of dice
+        this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)
+        this.#textLabel = this.add.text(this.scale.width + 160, 128, 'Recuerda leer\n el tutorial.', {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
+        this.#imageDice.visible = true;
+        this.#textLabel.visible = false;
+        const altura = 128;
+        this.tweens.add({
+            targets: this.#imageDice,
+            x: this.scale.width - 150,
+            y: altura,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            hold: 2000,
+            repeat: 0,
+            yoyo: true,
+        })
+        this.tweens.add({
+            targets: this.#textLabel,
+            x: this.scale.width - 140,
+            y: altura,
+            ease: "Sine.easeInOut",
+            duration: 1500,
+            hold: 2000,
+            repeat: 0,
+            yoyo: true,
+            onStart: () =>{
+                this.#imageDice.visible = true;
+                this.#textLabel.visible = true;
+            },
+            onComplete: () =>{
+                this.#imageDice.visible = false;
+                this.#textLabel.visible = false;
+            }
+        })
     }
 
     createInputs(nameText, playerObj) {
@@ -122,7 +155,6 @@ export default class SeleccionPersonajes extends Phaser.Scene
 
         function writeName(e) {
             if (stringName === undefined) {
-                console.log('Es igual a undefined')
                 //Lo reseteo y luego le agrego la letra.
                 stringName = '';
                 stringName += e.key;

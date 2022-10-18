@@ -19,11 +19,13 @@ export default class Precarga extends Phaser.Scene
         this.load.atlas("atlas-backgrounds", 'assets/escenas/atlas-backgrounds.png', 'assets/escenas/atlas-backgrounds.json');
 
         this.load.image("invisible", 'assets/capa-invisible.png');
-        //Pointer of ducks
-        this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
 
         //Statics sprites of "ducks"
         this.load.atlas('atlas-patos-statics', 'assets/patos/atlas-patos-statics.png', 'assets/patos/atlas-patos-statics.json')
+
+        //Pointer of ducks
+        this.load.image("point", 'assets/pointers/point.png');
+        this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
 
         //Spritesheets of "ducks"
         this.load.spritesheet("pato-recibido-idle", 'assets/patos/spritesheets/pato-recibido-idle.png', {frameWidth: 64, frameHeight: 64})
@@ -35,9 +37,24 @@ export default class Precarga extends Phaser.Scene
         this.load.spritesheet("pato-galera-idle", 'assets/patos/spritesheets/pato-galera-idle.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("pato-galera-move", 'assets/patos/spritesheets/pato-galera-move.png', {frameWidth: 64, frameHeight: 64})
 
+
+
+
+        this.load.image("postal", 'assets/postal/postal.png');
+        //PowerUps
+        this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
+        this.load.image("nuclear-bomb", 'assets/powerups/nuclear-bomb/nuclear-bomb.png');
+        this.load.image("yunque", 'assets/powerups/yunque/yunque.png');
+
+        this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
+        this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+
+        //Consecuencias - Impacts
+        this.load.spritesheet("cerdo-spritesheet", 'assets/powerups/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.spritesheet("pan-spritesheet", 'assets/powerups/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         //Utils
-        this.load.image("pointer", 'assets/patos/spritesheets/pointer-spritesheet.png')
         this.load.image("reloj", 'assets/reloj.png');
+        this.load.image("ticket-dice", 'assets/pointers/ticket-dice.png');
 
 
         
@@ -72,15 +89,7 @@ export default class Precarga extends Phaser.Scene
 
     create()
     {
-        this.anims.create({
-            key: "pointer-duck-anims",
-            frames: this.anims.generateFrameNumbers("pointer-duck", {
-                start: 0,
-                end: 2,
-            }),
-            frameRate: 3,
-            repeat: -1,
-        });
+        
         this.anims.create({
             key: "pato-bruja-idle-anims",
             frames: this.anims.generateFrameNumbers("pato-bruja-idle", {
@@ -117,6 +126,56 @@ export default class Precarga extends Phaser.Scene
             frameRate: 3,
             repeat: -1,
         });
+        this.anims.create({
+            key: "pointer-duck-anims",
+            frames: this.anims.generateFrameNumbers("pointer-duck", {
+                start: 0,
+                end: 2,
+            }),
+            frameRate: 3,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: "bomb-anims",
+            frames: this.anims.generateFrameNumbers("bomb-spritesheet", {
+                start: 0,
+                end: 6,
+            }),
+            frameRate: 6,
+            repeat: 0,
+            yoyo: false
+        });
+        this.anims.create({
+            key: "nuclear-bomb-anims",
+            frames: this.anims.generateFrameNumbers("nuclear-bomb-spritesheet", {
+                start: 0,
+                end: 6,
+            }),
+            delay: 1000,
+            frameRate: 4,
+            repeat: 1,
+        });
+        this.anims.create({
+            key: "cerdo-anims",
+            frames: this.anims.generateFrameNumbers("cerdo-spritesheet", {
+                start: 0,
+                end: 16,
+            }),
+            frameRate: 8,
+            hideOnComplete: true,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: "pan-anims",
+            frames: this.anims.generateFrameNumbers("pan-spritesheet", {
+                start: 0,
+                end: 8,
+            }),
+            hideOnComplete: true,
+            frameRate: 4,
+            repeat: 0,
+        });
+       
         this.scene.start("Inicio");
     }
 }
