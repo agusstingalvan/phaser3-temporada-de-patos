@@ -67,6 +67,8 @@ export default class Tablero extends Phaser.Scene {
                     console.log(`${player.name} en la proxima jugada podra jugar.`);
                     player.changeTurn()
                     player.waitTurn = false;
+                    // setTimeout(()=>{
+                    // }, 3000)
                     return;
                 }
                 player.anims.resume();
@@ -109,14 +111,6 @@ export default class Tablero extends Phaser.Scene {
                     storeBox.body.allowGravity = false;
                     storeBox.visible = false;
                     break;
-                //#bombsGroup group is only for test
-                // case 'bomba':
-                //     const testBomb =  this.add.rectangle(x, y, 20, 20, 0xfff);
-                //     const bomb = this.#bombsGroup.create(x, y, testBomb)
-                //     bomb.body.allowGravity = false;
-                //     bomb.name = name;
-                //     // events.emit('add-bomb', testBomb);
-                // break;
             }
         })
     }
@@ -142,7 +136,7 @@ export default class Tablero extends Phaser.Scene {
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
             // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
-            // player.addPowerUp(nuclearBomb);
+            player.addPowerUp(nuclearBomb);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];

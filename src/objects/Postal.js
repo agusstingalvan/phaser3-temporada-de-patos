@@ -2,7 +2,7 @@ export default class Postal{
     container;
     #position;
 
-    constructor({scene, position, texture = 'postal', scale = 1, animsName, shake = false, autoClose = true, text = undefined}){
+    constructor({scene, position, texture = 'postal', scale = 1, animsName, shake = false, autoClose = true, text = undefined, autoChange = false, player, nuclear}){
         this.scene = scene.scene.scene;
         this.#position = {
             x: (position)? position.x : this.scene.scale.width / 2,
@@ -24,6 +24,9 @@ export default class Postal{
         }).on('animationcomplete', ()=>{
             if(autoClose){
                 this.container.visible = false;
+                if(autoChange){
+                    player?.loseTurn();
+                }
             }
         }).setScale((animsName) === 'pan-anims'? .8 : 1)
         

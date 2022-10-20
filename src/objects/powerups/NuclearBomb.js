@@ -14,12 +14,14 @@ export default class NuclearBomb extends PowerUp{
         // this.setX(player.x)
         // this.setY(player.y)
         // this.setData('owner', player.name)
-        // events.emit('hide-dice');
+        events.emit('hide-dice');
         const props = {
             scene: this.#scene,
             animsName: 'nuclear-bomb-anims',
             shake: true,
             autoClose: false,
+            autoChange: false,
+            player: player
         }
         const postal = new Postal(props);
        

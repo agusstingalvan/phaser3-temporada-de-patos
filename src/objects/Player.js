@@ -180,13 +180,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             const propsPato = {
                                 scene: this.tablero,
                                 animsName: 'pan-anims',
-                                text: 'Te lanzan un pan y pierdes el siguiente turno.'
+                                text: 'Te lanzan un pan y pierdes el siguiente turno.',
+                                autoChange: true,
+                                player: this,
                             }
                             const postalPan = new Postal(propsPato);
-                            this.loseTurn();
+                            // this.loseTurn();
+                            return
                             break;
                     }
                 }
+                //console.log('Siii');
                 // this.changeTurn()
                if(canChangeTurn){
                 const secondsChangeTurn = 3000;
@@ -251,6 +255,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         return this.inventory;
     }
     loseTurn(){
+        console.log(this.waitTurn);
         this.waitTurn = true;
         this.changeTurn();
     }
