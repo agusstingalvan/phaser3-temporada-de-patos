@@ -4,7 +4,7 @@ export default class PopUpContainer{
     #text;
     #position;
     #elements;
-    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null}){
+    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null, changeTurn = false, player}){
         this.scene = scene.scene.scene;
         this.#text = (text)? text : null;
         this.#position = {
@@ -18,7 +18,7 @@ export default class PopUpContainer{
         const rightPosition = background.width / 2;
         const topPosition = background.texture.frames.__BASE.height / 2;
 
-        const buttonClose = this.scene.add.text( rightPosition - 50, -topPosition + 20, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>this.hide());
+        const buttonClose = this.scene.add.text( rightPosition - 50, -topPosition + 20, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>this.hide(changeTurn, player));
         
         //If exist the button, then create one in the container.
         (btnClose)? this.#elements = [background, txt, buttonClose] : this.#elements = [background, txt];
@@ -30,15 +30,16 @@ export default class PopUpContainer{
     show(){
         this.container.visible = true;
         //Return false for the canOpenPopUp in the scene.
-        // this.setOpen(false)
         this.scene.canOpenPopUp = false;
         return false;
     }
-    hide(){
+    hide(changeTurn, player){
         this.container.visible = false;
         //Return true for the canOpenPopUp in the scene.
-        // this.setOpen(true)
         this.scene.canOpenPopUp = true;
+        if(changeTurn){
+            player.changeTurn()
+        }
         return true
     }
     canOpen(){

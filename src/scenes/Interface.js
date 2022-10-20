@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import PopUpContainer from '../objects/PopupContainer';
 import { sharedInstance as events } from './EventCenter';
 
 export default class Interface extends Phaser.Scene{
@@ -72,6 +73,18 @@ export default class Interface extends Phaser.Scene{
         events.on('update-money', (money) => {
             const text = `$:${money}`
             this.#moneyLabel.setText(text);
+        })
+        events.on('open-store', (player) => {
+            console.log('open store');
+            const props = {
+                scene: player.tablero,
+                btnClose: true,
+                changeTurn: true,
+                player: player
+            }
+            const popup = new PopUpContainer(props)
+            popup.container.visible = true;
+            const items = [{}];
         })
 
         events.on('change-turn', (player)=> {

@@ -62,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(this.numberDice);
+        this.changePosition(7);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -131,8 +131,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
                 let inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
                 if(inStoreBox){
-                    const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-                    this.addPowerUp(nuclearBomb);
+                    // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+                    // this.addPowerUp(nuclearBomb);
+                    console.log('in store');
+                    events.emit('open-store', this);
+                    return;
                 }
                 if(inMoneyBox){
                     this.addMoney();
@@ -190,7 +193,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             break;
                     }
                 }
-                //console.log('Siii');
+                console.log('afuera');
                 // this.changeTurn()
                if(canChangeTurn){
                 const secondsChangeTurn = 3000;

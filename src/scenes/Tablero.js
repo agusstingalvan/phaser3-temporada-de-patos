@@ -136,7 +136,7 @@ export default class Tablero extends Phaser.Scene {
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
             // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
-            player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(nuclearBomb);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];
@@ -150,41 +150,12 @@ export default class Tablero extends Phaser.Scene {
             box.disableBody(true, true);
         }, null, this);
 
-        // this.physics.add.overlap(this.players, this.#casillaConsecuenciaGroup,(player, box)=>{
-        //     //Cambiar estas casillas a numero internos de player obligatoriamente! Esto proboca q si otro pato cae en este lugar no activide la casilla.
-        //     this.casillaDesactivada = box.disableBody(true, true);
-        //     const numberRandom = Phaser.Math.Between(1,2);
-        //     switch(numberRandom){
-        //         case 1:
-        //             console.log('Cerdito');
-        //             const propsCerdo = {
-        //                 scene: this,
-        //                 animsName: 'cerdo-anims',
-        //                 text: 'Cerdo banquero te cobra los impuestos.'
-        //             }
-        //             const postalCerdo = new Postal(propsCerdo);
-        //             player.deleteMoney();
-        //             break;
-        //         case 2:
-        //             console.log('Se le lanza un pan y pierde el turno');
-        //             const propsPato = {
-        //                 scene: this,
-        //                 animsName: 'pan-anims',
-        //                 text: 'Te lanzan un pan y pierdes el siguiente turno.'
-        //             }
-        //             const postalPan = new Postal(propsPato);
-        //             player.loseTurn();
-        //             break;
-        //     }
-        // }, null, this)
 
         this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
             const owner = bomb.getData('owner');
             if(player.name === owner) return 
             bomb.effect(player);
         }, null, this);
-        //#bombsGroup group is only for test, for bomb in the boxes.
-        // this.physics.add.overlap(this.players, this.#bombsGroup, (player, bomb) => this.effectBomb(player, bomb), null, this);
     }
     cronometer() {
         // #time
