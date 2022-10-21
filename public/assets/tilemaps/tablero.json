@@ -96,7 +96,7 @@
                  "name":"5",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":421,
@@ -168,7 +168,7 @@
                  "name":"11",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":836,
@@ -195,8 +195,8 @@
                  "type":"yunque",
                  "visible":true,
                  "width":0,
-                 "x":683.666666666667,
-                 "y":447.333333333333
+                 "x":683.667,
+                 "y":447.333
                 }, 
                 {
                  "height":0,
@@ -313,7 +313,7 @@
                  "name":"23",
                  "point":true,
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":1088,

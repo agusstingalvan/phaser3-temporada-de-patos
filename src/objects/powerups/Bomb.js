@@ -8,7 +8,7 @@ export default class Bomb extends PowerUp{
         this.#scene = scene;
     }
     add(player){
-
+        if(player.onHolidays) return
         this.#scene.bombsGroup.add(this, this.#scene)
         this.setX(player.x)
         this.setY(player.y)

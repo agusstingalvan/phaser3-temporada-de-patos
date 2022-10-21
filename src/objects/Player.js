@@ -20,6 +20,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #moneyMap = [];
     #yunqueMap = [];
     #impactsMap = [];
+    #holidaysMap = [];
+    onHolidays = false;
     numberDice;
     waitTurn = false;
     pointerEntity;
@@ -62,6 +64,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
         //Move
+        if(this.onHolidays && this.numberDice !== 4){
+            console.log('Wanwanwanng! Necesitas un 4.')
+            this.changeTurn();
+            return;
+        }else if(this.onHolidays && this.numberDice === 4){
+            console.log('Wiiii!!! sacaste un 4')
+            this.onHolidays = false;
+        }
         this.changePosition(this.numberDice);
     }
     changePosition(numberPositon, canChangeTurn = true){
@@ -130,6 +140,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
                 let inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
                 let inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
+                let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
                 if(inStoreBox){
                     // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
                     // this.addPowerUp(nuclearBomb);
@@ -188,14 +199,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 player: this,
                             }
                             const postalPan = new Postal(propsPato);
-                            return
+                            return;
+                            break;
+                        case 3:
+                            console.log('descuento')
+                            break;
+                        case 4:
+                            console.log('curita')
                             break;
                     }
                 }
-               if(canChangeTurn){
-                const secondsChangeTurn = 3000;
-                setTimeout(()=>this.changeTurn(), secondsChangeTurn)
-               }
+                if(inHolidaysBox){
+                    console.log('en vacaciones')
+                    this.onHolidays = true;
+                    events.emit('hide-slots')
+                }
+                // if(this.#onHolidays && !inHolidaysBox ) this.#onHolidays = true;
+                if(canChangeTurn){
+                    const secondsChangeTurn = 3000;
+                    setTimeout(()=>this.changeTurn(), secondsChangeTurn)
+                }
             },
         })
     }
@@ -237,6 +260,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
                 case 'consecuencia': 
                     this.#impactsMap.push(name)
+                break;
+                case 'holidays': 
+                    this.#holidaysMap.push(name)
                 break;
             }
         });

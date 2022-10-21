@@ -142,24 +142,23 @@ export default class Interface extends Phaser.Scene{
     }
 
     updateSlots(inventory, player){
-        this.#slots.map((slot)=> {
+        this.#slots.map((slot) => {
             slot?.image?.destroy();
-            slot.useEffect = ()=>{
-                console.log('vacio')
-            }
+            slot.useEffect = () => console.log('vacio')
         });
         inventory.map((item, index)=> {
+            if(player.onHolidays) {
+                this.#slots.map((slot)=> slot.visible = false);
+                return
+            }
+            this.#slots.map((slot)=> slot.visible = true);
             const {x, y} = this.#slots[index];
             const {key} = item.texture;
             this.#slots[index].image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
             events.on('delete-item', (element)=> {
-                if(element === item){
-                    this.#slots[index].image.destroy();
-                }
+                if(element === item) this.#slots[index].image.destroy();
             })
-            this.#slots[index].useEffect = () =>{
-                item.add(player);
-            }
+            this.#slots[index].useEffect = () => item.add(player);
         })
     }
 
