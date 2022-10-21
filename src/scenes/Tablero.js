@@ -6,6 +6,7 @@ import PopUpContainer from '../objects/PopupContainer';
 import Bomb from '../objects/powerups/Bomb';
 import NuclearBomb from '../objects/powerups/NuclearBomb';
 import Postal from '../objects/Postal';
+import Hook from '../objects/powerups/Hook';
 
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
@@ -134,9 +135,11 @@ export default class Tablero extends Phaser.Scene {
             player = new Player(props);
             const bomb = new Bomb({ scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
+            const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
             // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
             player.addPowerUp(bomb);
-            player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(nuclearBomb);
+            player.addPowerUp(hook);
             this.players = [...this.players, player];
 
             // this.players = [...this.players, new Player(props)];

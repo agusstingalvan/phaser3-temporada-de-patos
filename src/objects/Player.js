@@ -65,7 +65,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
-        //Move
         if(this.onHolidays && this.numberDice !== 4){
             console.log('Wanwanwanng! Necesitas un 4.')
             this.changeTurn();
@@ -74,7 +73,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             console.log('Wiiii!!! sacaste un 4')
             this.onHolidays = false;
         }
-        this.changePosition(4);
+        //Move
+        this.changePosition(this.numberDice);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -144,83 +144,85 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
                 let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
 
-                if(inStoreBox){
-                    // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-                    // this.addPowerUp(nuclearBomb);
-                    console.log('in store');
-                    events.emit('open-store', this);
-                    return;
-                }
-                if(inMoneyBox){
-                    this.addMoney();
-                }
-                if(inYunqueBox){
-                    console.log('yunque')
-                    const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
-                    yunque.visible = false;
-                    this.tablero.tweens.add({
-                        targets: yunque,
-                        x: Phaser.Math.Between(this.x - 15, this.x + 15),
-                        y: Phaser.Math.Between(this.y - 15, this.y + 15),
-                        ease: "Sine.easeIn",
-                        duration: 600,
-                        repeat: 0,
-                        yoyo: false,
-                        onStart: ()=> {
-                            yunque.visible = true;
-                        },
-                        onComplete: ()=>{
-                            this.tablero.camara.shake(400, 0.015, false, ()=>{
-                                yunque.visible = false;
-                                yunque.destroy();
-                                this.onlyMove(1000)
-                                this.casillaDesactivada = this.casillaDesactivada;
-                            })
-                        },
-                    })
-                }
-                if(inImpactsBox){
-                    const numberRandom = Phaser.Math.Between(1,2);
-                    switch(4){
-                        case 1:
-                            console.log('Cerdito');
-                            const propsCerdo = {
-                                scene: this.tablero,
-                                animsName: 'cerdo-anims',
-                                text: 'El cerdo banquero te cobra los impuestos.'
-                            }
-                            const postalCerdo = new Postal(propsCerdo);
-                            this.deleteMoney();
-                            break;
-                        case 2:
-                            console.log('Se le lanza un pan y pierde el turno');
-                            const propsPato = {
-                                scene: this.tablero,
-                                animsName: 'pan-anims',
-                                text: 'Te lanzan un pan y pierdes el siguiente turno.',
-                                autoChange: true,
-                                player: this,
-                            }
-                            const postalPan = new Postal(propsPato);
-                            return;
-                            break;
-                        case 3:
-                            console.log('descuento')
-                            break;
-                        case 4:
-                            console.log('curita')
-                            this.haveBand = true;
-                            break;
+                if(this.isTurn){
+                    if(inStoreBox){
+                        // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
+                        // this.addPowerUp(nuclearBomb);
+                        console.log('in store');
+                        events.emit('open-store', this);
+                        return;
                     }
-                }
-                if(inHolidaysBox){
-                    console.log('en vacaciones')
-                    this.onHolidays = true;
-                    events.emit('hide-slots')
-                }
-                // if(this.#onHolidays && !inHolidaysBox ) this.#onHolidays = true;
-                if(inWapesBox){
-                    this.changePosition(-4, false);
+                    if(inMoneyBox){
+                        this.addMoney();
+                    }
+                    if(inYunqueBox){
+                        console.log('yunque')
+                        const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
+                        yunque.visible = false;
+                        this.tablero.tweens.add({
+                            targets: yunque,
+                            x: Phaser.Math.Between(this.x - 15, this.x + 15),
+                            y: Phaser.Math.Between(this.y - 15, this.y + 15),
+                            ease: "Sine.easeIn",
+                            duration: 600,
+                            repeat: 0,
+                            yoyo: false,
+                            onStart: ()=> {
+                                yunque.visible = true;
+                            },
+                            onComplete: ()=>{
+                                this.tablero.camara.shake(400, 0.015, false, ()=>{
+                                    yunque.visible = false;
+                                    yunque.destroy();
+                                    this.onlyMove(1000)
+                                    this.casillaDesactivada = this.casillaDesactivada;
+                                })
+                            },
+                        })
+                    }
+                    if(inImpactsBox){
+                        const numberRandom = Phaser.Math.Between(1,2);
+                        switch(4){
+                            case 1:
+                                console.log('Cerdito');
+                                const propsCerdo = {
+                                    scene: this.tablero,
+                                    animsName: 'cerdo-anims',
+                                    text: 'El cerdo banquero te cobra los impuestos.'
+                                }
+                                const postalCerdo = new Postal(propsCerdo);
+                                this.deleteMoney();
+                                break;
+                            case 2:
+                                console.log('Se le lanza un pan y pierde el turno');
+                                const propsPato = {
+                                    scene: this.tablero,
+                                    animsName: 'pan-anims',
+                                    text: 'Te lanzan un pan y pierdes el siguiente turno.',
+                                    autoChange: true,
+                                    player: this,
+                                }
+                                const postalPan = new Postal(propsPato);
+                                return;
+                                break;
+                            case 3:
+                                console.log('descuento')
+                                break;
+                            case 4:
+                                console.log('curita')
+                                this.haveBand = true;
+                                break;
+                        }
+                    }
+                    if(inHolidaysBox){
+                        console.log('en vacaciones')
+                        this.onHolidays = true;
+                        events.emit('hide-slots')
+                    }
+                    // if(this.#onHolidays && !inHolidaysBox ) this.#onHolidays = true;
+                    if(inWapesBox){
+                        this.changePosition(-4, false);
+                    }
                 }
                 if(canChangeTurn){
                     const secondsChangeTurn = 3000;
