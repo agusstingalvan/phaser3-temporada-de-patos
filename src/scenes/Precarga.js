@@ -69,6 +69,7 @@ export default class Precarga extends Phaser.Scene
         //UserInterfaces
         this.load.image('slot', 'assets/interface/slot.png');
         this.load.image('boton-dado', 'assets/interface/boton-dado.png');
+        this.load.image('band', 'assets/interface/band.png');
         this.load.spritesheet('boton-dado-pointer-spritesheet', 'assets/interface/boton-dado-pointer-spritesheet.png', {frameWidth: 128, frameHeight: 128});
 
         //Music

@@ -7,7 +7,9 @@ export default class Bomb extends PowerUp{
         super({scene, x, y, texture, position, currentPlayer})
         this.#scene = scene;
     }
+    //when player plant the bomb in the tablero.
     add(player){
+        //If player on holiday. He can't put in the bomb. Else. He puts the bomb in the tablero.
         if(player.onHolidays) return
         this.#scene.bombsGroup.add(this, this.#scene)
         this.setX(player.x)
@@ -21,7 +23,7 @@ export default class Bomb extends PowerUp{
         }, 3000)
     }
     effect(playerCollide){
-        //He us call for the tablero.
+        //He is call for the tablero.
         this.currentPlayer = playerCollide;
         this.anims.play('bomb-anims', true).on('animationcomplete', ()=>{
             this.destroy();

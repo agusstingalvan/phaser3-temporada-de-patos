@@ -7,7 +7,8 @@ export default class Interface extends Phaser.Scene{
     #slot1;
     #slot2;
     #buttonDice;
-    #timerLabel;
+    // #timerLabel;
+    #band;
     #nameLabel;
     #numberDiceLabel;
     #imageDice;
@@ -33,8 +34,8 @@ export default class Interface extends Phaser.Scene{
         //Wallet
         this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
        //Timer
-       this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontStyle: 'bold'}).setOrigin(0.5)
-
+         //    this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontStyle: 'bold'}).setOrigin(0.5)
+        this.#band = this.add.image(this.scale.width/2, this.scale.height - 64, 'band');
         //TextName
        this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5);
 
@@ -96,7 +97,9 @@ export default class Interface extends Phaser.Scene{
             this.updateWallet(wallet);
 
             const inventory = player.inventory;
-            this.updateSlots(inventory, player)
+            this.updateSlots(inventory, player);
+
+            (player.haveBand) ? this.#band.visible = true : this.#band.visible = false;
         }, this)
     }
     handleDice(){
