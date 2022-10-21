@@ -21,6 +21,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #yunqueMap = [];
     #impactsMap = [];
     #holidaysMap = [];
+    #wavesMap = [];
     onHolidays = false;
     numberDice;
     waitTurn = false;
@@ -96,7 +97,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.move(this.currentPosition, canChangeTurn);
     }
     move(position, canChangeTurn){
-        
         events.emit('hide-dice');
         let newPositon = this.#map.findObject(
             "objectsBoxes",
@@ -141,6 +141,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
                 let inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
                 let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
+                let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
+
                 if(inStoreBox){
                     // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
                     // this.addPowerUp(nuclearBomb);
@@ -215,6 +217,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     events.emit('hide-slots')
                 }
                 // if(this.#onHolidays && !inHolidaysBox ) this.#onHolidays = true;
+                if(inWapesBox){
+                    this.changePosition(-4, false);
+                }
                 if(canChangeTurn){
                     const secondsChangeTurn = 3000;
                     setTimeout(()=>this.changeTurn(), secondsChangeTurn)
@@ -263,6 +268,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
                 case 'holidays': 
                     this.#holidaysMap.push(name)
+                break;
+                case 'wave': 
+                    this.#wavesMap.push(name)
                 break;
             }
         });
