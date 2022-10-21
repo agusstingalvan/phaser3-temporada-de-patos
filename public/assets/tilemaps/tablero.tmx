@@ -71,7 +71,7 @@
   <object id="116" name="15" type="dinero" x="676" y="293">
    <point/>
   </object>
-  <object id="117" name="16" type="casilla" x="717" y="235">
+  <object id="117" name="16" type="wave" x="717" y="235">
    <point/>
   </object>
   <object id="118" name="17" type="casilla" x="915" y="187">
@@ -98,7 +98,7 @@
   <object id="126" name="24" type="dinero" x="1029" y="602">
    <point/>
   </object>
-  <object id="127" name="25" type="casilla" x="943" y="616">
+  <object id="127" name="25" type="wave" x="943" y="616">
    <point/>
   </object>
   <object id="128" name="26" type="casilla" x="852" y="616">
