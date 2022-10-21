@@ -23,6 +23,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #holidaysMap = [];
     #wavesMap = [];
     onHolidays = false;
+    haveBand = false;
     numberDice;
     waitTurn = false;
     pointerEntity;
@@ -73,7 +74,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             console.log('Wiiii!!! sacaste un 4')
             this.onHolidays = false;
         }
-        this.changePosition(this.numberDice);
+        this.changePosition(4);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -180,7 +181,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 }
                 if(inImpactsBox){
                     const numberRandom = Phaser.Math.Between(1,2);
-                    switch(numberRandom){
+                    switch(4){
                         case 1:
                             console.log('Cerdito');
                             const propsCerdo = {
@@ -208,6 +209,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             break;
                         case 4:
                             console.log('curita')
+                            this.haveBand = true;
                             break;
                     }
                 }

@@ -155,6 +155,11 @@ export default class Tablero extends Phaser.Scene {
             const owner = bomb.getData('owner');
             if(player.name === owner) return;
             if(player.onHolidays) return;
+            if(player.haveBand) {
+                player.haveBand = false;
+                bomb.destroy();
+                return
+            }
             bomb.effect(player);
         }, null, this);
     }

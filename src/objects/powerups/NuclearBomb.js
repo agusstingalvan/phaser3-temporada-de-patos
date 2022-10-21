@@ -40,6 +40,7 @@ export default class NuclearBomb extends PowerUp{
 
         for(let player of players){
             if(player.onHolidays) return;
+            if(player.haveBand) player.haveBand = false;
             if (player.currentPosition <= 4){
                 player.onlyMove(1000)
             }
