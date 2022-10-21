@@ -38,7 +38,7 @@
   <object id="105" name="4" type="consecuencia" x="335" y="242">
    <point/>
   </object>
-  <object id="106" name="5" type="casilla" x="421" y="198">
+  <object id="106" name="5" type="holidays" x="421" y="198">
    <point/>
   </object>
   <object id="107" name="6" type="dinero" x="513" y="163">
@@ -56,7 +56,7 @@
   <object id="111" name="10" type="casilla" x="839" y="291">
    <point/>
   </object>
-  <object id="112" name="11" type="casilla" x="836" y="372">
+  <object id="112" name="11" type="holidays" x="836" y="372">
    <point/>
   </object>
   <object id="113" name="12" type="dinero" x="779" y="451">
@@ -92,7 +92,7 @@
   <object id="123" name="22" type="casilla" x="1122" y="494">
    <point/>
   </object>
-  <object id="125" name="23" type="casilla" x="1088" y="557">
+  <object id="125" name="23" type="holidays" x="1088" y="557">
    <point/>
   </object>
   <object id="126" name="24" type="dinero" x="1029" y="602">

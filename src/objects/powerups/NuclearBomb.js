@@ -14,6 +14,7 @@ export default class NuclearBomb extends PowerUp{
         // this.setX(player.x)
         // this.setY(player.y)
         // this.setData('owner', player.name)
+        if(player.onHolidays) return
         events.emit('hide-dice');
         const props = {
             scene: this.#scene,
@@ -38,6 +39,7 @@ export default class NuclearBomb extends PowerUp{
         const players = this.#scene.players.filter((player)=> player.name !== this.currentPlayer.name);
 
         for(let player of players){
+            if(player.onHolidays) return;
             if (player.currentPosition <= 4){
                 player.onlyMove(1000)
             }
