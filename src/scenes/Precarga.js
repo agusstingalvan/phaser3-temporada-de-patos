@@ -41,11 +41,14 @@ export default class Precarga extends Phaser.Scene
 
 
         this.load.image("postal", 'assets/postal/postal.png');
-        //PowerUps
+        
+        //PowerUps- StaticSprites
         this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
         this.load.image("nuclear-bomb", 'assets/powerups/nuclear-bomb/nuclear-bomb.png');
+        this.load.image("hook", 'assets/powerups/hook/hook.png');
         this.load.image("yunque", 'assets/powerups/yunque/yunque.png');
 
+        //PowerUps-Anims
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
 
