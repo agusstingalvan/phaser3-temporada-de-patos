@@ -96,21 +96,21 @@ export default class Tablero extends Phaser.Scene {
         objectsBoxesLayer.objects.forEach((box) => {
             const { type, x, y, name } = box;
 
-            const casilla = this.#boxesGroup.create(box.x, box.y, 'invisible')
-            casilla.body.allowGravity = false;
-            casilla.visible = false;
+            // const casilla = this.#boxesGroup.create(box.x, box.y, 'invisible')
+            // casilla.body.allowGravity = false;
+            // casilla.visible = false;
             switch (type) {
-                case 'consecuencia':
-                    console.log('consecuencia')
-                    const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
-                    casillaConsecuencia.body.allowGravity = false;
-                    casillaConsecuencia.visible = false;
-                    break;
-                case 'tienda':
-                    const storeBox = this.#storeBoxesGroup.create(x, y, 'invisible')
-                    storeBox.body.allowGravity = false;
-                    storeBox.visible = false;
-                    break;
+                // case 'consecuencia':
+                //     console.log('consecuencia')
+                //     const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
+                //     casillaConsecuencia.body.allowGravity = false;
+                //     casillaConsecuencia.visible = false;
+                //     break;
+                // case 'tienda':
+                //     const storeBox = this.#storeBoxesGroup.create(x, y, 'invisible')
+                //     storeBox.body.allowGravity = false;
+                //     storeBox.visible = false;
+                //     break;
             }
         })
     }

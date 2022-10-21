@@ -62,7 +62,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
         //Move
-        this.changePosition(7);
+        this.changePosition(this.numberDice);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -188,13 +188,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 player: this,
                             }
                             const postalPan = new Postal(propsPato);
-                            // this.loseTurn();
                             return
                             break;
                     }
                 }
-                console.log('afuera');
-                // this.changeTurn()
                if(canChangeTurn){
                 const secondsChangeTurn = 3000;
                 setTimeout(()=>this.changeTurn(), secondsChangeTurn)
@@ -258,7 +255,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         return this.inventory;
     }
     loseTurn(){
-        console.log(this.waitTurn);
         this.waitTurn = true;
         this.changeTurn();
     }
