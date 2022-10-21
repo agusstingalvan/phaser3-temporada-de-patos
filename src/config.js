@@ -1,9 +1,10 @@
-import HelloWorldScene from './scenes/HelloWorldScene'
-import Precarga from './scenes/Precarga';
+import Ganador from './scenes/Ganador';
 import Inicio from './scenes/Inicio';
+import Interface from './scenes/Interface';
+import Precarga from './scenes/Precarga';
 import SeleccionPersonajes from './scenes/SeleccionPersonajes';
 import Tablero from './scenes/Tablero';
-import Ganador from './scenes/Ganador';
+
 
 export const config = {
     type: Phaser.AUTO,
@@ -14,8 +15,8 @@ export const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         min: {
-            width: 800,
-            height: 600,
+            width: 600,
+            height: 280,
         },
         max: {
             width: 1280,
@@ -34,6 +35,7 @@ export const config = {
         Inicio,
         SeleccionPersonajes,
         Tablero,
+        Interface,
         Ganador,
     ],
 };
