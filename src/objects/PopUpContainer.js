@@ -27,6 +27,9 @@ export default class PopUpContainer{
         this.container = this.scene.add.container(this.#position.x, this.#position.y, this.#elements).setScale(scale);
         this.container.visible = false;
     }
+    addChild(child){
+        this.container.add(child)
+    }
     show(){
         this.container.visible = true;
         //Return false for the canOpenPopUp in the scene.

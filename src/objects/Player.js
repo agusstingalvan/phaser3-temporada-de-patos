@@ -74,7 +74,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.onHolidays = false;
         }
         //Move
-        this.changePosition(this.numberDice);
+        this.changePosition(7);
     }
     changePosition(numberPositon, canChangeTurn = true){
 

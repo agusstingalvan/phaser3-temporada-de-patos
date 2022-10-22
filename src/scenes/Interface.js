@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import ItemStore from '../objects/ItemStore';
 import PopUpContainer from '../objects/PopupContainer';
 import { sharedInstance as events } from './EventCenter';
 
@@ -77,15 +78,15 @@ export default class Interface extends Phaser.Scene{
         })
         events.on('open-store', (player) => {
             console.log('open store');
-            const props = {
+            
+            
+            const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 150, texture: 'nuclear-bomb'},  {name: 'Hook', price: 100, texture: 'hook'}]
+            const props  = {
                 scene: player.tablero,
-                btnClose: true,
-                changeTurn: true,
-                player: player
+                items, 
+                player,
             }
-            const popup = new PopUpContainer(props)
-            popup.container.visible = true;
-            const items = [{}];
+            const popup = new ItemStore(props)
         })
 
         events.on('change-turn', (player)=> {
