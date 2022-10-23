@@ -15,6 +15,7 @@ export default class Interface extends Phaser.Scene{
     #imageDice;
     #moneyLabel;
     #currentPlayer;
+    #openStore = false;
     constructor(){
         super("Interface")
     }
@@ -56,19 +57,14 @@ export default class Interface extends Phaser.Scene{
         this.#buttonDice.visible = true;
         this.#slots.map((slot, index)=>{
             slot.visible = true
-            //Esta logica es sobreescrita en algun lugar
-            const image = slot?.image;
-            if(image) slot.image.visible = true; 
            })
         }, this)
 
        events.on('hide-dice', () => {
            this.#buttonDice.visible = false;
            this.#slots.map((slot, index)=>{
-            slot.visible = false;
-            //Esta logica es sobreescrita en algun lugar
-            const image = slot?.image;
-            if(image) slot.image.visible = false; 
+            slot.visible = true;
+
            })
         }, this)
         
@@ -77,9 +73,12 @@ export default class Interface extends Phaser.Scene{
             this.#moneyLabel.setText(text);
         })
         events.on('open-store', (player) => {
-            console.log('open store');
-            
-            
+            this.#openStore = true;
+            if(this.#openStore){
+                this.#slots.map((slot) => {
+                    slot.disableInteractive()
+                });
+            }
             const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 150, texture: 'nuclear-bomb'},  {name: 'Hook', price: 100, texture: 'hook'}]
             const props  = {
                 scene: player.tablero,
@@ -88,7 +87,16 @@ export default class Interface extends Phaser.Scene{
             }
             const popup = new ItemStore(props)
         })
-
+        events.on('close-store', ()=>{
+            this.#openStore = false;
+            this.#slots.map((slot) => {
+                console.log('yes')
+                slot.setInteractive({ useHandCursor: true })
+                .on("pointerdown", () => slot.useEffect())
+                .on("pointerover", (btn) => slot.setTint('0xc2c2c2'))
+                .on("pointerout", (btn) => slot.setTint('0xe5e5e5'))
+            });
+        })
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
             //Change the interfaces with own properties of player, when change the turn

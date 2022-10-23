@@ -1,31 +1,99 @@
 import PopUpContainer from "./PopupContainer";
+import Bomb from "./powerups/Bomb";
+import Hook from "./powerups/Hook";
+import NuclearBomb from "./powerups/NuclearBomb";
 
 export default class ItemStore {
-    #items = [];
     constructor({scene, items, player}){
-        console.log('mundo')
         console.log(items)
         const props = {
             scene: scene,
             btnClose: true,
+            isStore: true,
             changeTurn: true,
             player: player,
         }
         const popup = new PopUpContainer(props)
         popup.container.visible = true;
-        
+        let widthContainerItems = 0;
+        let itemContainer;
+        let containerItems = scene.add.container(0, 0, []);
         items.map((item, index)=>{
+            // player.wallet = 300;
+            if(player.haveDescuento){
+                item.price = item.price/2;
+            }
             const image = scene.add.image(0, 0, item.texture)
-            console.log()
-            const rectangle = scene.add.rectangle(- (popup.container.x / 2), 0, image.width + 30, image.height + 30, '0x242424' )
+            const rectangle = scene.add.rectangle(0, 0, image.width + 30, image.height + 30, '0x242424' )
+            rectangle.visible = true;
             const name = scene.add.text(0, -image.height, item.name).setOrigin(0.5)
-            const price = scene.add.text(0, image.height + 10, `Price: ${item.price}`).setOrigin(0.5)
-            let itemContainer = scene.add.container(index  * (rectangle.width + 40), 0, [rectangle ,name ,image, price])
+            const priceText = scene.add.text(0, image.height, `Price: $${item.price}`).setOrigin(0.5);
+            priceText.setData('price', item.price)
+            const btn = scene.add.text(0, image.height + 24, 'Comprar', {padding: 8, backgroundColor: '#ffffff', color: '#000000', fontStyle: 'bold', fontFamily: 'Montserrat'}).setOrigin(0.5)
+
+
+            if(player.wallet >= item.price && player.inventory.length < 2){
+                btn.setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
+                    if(player.wallet >= item.price && player.inventory.length < 2){
+                        console.log(player.wallet)
+                        player.wallet -= item.price;
+                        btn.disableInteractive();
+                        image.setTint('0x5c5c5c');
+                        btn.setAlpha(.8)
+                        switch(item.name.toLowerCase()){
+                            case 'bomb':
+                                const bomb = new Bomb({ scene: scene, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
+                                player.addPowerUp(bomb)
+                                break;
+                            case 'nuclear bomb':
+                                const nuclearBomb = new NuclearBomb({ scene: scene, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
+                                player.addPowerUp(nuclearBomb)
+                                break;
+                            case 'hook':
+                                const hook = new Hook({ scene: scene, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
+                                player.addPowerUp(hook)
+                                break    
+                            
+                        }
+                        if(player.haveDescuento){
+                            player.haveDescuento = false;
+                        }
+                        containerItems.list.map((container)=>{
+                            // if(!player.haveDescuento){
+                            //     item.price *= 2;
+                            //     container.list[3].setText(item.price)
+                            // }
+                            let price = container.list[3].getData('price');
+                            if(player.wallet < price || player.inventory.length === 2){
+                                container.list[4].disableInteractive();
+                                container.list[4].setAlpha(.8);
+                                container.list[2].setTint('0x5c5c5c');
+                            }
+                        })
+                    }else{
+                        btn.disableInteractive();
+                        btn.setAlpha(.8);
+                        image.setTint('0x5c5c5c');
+                    }
+                })
+            }else{
+                btn.disableInteractive();
+                btn.setAlpha(.8);
+                image.setTint('0x5c5c5c');
+            }
+
             
-            this.#items.push(itemContainer);
-            popup.addChild(itemContainer);
-            
+
+            const positionX = index  * (rectangle.width + 20);
+            itemContainer = scene.add.container(positionX, 0, [rectangle ,name ,image, priceText, btn])
+            widthContainerItems = positionX;
+            containerItems.add(itemContainer);
+            popup.addChild(containerItems);
         })
-        console.log(this.#items)
+        containerItems.setX(-(widthContainerItems/ 2))
+        if(widthContainerItems > 386) {
+            let width = (widthContainerItems - 386) / 100;
+            popup.container.list[0].setScale(1 + width + 0.20)
+        }
     }
 }
