@@ -11,6 +11,7 @@ export default class Hook extends PowerUp{
     }
     //add() is equals of USE the powerup.
     add(player){
+        if(player.onHolidays) return
         this.effect(player);
 
 

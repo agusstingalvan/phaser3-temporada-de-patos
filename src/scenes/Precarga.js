@@ -88,12 +88,23 @@ export default class Precarga extends Phaser.Scene
         this.load.image('popup-ayuda', 'assets/popups/popup-ayuda.png');
         this.load.image('popup-opciones', 'assets/popups/popup-opciones.png');
         this.load.image('popup-creditos', 'assets/popups/popup-creditos.png');
+
+        this.load.image('cargando', 'assets/escenas/cargando.png')
         
+        
+        const maxWidth = 1280;
+        const rectangleProgress = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, maxWidth, 160, '0xffc600');
+        this.load.on('progress', (progress)=>{
+            rectangleProgress.width = maxWidth * progress;
+        })
+        this.load.on('complete',  () => {
+            this.scene.start("Inicio");
+        });
     }
 
     create()
     {
-        
+        this.add.image(this.scale.width / 2, this.scale.height / 2, 'cargando')
         this.anims.create({
             key: "pato-bruja-idle-anims",
             frames: this.anims.generateFrameNumbers("pato-bruja-idle", {
@@ -179,7 +190,5 @@ export default class Precarga extends Phaser.Scene
             frameRate: 4,
             repeat: 0,
         });
-       
-        this.scene.start("Inicio");
     }
 }

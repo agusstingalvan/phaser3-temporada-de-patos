@@ -1,16 +1,20 @@
+import { sharedInstance as events } from "../scenes/EventCenter";
+
 export default class PopUpContainer{
     container;
     scene;
     #text;
     #position;
     #elements;
-    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null, changeTurn = false, player}){
+    #isStore;
+    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null, changeTurn = false, player, isStore = false}){
         this.scene = scene.scene.scene;
         this.#text = (text)? text : null;
         this.#position = {
             x: (position)? position.x : this.scene.scale.width / 2,
             y: (position)? position.y : this.scene.scale.height / 2
         }
+        this.#isStore = isStore
         const background = this.scene.add.image(0, 0, texture)
         const txt = this.scene.add.text(0, 0, this.#text, {fontStyle: 'bold', fontSize: '18px'}).setOrigin(0.5)
 
@@ -27,6 +31,9 @@ export default class PopUpContainer{
         this.container = this.scene.add.container(this.#position.x, this.#position.y, this.#elements).setScale(scale);
         this.container.visible = false;
     }
+    addChild(child){
+        this.container.add(child)
+    }
     show(){
         this.container.visible = true;
         //Return false for the canOpenPopUp in the scene.
@@ -39,6 +46,9 @@ export default class PopUpContainer{
         this.scene.canOpenPopUp = true;
         if(changeTurn){
             player.changeTurn()
+        }
+        if(this.#isStore){
+            events.emit('close-store', player)
         }
         return true
     }

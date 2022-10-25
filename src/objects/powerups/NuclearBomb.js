@@ -27,25 +27,28 @@ export default class NuclearBomb extends PowerUp{
         const postal = new Postal(props);
        
         this.delete();
+        this.effect();
        
         setTimeout(()=>{
             postal.container.visible = false;
-            this.effect();
             player.changeTurn()
         }, 3000)
         
     }
     effect(){
-        const players = this.#scene.players.filter((player)=> player.name !== this.currentPlayer.name);
-
+        const players = this.#scene.players.filter((player)=> (player.name !== this.currentPlayer.name) && !player.onHolidays);
         for(let player of players){
-            if(player.onHolidays) return;
+            console.log(`Name: ${player.name}, esta en : ${player.currentPosition}`)
+            // if(player.onHolidays) return;
             if(player.haveBand) player.haveBand = false;
             if (player.currentPosition <= 4){
                 player.onlyMove(1000)
+                console.log(`Name: ${player.name}, se mueve a : ${player.currentPosition}`)
             }
             else{
                 player.changePosition(-4, false)
+                console.log(`Name: ${player.name}, se mueve a : ${player.currentPosition}`)
+
             }
         }
     }

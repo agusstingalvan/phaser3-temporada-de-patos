@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import ItemStore from '../objects/ItemStore';
 import PopUpContainer from '../objects/PopupContainer';
 import { sharedInstance as events } from './EventCenter';
 
@@ -14,6 +15,7 @@ export default class Interface extends Phaser.Scene{
     #imageDice;
     #moneyLabel;
     #currentPlayer;
+    #openStore = false;
     constructor(){
         super("Interface")
     }
@@ -21,15 +23,18 @@ export default class Interface extends Phaser.Scene{
         
         //Slots
        this.#slot1 = this.add.image(100, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
-       .on("pointerdown", () => this.#slot1.useEffect())
+       .on("pointerdown", () => this.#slot1.image.useEffect())
        .on("pointerover", (btn) => this.#slot1.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot1.setTint('0xe5e5e5'))
+       this.#slot1.image = this.add.image();
+       this.#slot1.image.useEffect = ()=> console.log('hola');
 
        this.#slot2 = this.add.image(174, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
-       .on("pointerdown", () => this.#slot2.useEffect())
+       .on("pointerdown", () => this.#slot2.image.useEffect())
        .on("pointerover", (btn) => this.#slot2.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot2.setTint('0xe5e5e5'))
-
+        this.#slot2.image = this.add.image();
+        this.#slot2.image.useEffect = ()=> console.log('hola');
        this.#slots = [this.#slot1, this.#slot2];
         //Wallet
         this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
@@ -54,20 +59,14 @@ export default class Interface extends Phaser.Scene{
        events.on('show-dice', ()=> {
         this.#buttonDice.visible = true;
         this.#slots.map((slot, index)=>{
-            slot.visible = true
-            //Esta logica es sobreescrita en algun lugar
-            const image = slot?.image;
-            if(image) slot.image.visible = true; 
+            this.enableSlot(slot)
            })
         }, this)
 
        events.on('hide-dice', () => {
            this.#buttonDice.visible = false;
            this.#slots.map((slot, index)=>{
-            slot.visible = false;
-            //Esta logica es sobreescrita en algun lugar
-            const image = slot?.image;
-            if(image) slot.image.visible = false; 
+                this.disableSlot(slot)
            })
         }, this)
         
@@ -76,18 +75,26 @@ export default class Interface extends Phaser.Scene{
             this.#moneyLabel.setText(text);
         })
         events.on('open-store', (player) => {
-            console.log('open store');
-            const props = {
-                scene: player.tablero,
-                btnClose: true,
-                changeTurn: true,
-                player: player
+            this.#openStore = true;
+            if(this.#openStore){
+                this.#slots.map((slot) => {
+                    this.disableSlot(slot)
+                });
             }
-            const popup = new PopUpContainer(props)
-            popup.container.visible = true;
-            const items = [{}];
+            const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 150, texture: 'nuclear-bomb'},  {name: 'Hook', price: 100, texture: 'hook'}]
+            const props  = {
+                scene: player.tablero,
+                items, 
+                player: player,
+            }
+            const popup = new ItemStore(props)
         })
-
+        events.on('close-store', ()=>{
+            this.#openStore = false;
+            this.#slots.map((slot) => {
+                this.enableSlot(slot)
+            });
+        })
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
             //Change the interfaces with own properties of player, when change the turn
@@ -101,6 +108,14 @@ export default class Interface extends Phaser.Scene{
 
             (player.haveBand) ? this.#band.visible = true : this.#band.visible = false;
         }, this)
+    }
+    enableSlot(slot){
+        slot.setInteractive({ useHandCursor: true })
+        slot.clearTint()
+    }
+    disableSlot(slot){
+        slot.disableInteractive()
+        slot.setTint('0xc2c2c2')
     }
     handleDice(){
         this.#currentPlayer.throwDice();
@@ -147,21 +162,22 @@ export default class Interface extends Phaser.Scene{
     updateSlots(inventory, player){
         this.#slots.map((slot) => {
             slot?.image?.destroy();
-            slot.useEffect = () => console.log('vacio')
+            slot.image.useEffect = () => console.log('vacio')
         });
+        
         inventory.map((item, index)=> {
             if(player.onHolidays) {
-                this.#slots.map((slot)=> slot.visible = false);
+                this.#slots.map((slot)=> this.disableSlot(slot));
                 return
-            }
-            this.#slots.map((slot)=> slot.visible = true);
+            }        
             const {x, y} = this.#slots[index];
             const {key} = item.texture;
             this.#slots[index].image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
             events.on('delete-item', (element)=> {
                 if(element === item) this.#slots[index].image.destroy();
+                if(element === item) this.#slots[index].image.useEffect = () => console.log('vacio');
             })
-            this.#slots[index].useEffect = () => item.add(player);
+            this.#slots[index].image.useEffect = () => item.add(player);
         })
     }
 

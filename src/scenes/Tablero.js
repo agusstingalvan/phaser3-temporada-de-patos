@@ -2,10 +2,8 @@ import Phaser from 'phaser'
 import { shuffle } from 'underscore';
 import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
-import PopUpContainer from '../objects/PopupContainer';
 import Bomb from '../objects/powerups/Bomb';
 import NuclearBomb from '../objects/powerups/NuclearBomb';
-import Postal from '../objects/Postal';
 import Hook from '../objects/powerups/Hook';
 
 export default class Tablero extends Phaser.Scene {
@@ -29,7 +27,6 @@ export default class Tablero extends Phaser.Scene {
         super('Tablero')
     }
     init({ players, sonidos }) {
-        console.log('tablero');
         this.#playersData = shuffle(players);
         this.players = [];
         this.sonidos = sonidos;
@@ -136,13 +133,12 @@ export default class Tablero extends Phaser.Scene {
             const bomb = new Bomb({ scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
             const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
-            // const nuclearBomb = new NuclearBomb({scene: this.#tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-            player.addPowerUp(bomb);
-            // player.addPowerUp(nuclearBomb);
-            player.addPowerUp(hook);
-            this.players = [...this.players, player];
 
-            // this.players = [...this.players, new Player(props)];
+            // player.addPowerUp(bomb);
+            // player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(hook);
+            this.players = [...this.players, player];
         }
         console.log(this.players);
     }
@@ -165,8 +161,5 @@ export default class Tablero extends Phaser.Scene {
             }
             bomb.effect(player);
         }, null, this);
-    }
-    cronometer() {
-        // #time
     }
 }
