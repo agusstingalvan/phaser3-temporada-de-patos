@@ -66,6 +66,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
+
         if(this.onHolidays && this.numberDice !== 4){
             console.log('Wanwanwanng! Necesitas un 4.')
             this.changeTurn();
@@ -74,6 +75,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             console.log('Wiiii!!! sacaste un 4')
             this.onHolidays = false;
         }
+        
         //Move
         this.changePosition(this.numberDice);
     }
@@ -87,7 +89,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
         //Change position and the postions is evaluated
         if(this.currentPosition > 39) {
-            this.currentPosition -= numberPositon;
+            const rest = 39 - numberPositon;
+            this.currentPosition = rest;
         }
         
         if(this.currentPosition === 39){
@@ -104,6 +107,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             "objectsBoxes",
             (obj) => obj.name === position.toString()
         );
+        
         this.tablero.tweens.add({
             targets: this.pointerEntity,
             x: newPositon.x,
@@ -145,18 +149,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
                 let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
 
-                if(this.isTurn){
-                    if(inStoreBox){
-                        // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y, texture: 'nuclear-bomb', currentPlayer: this});
-                        // this.addPowerUp(nuclearBomb);
-                        console.log('in store');
-                        events.emit('open-store', this);
-                        return;
-                    }
-                    if(inMoneyBox){
-                        this.addMoney();
-                    }
-                    if(inYunqueBox){
+                if(this.isTurn && inStoreBox){
+                    // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y,texture: 'nuclear-bomb', currentPlayer: this});
+                    // this.addPowerUp(nuclearBomb);
+                    console.log('in store');
+                    events.emit('open-store', this);
+                    return;
+                }
+                if(inMoneyBox){
+                    this.addMoney();
+                }
+                if(inYunqueBox){
                         console.log('yunque')
                         const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
                         yunque.visible = false;
@@ -180,8 +183,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 })
                             },
                         })
-                    }
-                    if(inImpactsBox){
+                }
+                if(this.isTurn && inImpactsBox){
                         const numberRandom = Phaser.Math.Between(1,4);
                         switch(numberRandom){
                             case 1:
@@ -216,16 +219,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 this.haveBand = true;
                                 break;
                         }
-                    }
-                    if(inHolidaysBox){
+                }
+                if(this.isTurn && inHolidaysBox){
                         console.log('en vacaciones')
                         this.onHolidays = true;
                         events.emit('hide-slots')
-                    }
-                    // if(this.#onHolidays && !inHolidaysBox ) this.#onHolidays = true;
-                    if(inWapesBox){
+                }
+                if(this.isTurn && inWapesBox){
                         this.changePosition(-4, false);
-                    }
+                }
+                
+                const direction = newPositon.properties[0].value;
+                if(direction === 'left'){
+                    this.setFlipX(false)
+                }else{
+                    this.setFlipX(true)
                 }
                 if(canChangeTurn){
                     const secondsChangeTurn = 3000;

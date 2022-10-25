@@ -48,7 +48,7 @@ export default class PopUpContainer{
             player.changeTurn()
         }
         if(this.#isStore){
-            events.emit('close-store')
+            events.emit('close-store', player)
         }
         return true
     }
