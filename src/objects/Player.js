@@ -66,11 +66,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
-
+        console.log(this.name+' dado:'+ this.numberDice)
         if(this.onHolidays && this.numberDice !== 4){
             console.log('Wanwanwanng! Necesitas un 4.')
-            this.changeTurn();
-            return;
+            setTimeout(() => {
+             this.changeTurn();
+            }, 3000);
+            return
+            
         }else if(this.onHolidays && this.numberDice === 4){
             console.log('Wiiii!!! sacaste un 4')
             this.onHolidays = false;
@@ -260,6 +263,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(nextIndex > this.tablero.players.length - 1) nextIndex = 0;
         const nextPlayer = this.tablero.players[nextIndex];
         nextPlayer.isTurn = true;
+        console.log('changeTurn', nextPlayer.name+' dado anterior:'+nextPlayer.numberDice)
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');
     }

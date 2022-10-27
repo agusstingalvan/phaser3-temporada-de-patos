@@ -67,6 +67,7 @@ export default class Precarga extends Phaser.Scene
         this.load.atlas("botones", 'assets/botones/atlas_botones_amarrillos.png', 'assets/botones/atlas_botones_amarrillos.json')
         this.load.image('boton-check', 'assets/botones/boton-check.png');
         this.load.image('boton-lapiz-edit', 'assets/botones/boton-lapiz-edit.png');
+        this.load.image('contenedor-madera', 'assets/botones/contenedores-madera.png');
 
 
         //UserInterfaces

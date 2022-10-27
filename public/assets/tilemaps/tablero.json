@@ -78,7 +78,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"tienda",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":192,
@@ -96,7 +96,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"dinero",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":256,
@@ -114,7 +114,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"consecuencia",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":335,
@@ -150,7 +150,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"dinero",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":513,
@@ -168,7 +168,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"tienda",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":589,
@@ -186,7 +186,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"holidays",
                  "visible":true,
                  "width":0,
                  "x":671,

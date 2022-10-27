@@ -119,6 +119,7 @@ export default class Interface extends Phaser.Scene{
     }
     handleDice(){
         this.#currentPlayer.throwDice();
+        console.info('popup', this.#currentPlayer.name+' dado:'+ this.#currentPlayer.numberDice)
         this.#numberDiceLabel.setText(this.#currentPlayer.numberDice);
         const height = (this.scale.height / 2) - 320;
         this.#imageDice.setY(-32)
