@@ -23,6 +23,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #holidaysMap = [];
     #wavesMap = [];
     onHolidays = false;
+    waitOnHolidays = false;
     haveBand = false;
     haveDescuento = false;
     numberDice;
@@ -66,9 +67,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     throwDice(){
         this.numberDice = Phaser.Math.Between(1, 6);
-        console.log(this.name+' dado:'+ this.numberDice)
         if(this.onHolidays && this.numberDice !== 4){
             console.log('Wanwanwanng! Necesitas un 4.')
+            // events.emit('dice-onHoliday', 'fail')
+            events.emit('hide-dice');
             setTimeout(() => {
              this.changeTurn();
             }, 3000);
@@ -76,9 +78,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             
         }else if(this.onHolidays && this.numberDice === 4){
             console.log('Wiiii!!! sacaste un 4')
+            this.waitOnHolidays = true;
+            // events.emit('dice-onHoliday', 'right')
             this.onHolidays = false;
         }
-        
+        console.log('Scaco uin: ', this.numberDice)
         //Move
         this.changePosition(this.numberDice);
     }
@@ -92,7 +96,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
         //Change position and the postions is evaluated
         if(this.currentPosition > 39) {
-            const rest = 39 - numberPositon;
+            const rest = ( 39 - (this.currentPosition - 39))
             this.currentPosition = rest;
         }
         
@@ -153,9 +157,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
 
                 if(this.isTurn && inStoreBox){
-                    // const nuclearBomb = new NuclearBomb({scene: this.tablero, x: this.x, y: this.y,texture: 'nuclear-bomb', currentPlayer: this});
-                    // this.addPowerUp(nuclearBomb);
-                    console.log('in store');
                     events.emit('open-store', this);
                     return;
                 }
@@ -163,7 +164,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     this.addMoney();
                 }
                 if(inYunqueBox){
-                        console.log('yunque')
                         const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
                         yunque.visible = false;
                         this.tablero.tweens.add({
@@ -223,8 +223,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 break;
                         }
                 }
-                if(this.isTurn && inHolidaysBox){
-                        console.log('en vacaciones')
+                if(inHolidaysBox){
+                        if(this.isTurn){
+                            const props = {
+                                scene: this.tablero,
+                                image: 'holidays',
+                                text: '     Estás tomando unas vacaciones.\nNecesitas sacar un 4 para salir de ellas.'
+                            }
+                            const postalHolidays = new Postal(props)
+                        }
                         this.onHolidays = true;
                         events.emit('hide-slots')
                 }
@@ -232,12 +239,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         this.changePosition(-4, false);
                 }
                 
+                //Detect of direction of player.
                 const direction = newPositon.properties[0].value;
                 if(direction === 'left'){
                     this.setFlipX(false)
                 }else{
                     this.setFlipX(true)
                 }
+
                 if(canChangeTurn){
                     const secondsChangeTurn = 3000;
                     setTimeout(()=>this.changeTurn(), secondsChangeTurn)
@@ -263,7 +272,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(nextIndex > this.tablero.players.length - 1) nextIndex = 0;
         const nextPlayer = this.tablero.players[nextIndex];
         nextPlayer.isTurn = true;
-        console.log('changeTurn', nextPlayer.name+' dado anterior:'+nextPlayer.numberDice)
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');
     }
@@ -297,7 +305,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     addMoney(money = 300){
         this.wallet  += money;
-        // events.emit('update-money', this.wallet);
     }
     deleteMoney(){
         this.wallet = 0; 

@@ -41,6 +41,7 @@ export default class Precarga extends Phaser.Scene
 
 
         this.load.image("postal", 'assets/postal/postal.png');
+        this.load.image("holidays", 'assets/postal/vacaciones.png');
         
         //PowerUps- StaticSprites
         this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
@@ -57,7 +58,9 @@ export default class Precarga extends Phaser.Scene
         this.load.spritesheet("pan-spritesheet", 'assets/powerups/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         //Utils
         this.load.image("reloj", 'assets/reloj.png');
-        this.load.image("ticket-dice", 'assets/pointers/ticket-dice.png');
+        this.load.image("ticket-dice", 'assets/interface/ticket-dice.png');
+        this.load.image("ticket-dice-fail", 'assets/interface/ticket-dice-fail.png');
+        this.load.image("ticket-dice-right", 'assets/interface/ticket-dice-right.png');
 
 
         
