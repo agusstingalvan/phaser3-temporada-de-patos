@@ -2,13 +2,13 @@ export default class Postal{
     container;
     #position;
 
-    constructor({scene, position, texture = 'postal', scale = 1, image, animsName = '', shake = false, autoClose = true, text = undefined, autoChange = false, player, nuclear}){
+    constructor({scene, position, texture = 'postal', scale = 1, image, animsName = '', shake = false, autoClose = true, text = undefined, autoChange = false, player, callback = null}){
         this.scene = scene.scene.scene;
         this.#position = {
             x: (position)? position.x : this.scene.scale.width / 2,
             y: (position)? position.y : this.scene.scale.height / 2
         }
-
+        console.log(callback)
         const textureSprite = (animsName.includes('anims')? animsName.slice(0, -6) : null)
         const background = this.scene.add.image(0, 0, texture);
         const imageStatic = this.scene.add.sprite(0, 0, image)
@@ -37,6 +37,7 @@ export default class Postal{
                 
             }).on('animationcomplete', ()=>{
                 if(autoClose){
+                    if(callback) callback()
                     this.container.visible = false;
                     if(autoChange){
                         player?.loseTurn();

@@ -52,6 +52,7 @@ export default class Precarga extends Phaser.Scene
         //PowerUps-Anims
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.spritesheet("hook-spritesheet", 'assets/powerups/hook/hook-spritesheet.png', {frameWidth: 575, frameHeight: 315})
 
         //Consecuencias - Impacts
         this.load.spritesheet("cerdo-spritesheet", 'assets/powerups/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
@@ -173,6 +174,15 @@ export default class Precarga extends Phaser.Scene
             delay: 1000,
             frameRate: 4,
             repeat: 1,
+        });
+        this.anims.create({
+            key: "hook-anims",
+            frames: this.anims.generateFrameNumbers("hook-spritesheet", {
+                start: 0,
+                end: 9,
+            }),
+            frameRate: 8,
+            repeat: 0,
         });
         this.anims.create({
             key: "cerdo-anims",
