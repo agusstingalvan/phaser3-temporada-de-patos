@@ -8,7 +8,7 @@ import Hook from '../objects/powerups/Hook';
 
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
-    players = []; //Intances of class Player 
+    #players = []; //Intances of class Player 
     #currentPositionPlayer;
     #currentPlayer;
     #time;
@@ -22,13 +22,16 @@ export default class Tablero extends Phaser.Scene {
     bombsGroup;
     nuclearBombsGroup;
     map;
-    casillaDesactivada;
+    // casillaDesactivada;
     constructor() {
         super('Tablero')
     }
+    getPlayers(){
+        return this.#players;
+    }
     init({ players, sonidos }) {
         this.#playersData = shuffle(players);
-        this.players = [];
+        this.#players = [];
         this.sonidos = sonidos;
     }
 
@@ -59,19 +62,19 @@ export default class Tablero extends Phaser.Scene {
 
     }
     changeTurn() {
-        for (let player of this.players) {
-            if (player.isTurn) {
-                if(player.waitTurn){
-                    console.log(`${player.name} en la proxima jugada podra jugar.`);
+        for (let player of this.getPlayers()) {
+            if (player.getIsTurn()) {
+                if(player.getWaitTurn()){
+                    console.log(`${player.getName()} en la proxima jugada podra jugar.`);
                     player.changeTurn()
-                    player.waitTurn = false;
+                    player.setWaitTurn(false);
                     // setTimeout(()=>{
                     // }, 3000)
                     return;
                 }
                 player.anims.resume();
-                player.pointerEntity.visible = true;
-                player.pointerEntity.anims.resume();
+                player.getPointerEntity().visible = true;
+                player.getPointerEntity().anims.resume();
 
                 this.#currentPlayer = player;
                 events.emit('change-turn', this.#currentPlayer);
@@ -135,27 +138,26 @@ export default class Tablero extends Phaser.Scene {
             const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
 
             // player.addPowerUp(bomb);
-            // player.addPowerUp(nuclearBomb);
-            // player.addPowerUp(nuclearBomb);
+            player.addPowerUp(nuclearBomb);
             // player.addPowerUp(hook);
-            this.players = [...this.players, player];
+            this.#players = [...this.#players, player];
         }
-        console.log(this.players);
+        console.log(this.#players);
     }
 
     addOverlaps() {
-        this.physics.add.overlap(this.players, this.#boxesGroup, (player, box) => {
-            this.#currentPositionPlayer = player.currentPosition;
+        this.physics.add.overlap(this.getPlayers(), this.#boxesGroup, (player, box) => {
+            this.#currentPositionPlayer = player.getCurrentPosition();
             box.disableBody(true, true);
         }, null, this);
 
 
-        this.physics.add.overlap(this.players, this.bombsGroup, (player, bomb) => {
+        this.physics.add.overlap(this.getPlayers(), this.bombsGroup, (player, bomb) => {
             const owner = bomb.getData('owner');
-            if(player.name === owner) return;
-            if(player.onHolidays) return;
-            if(player.haveBand) {
-                player.haveBand = false;
+            if(player.getName() === owner) return;
+            if(player.getOnHolidays()) return;
+            if(player.getHaveBand()) {
+                player.setHaveBand(false);
                 bomb.destroy();
                 return
             }

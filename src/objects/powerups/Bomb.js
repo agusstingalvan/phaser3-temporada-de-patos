@@ -10,11 +10,11 @@ export default class Bomb extends PowerUp{
     //when player plant the bomb in the tablero.
     add(player){
         //If player on holiday. He can't put in the bomb. Else. He puts the bomb in the tablero.
-        if(player.onHolidays) return
+        if(player.getOnHolidays()) return
         this.#scene.bombsGroup.add(this, this.#scene)
         this.setX(player.x)
         this.setY(player.y)
-        this.setData('owner', player.name)
+        this.setData('owner', player.getName())
         events.emit('hide-dice');
         this.delete()
         
@@ -28,7 +28,7 @@ export default class Bomb extends PowerUp{
         this.anims.play('bomb-anims', true).on('animationcomplete', ()=>{
             this.destroy();
         })
-        if (this.currentPlayer.currentPosition <= 5){
+        if (this.currentPlayer.getCurrentPosition() <= 5){
             this.currentPlayer.onlyMove(1000)
         }
         else{

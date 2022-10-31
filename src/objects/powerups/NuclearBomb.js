@@ -9,7 +9,7 @@ export default class NuclearBomb extends PowerUp{
         this.#scene = scene;
     }
     add(player){
-        if(player.onHolidays) return
+        if(player.getOnHolidays()) return
         events.emit('hide-dice');
         const props = {
             scene: this.#scene,
@@ -31,11 +31,11 @@ export default class NuclearBomb extends PowerUp{
         
     }
     effect(){
-        const players = this.#scene.players.filter((player)=> (player.name !== this.currentPlayer.name) && !player.onHolidays);
+        const players = this.#scene.getPlayers().filter((player)=> (player.getName() !== this.currentPlayer.getName()) && !player.getOnHolidays());
         for(let player of players){
             // console.log(`Name: ${player.name}, esta en : ${player.currentPosition}`)
-            if(player.haveBand) player.haveBand = false;
-            if (player.currentPosition <= 4){
+            if(player.getHaveBand()) player.setHaveBand(false);
+            if (player.getCurrentPosition() <= 4){
                 player.onlyMove(1000)
                 // console.log(`Name: ${player.name}, se mueve a : ${player.currentPosition}`)
             }

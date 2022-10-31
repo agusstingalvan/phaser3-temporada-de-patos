@@ -28,7 +28,7 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
         // }, 3000)
     }
     delete(){
-        this.currentPlayer.inventory = this.currentPlayer.inventory.filter((item) => item.texture.key !== this.texture.key);
+        this.currentPlayer.setInventory(this.currentPlayer.getInventory().filter((item) => item.texture.key !== this.texture.key)); 
         events.emit('delete-item', this);
     }
     effect(){
