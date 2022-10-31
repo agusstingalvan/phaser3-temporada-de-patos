@@ -11,7 +11,7 @@ export default class Ganador extends Phaser.Scene
 
     init(data){
         console.log(data)
-        this.#winPlayer = data.name;
+        this.#winPlayer = data.getName();
     }
 	preload()
     {

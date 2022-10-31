@@ -13,7 +13,7 @@ export default class Hook extends PowerUp{
     
     //add() is equals of USE the powerup.
     add(player){
-        if(player.onHolidays) return
+        if(player.getOnHolidays()) return
         this.effect(player);
         if(this.#canChangeTurn){
             this.delete();
@@ -23,24 +23,24 @@ export default class Hook extends PowerUp{
         }
     }
     effect(player){
-        const players = this.#scene.players.filter((player) => (player.currentPosition > this.#currentPlayer.currentPosition) && !player.onHolidays);
+        const players = this.#scene.getPlayers().filter((player) => (player.getCurrentPosition() > this.#currentPlayer.getCurrentPosition()) && !player.get);
 
         if(players.length >= 1){ 
             const positonArray = players.map(player => {
-                return  {position: player.currentPosition, player}
+                return  {position: player.getCurrentPosition(), player}
             });
             const positions = positonArray.sort((a,b) =>  a.position - b.position); 
             const playerCollide = positions[positions.length - 1].player;
-            if(playerCollide.haveBand) {
-                playerCollide.haveBand = false;
+            if(playerCollide.getHaveBand()) {
+                playerCollide.setHaveBand(false)
                 this.#canChangeTurn = true;
                 this.delete();
                 console.log('se roimpio el gancho y la curita')
                 return
             }
             
-            playerCollide.currentPosition = player.currentPosition;
-            if(playerCollide.currentPosition <= 1){  
+            playerCollide.setCurrentPosition(player.getCurrentPosition());
+            if(playerCollide.getCurrentPosition() <= 1){  
                 const props = {
                     scene: this.#scene,
                     animsName: 'hook-anims',

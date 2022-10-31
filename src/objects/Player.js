@@ -4,17 +4,15 @@ import Postal from "./Postal";
 import Bomb from "./powerups/Bomb";
 import NuclearBomb from "./powerups/NuclearBomb";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    tablero;
-    name;
-    isTurn;
-    currentPosition = 0;
-    frameAnimation;
-    #timeTurn;
+    #tablero;
+    #name;
+    #isTurn;
+    #currentPosition = 0;
+    #frameAnimation;
     #position = 0;
-    #canMove;
-    wallet = 0;
-    inventory = [];
-    casillaDesactivada;
+    #wallet = 0;
+    #inventory = [];
+    // casillaDesactivada;
     #map; //Map of tilemaps for find objects in the tablero.
     #storeMap = [];
     #moneyMap = [];
@@ -22,91 +20,156 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #impactsMap = [];
     #holidaysMap = [];
     #wavesMap = [];
-    onHolidays = false;
-    waitOnHolidays = false;
-    haveBand = false;
-    haveDescuento = false;
-    numberDice;
-    waitTurn = false;
-    pointerEntity;
+    #onHolidays = false;
+    #waitOnHolidays = false;
+    #haveBand = false;
+    #haveDiscount = false;
+    #numberDice;
+    #waitTurn = false;
+    #pointerEntity;
 
-    constructor({tablero, name, position, currentPositon = 0, texture, frame, isTurn, canMove, wallet = 0, invetory = []}){
+    constructor({tablero, name,position, currentPositon = 0, texture, frame, isTurn, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
-        this.tablero = tablero;
-        this.name = name; 
-        this.isTurn = isTurn;
+        this.#tablero = tablero;
+        this.#name = name; 
+        this.#isTurn = isTurn;
+        this.#currentPosition = currentPositon;
+        this.#frameAnimation = frame;
         this.#position = position;
-        this.currentPosition = currentPositon;
-        this.#canMove = canMove;
-        this.wallet = wallet;
-        this.inventory = invetory;
-        this.frameAnimation = frame;
-        this.#map = this.tablero.map;
+        this.#wallet = wallet;
+        this.#inventory = invetory;
+        this.#map = this.#tablero.map;
 
-        this.tablero.add.existing(this);
-        this.tablero.physics.add.existing(this);
+        this.#tablero.add.existing(this);
+        this.#tablero.physics.add.existing(this);
         this.body.allowGravity = false;
         this.setCollideWorldBounds(true);
         
-        this.pointerEntity = this.tablero.add.sprite(position.x, position.y, 'point');
-        this.pointerEntity.visible = false;
-        if(this.isTurn) {
-            this.pointerEntity.visible = true;
-            this.pointerEntity.anims.play(`pointer-duck-anims`, true)
-            this.anims.play(`${this.frameAnimation}-idle-anims`, true);
+        this.#pointerEntity = this.#tablero.add.sprite(position.x, position.y, 'point');
+        this.#pointerEntity.visible = false;
+        if(this.getIsTurn()) {
+            this.#pointerEntity.visible = true;
+            this.#pointerEntity.anims.play(`pointer-duck-anims`, true)
+            this.anims.play(`${this.#frameAnimation}-idle-anims`, true);
         }else{
-            this.pointerEntity.visible = false;
-            this.pointerEntity.anims.play(`pointer-duck-anims`, true)
-            this.pointerEntity.anims.pause();
-            this.anims.play(`${this.frameAnimation}-idle-anims`, true);
+            this.#pointerEntity.visible = false;
+            this.#pointerEntity.anims.play(`pointer-duck-anims`, true)
+            this.#pointerEntity.anims.pause();
+            this.anims.play(`${this.#frameAnimation}-idle-anims`, true);
             this.anims.pause();
         }
 
         this.searchBoxes();
     }
-
+    getTablero(){
+        return this.#tablero;
+    }
+    getName () {
+        return this.#name;
+    }
+    getIsTurn(){
+        return this.#isTurn;
+    }
+    setIsTurn(bool){
+        this.#isTurn = bool;
+    }
+    getCurrentPosition(){
+        return this.#currentPosition;
+    }
+    setCurrentPosition(number){
+        this.#currentPosition = number
+    }
+    getWallet(){
+        return this.#wallet;
+    }
+    setWallet(number){
+        this.#wallet = number;
+    }
+    getInventory(){
+        return this.#inventory;
+    }
+    setInventory(items){
+        this.#inventory = items;
+    }
+    getOnHolidays(){
+        return this.#onHolidays;
+    }
+    setOnHolidays(bool){
+        this.#onHolidays = bool;
+    }
+    getWaitOnHolidays(){
+        return this.#waitOnHolidays;
+    }
+    setWaitOnHolidays(bool){
+        this.#waitOnHolidays = bool;
+    }
+    getHaveBand(){
+        return this.#haveBand;
+    }
+    setHaveBand(bool){
+        this.#haveBand = bool;
+    }
+    getHaveDiscount(bool){
+        return this.#haveDiscount;
+    }
+    setHaveDiscount(bool){
+        this.#haveDiscount = bool;
+    }
+    getNumberDice(){
+        return this.#numberDice;
+    }
+    setNumberDice(number){
+        this.#numberDice = number;
+    }
+    getWaitTurn(){
+        return this.#waitTurn;
+    }
+    setWaitTurn(bool){
+        this.#waitTurn = bool;
+    }
+    getPointerEntity(){
+        return this.#pointerEntity;
+    }
     throwDice(){
-        this.numberDice = Phaser.Math.Between(1, 6);
-        if(this.onHolidays && this.numberDice !== 4){
+        this.setNumberDice(Phaser.Math.Between(1, 6));
+        if(this.getOnHolidays() && this.getNumberDice() !== 4){
             console.log('Wanwanwanng! Necesitas un 4.')
-            // events.emit('dice-onHoliday', 'fail')
             events.emit('hide-dice');
             setTimeout(() => {
              this.changeTurn();
             }, 3000);
             return
             
-        }else if(this.onHolidays && this.numberDice === 4){
+        }else if(this.getOnHolidays() && this.getNumberDice() === 4){
             console.log('Wiiii!!! sacaste un 4')
-            this.waitOnHolidays = true;
-            // events.emit('dice-onHoliday', 'right')
-            this.onHolidays = false;
+            this.setWaitOnHolidays(true);
+            this.setOnHolidays(false);
         }
-        console.log('Scaco uin: ', this.numberDice)
+        // console.log('Scaco uin: ', this.#numberDice)
         //Move
-        this.changePosition(this.numberDice);
+        this.changePosition(this.getNumberDice());
     }
     changePosition(numberPositon, canChangeTurn = true){
 
         if(numberPositon === 1000){
             //The number 1000, is for init position one
-            this.currentPosition = 1;
+            this.setCurrentPosition(1);
         }else{
-            this.currentPosition += numberPositon;
+            this.setCurrentPosition(this.getCurrentPosition() + numberPositon);
         }
         //Change position and the postions is evaluated
-        if(this.currentPosition > 39) {
-            const rest = ( 39 - (this.currentPosition - 39))
-            this.currentPosition = rest;
+        if(this.getCurrentPosition() > 39) {
+            const rest = ( 39 - (this.getCurrentPosition() - 39))
+            this.setCurrentPosition(rest);
         }
         
-        if(this.currentPosition === 39){
+        if(this.getCurrentPosition() === 39){
 
-            this.tablero.scene.stop('Tablero')
-            this.tablero.scene.stop('Interface')
-            this.tablero.scene.start('Ganador', this)
+            this.#tablero.scene.stop('Tablero')
+            this.#tablero.scene.stop('Interface')
+            this.#tablero.scene.start('Ganador', this)
         }
-        this.move(this.currentPosition, canChangeTurn);
+        this.move(this.getCurrentPosition(), canChangeTurn);
     }
     move(position, canChangeTurn){
         events.emit('hide-dice');
@@ -115,8 +178,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             (obj) => obj.name === position.toString()
         );
         
-        this.tablero.tweens.add({
-            targets: this.pointerEntity,
+        this.#tablero.tweens.add({
+            targets: this.#pointerEntity,
             x: newPositon.x,
             y: newPositon.y,
             ease: "Sine.easeOut",
@@ -124,7 +187,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: 0,
             yoyo: false,
         })
-        this.tablero.tweens.add({
+        this.#tablero.tweens.add({
             targets: this,
             x: newPositon.x,
             y: newPositon.y,
@@ -133,21 +196,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: 0,
             yoyo: false,
             onStart: ()=>{
-                this.tablero.physics.pause()
+                this.#tablero.physics.pause()
             },
             onComplete: ()=>{
-                this.tablero.physics.resume()
+                this.#tablero.physics.resume()
                 
                 //Reactivar casilla
-                if(this.casillaDesactivada !== undefined){
-                    this.casillaDesactivada.enableBody(
-                        true,
-                        this.casillaDesactivada.x,
-                        this.casillaDesactivada.y,
-                        true,
-                        true
-                    );
-                };
+                // if(this.casillaDesactivada !== undefined){
+                //     this.casillaDesactivada.enableBody(
+                //         true,
+                //         this.casillaDesactivada.x,
+                //         this.casillaDesactivada.y,
+                //         true,
+                //         true
+                //     );
+                // };
 
                 let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === position.toString());
                 let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
@@ -156,7 +219,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
                 let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
 
-                if(this.isTurn && inStoreBox){
+                if(this.getIsTurn() && inStoreBox){
                     events.emit('open-store', this);
                     return;
                 }
@@ -164,9 +227,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     this.addMoney();
                 }
                 if(inYunqueBox){
-                        const yunque = this.tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
+                        const yunque = this.#tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
                         yunque.visible = false;
-                        this.tablero.tweens.add({
+                        this.#tablero.tweens.add({
                             targets: yunque,
                             x: Phaser.Math.Between(this.x - 15, this.x + 15),
                             y: Phaser.Math.Between(this.y - 15, this.y + 15),
@@ -178,22 +241,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 yunque.visible = true;
                             },
                             onComplete: ()=>{
-                                this.tablero.camara.shake(400, 0.015, false, ()=>{
+                                this.#tablero.camara.shake(400, 0.015, false, ()=>{
                                     yunque.visible = false;
                                     yunque.destroy();
                                     this.onlyMove(1000)
-                                    this.casillaDesactivada = this.casillaDesactivada;
+                                    // this.casillaDesactivada = this.casillaDesactivada;
                                 })
                             },
                         })
                 }
-                if(this.isTurn && inImpactsBox){
+                if(this.getIsTurn() && inImpactsBox){
                         const numberRandom = Phaser.Math.Between(1,4);
                         switch(numberRandom){
                             case 1:
                                 console.log('Cerdito');
                                 const propsCerdo = {
-                                    scene: this.tablero,
+                                    scene: this.#tablero,
                                     animsName: 'cerdo-anims',
                                     text: 'El cerdo banquero te cobra los impuestos.'
                                 }
@@ -203,7 +266,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             case 2:
                                 console.log('Se le lanza un pan y pierde el turno');
                                 const propsPato = {
-                                    scene: this.tablero,
+                                    scene: this.#tablero,
                                     animsName: 'pan-anims',
                                     text: 'Te lanzan un pan y pierdes el siguiente turno.',
                                     autoChange: true,
@@ -214,28 +277,27 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 break;
                             case 3:
                                 console.log('descuento')
-                                this.haveDescuento = true;
-                                events.emit('have-descuento', this.haveDescuento)
+                                this.setHaveDiscount(true);
                                 break;
                             case 4:
                                 console.log('curita')
-                                this.haveBand = true;
+                                this.setHaveBand(true);
                                 break;
                         }
                 }
                 if(inHolidaysBox){
-                        if(this.isTurn){
+                        if(this.getIsTurn()){
                             const props = {
-                                scene: this.tablero,
+                                scene: this.#tablero,
                                 image: 'holidays',
                                 text: '     Estás tomando unas vacaciones.\nNecesitas sacar un 4 para salir de ellas.'
                             }
                             const postalHolidays = new Postal(props)
                         }
-                        this.onHolidays = true;
+                        this.setOnHolidays(true);
                         events.emit('hide-slots')
                 }
-                if(this.isTurn && inWapesBox){
+                if(this.getIsTurn() && inWapesBox){
                         this.changePosition(-4, false);
                 }
                 
@@ -260,18 +322,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     changeTurn(){
         //Change turn
-        this.isTurn = false;
+        this.setIsTurn(false);
         //Stop the animations of pointers and player
         this.anims.pause();
-        this.pointerEntity.anims.pause();
-        this.pointerEntity.visible = false;
+        this.#pointerEntity.anims.pause();
+        this.#pointerEntity.visible = false;
 
         //Change Player
-        const currentIndex = this.tablero.players.indexOf(this);
+        const currentIndex = this.#tablero.getPlayers().indexOf(this);
         let nextIndex = currentIndex + 1;
-        if(nextIndex > this.tablero.players.length - 1) nextIndex = 0;
-        const nextPlayer = this.tablero.players[nextIndex];
-        nextPlayer.isTurn = true;
+        if(nextIndex > this.#tablero.getPlayers().length - 1) nextIndex = 0;
+        const nextPlayer = this.#tablero.getPlayers()[nextIndex];
+        nextPlayer.setIsTurn(true);
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');
     }
@@ -304,18 +366,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     addMoney(money = 300){
-        this.wallet  += money;
+        this.setWallet(this.getWallet() + money);
     }
     deleteMoney(){
-        this.wallet = 0; 
+        this.setWallet(0); 
     }
     addPowerUp(powerup){
-        if(this.inventory.length === 2) return;
-        this.inventory.push(powerup);
-        return this.inventory;
+        if(this.getInventory().length === 2) return;
+        this.getInventory().push(powerup);
     }
     loseTurn(){
-        this.waitTurn = true;
+        this.setWaitTurn(true);
         this.changeTurn();
     }
 }
