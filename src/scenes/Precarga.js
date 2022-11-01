@@ -41,6 +41,7 @@ export default class Precarga extends Phaser.Scene
 
 
         this.load.image("postal", 'assets/postal/postal.png');
+        this.load.image("holidays", 'assets/postal/vacaciones.png');
         
         //PowerUps- StaticSprites
         this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
@@ -51,13 +52,16 @@ export default class Precarga extends Phaser.Scene
         //PowerUps-Anims
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.spritesheet("hook-spritesheet", 'assets/powerups/hook/hook-spritesheet.png', {frameWidth: 575, frameHeight: 315})
 
         //Consecuencias - Impacts
         this.load.spritesheet("cerdo-spritesheet", 'assets/powerups/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet("pan-spritesheet", 'assets/powerups/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         //Utils
         this.load.image("reloj", 'assets/reloj.png');
-        this.load.image("ticket-dice", 'assets/pointers/ticket-dice.png');
+        this.load.image("ticket-dice", 'assets/interface/ticket-dice.png');
+        this.load.image("ticket-dice-fail", 'assets/interface/ticket-dice-fail.png');
+        this.load.image("ticket-dice-right", 'assets/interface/ticket-dice-right.png');
 
 
         
@@ -67,6 +71,7 @@ export default class Precarga extends Phaser.Scene
         this.load.atlas("botones", 'assets/botones/atlas_botones_amarrillos.png', 'assets/botones/atlas_botones_amarrillos.json')
         this.load.image('boton-check', 'assets/botones/boton-check.png');
         this.load.image('boton-lapiz-edit', 'assets/botones/boton-lapiz-edit.png');
+        this.load.image('contenedor-madera', 'assets/botones/contenedores-madera.png');
 
 
         //UserInterfaces
@@ -169,6 +174,15 @@ export default class Precarga extends Phaser.Scene
             delay: 1000,
             frameRate: 4,
             repeat: 1,
+        });
+        this.anims.create({
+            key: "hook-anims",
+            frames: this.anims.generateFrameNumbers("hook-spritesheet", {
+                start: 0,
+                end: 9,
+            }),
+            frameRate: 8,
+            repeat: 0,
         });
         this.anims.create({
             key: "cerdo-anims",

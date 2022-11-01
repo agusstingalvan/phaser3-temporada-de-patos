@@ -13,6 +13,8 @@ export default class Interface extends Phaser.Scene{
     #nameLabel;
     #numberDiceLabel;
     #imageDice;
+    #imageDiceFail;
+    #imageDiceRight;
     #moneyLabel;
     #currentPlayer;
     #openStore = false;
@@ -46,6 +48,8 @@ export default class Interface extends Phaser.Scene{
 
        //Number of dice
        this.#imageDice = this.add.image(this.scale.width / 2, -32, 'ticket-dice')
+       this.#imageDiceFail = this.add.image(this.scale.width / 2, -32, 'ticket-dice-fail')
+       this.#imageDiceRight = this.add.image(this.scale.width / 2, -32, 'ticket-dice-right')
        this.#numberDiceLabel = this.add.text(this.scale.width / 2, -32, '0', {fontSize: 32, fontStyle: 'bold', color: '242424'} ).setOrigin(0.5);
        this.#imageDice.visible = true;
        this.#numberDiceLabel.visible = false;
@@ -70,10 +74,10 @@ export default class Interface extends Phaser.Scene{
            })
         }, this)
         
-        events.on('update-money', (money) => {
-            const text = `$:${money}`
-            this.#moneyLabel.setText(text);
-        })
+        // events.on('update-money', (money) => {
+        //     const text = `$:${money}`
+        //     this.#moneyLabel.setText(text);
+        // })
         events.on('open-store', (player) => {
             this.#openStore = true;
             if(this.#openStore){
@@ -83,7 +87,7 @@ export default class Interface extends Phaser.Scene{
             }
             const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 150, texture: 'nuclear-bomb'},  {name: 'Hook', price: 100, texture: 'hook'}]
             const props  = {
-                scene: player.tablero,
+                scene: player.getTablero(),
                 items, 
                 player: player,
             }
@@ -95,18 +99,19 @@ export default class Interface extends Phaser.Scene{
                 this.enableSlot(slot)
             });
         })
+        
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
             //Change the interfaces with own properties of player, when change the turn
             this.updateName(player)
 
-            const wallet = player.wallet;
+            const wallet = player.getWallet();
             this.updateWallet(wallet);
 
-            const inventory = player.inventory;
+            const inventory = player.getInventory();
             this.updateSlots(inventory, player);
 
-            (player.haveBand) ? this.#band.visible = true : this.#band.visible = false;
+            (player.getHaveBand()) ? this.#band.visible = true : this.#band.visible = false;
         }, this)
     }
     enableSlot(slot){
@@ -119,13 +124,29 @@ export default class Interface extends Phaser.Scene{
     }
     handleDice(){
         this.#currentPlayer.throwDice();
-        this.#numberDiceLabel.setText(this.#currentPlayer.numberDice);
+        // console.info('popup', this.#currentPlayer.name+' dado:'+ this.#currentPlayer.numberDice)
+        this.#numberDiceLabel.setText(this.#currentPlayer.getNumberDice());
         const height = (this.scale.height / 2) - 320;
         this.#imageDice.setY(-32)
+        this.#imageDiceFail.setY(-32)
+        this.#imageDiceRight.setY(-32)
         this.#numberDiceLabel.setY(-32)
 
+        //PopUpDice for holidays state.
+        let popupDice = '';
+        if(this.#currentPlayer.getOnHolidays() && this.#currentPlayer.getNumberDice() !== 4){
+            popupDice = this.#imageDiceFail;
+        }else if(this.#currentPlayer.getWaitOnHolidays() && this.#currentPlayer.getNumberDice() == 4){
+            popupDice = this.#imageDiceRight;
+            this.#currentPlayer.setWaitOnHolidays(false);
+        }else{
+            popupDice = this.#imageDice;
+        }
+        if(!this.popupDice ){
+            this.popupDice = this.#imageDice
+        }
         this.tweens.add({
-            targets: this.#imageDice,
+            targets: popupDice,
             x: this.scale.width / 2,
             y: height,
             ease: "Sine.easeInOut",
@@ -152,7 +173,7 @@ export default class Interface extends Phaser.Scene{
         })
     }
     updateName(player){
-        this.#nameLabel.setText(this.#currentPlayer.name);
+        this.#nameLabel.setText(this.#currentPlayer.getName());
     }
     updateWallet(wallet){
         const text = `$:${wallet}`;
@@ -166,7 +187,7 @@ export default class Interface extends Phaser.Scene{
         });
         
         inventory.map((item, index)=> {
-            if(player.onHolidays) {
+            if(player.getOnHolidays()) {
                 this.#slots.map((slot)=> this.disableSlot(slot));
                 return
             }        

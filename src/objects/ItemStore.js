@@ -5,7 +5,6 @@ import NuclearBomb from "./powerups/NuclearBomb";
 
 export default class ItemStore {
     constructor({scene, items, player}){
-        console.log(items)
         const props = {
             scene: scene,
             btnClose: true,
@@ -19,8 +18,7 @@ export default class ItemStore {
         let itemContainer;
         let containerItems = scene.add.container(0, 0, []);
         items.map((item, index)=>{
-            // player.wallet = 300;
-            if(player.haveDescuento){
+            if(player.getHaveDiscount()){
                 item.price = item.price/2;
             }
             const image = scene.add.image(0, 0, item.texture)
@@ -32,11 +30,11 @@ export default class ItemStore {
             const btn = scene.add.text(0, image.height + 24, 'Comprar', {padding: 8, backgroundColor: '#ffffff', color: '#000000', fontStyle: 'bold', fontFamily: 'Montserrat'}).setOrigin(0.5)
 
 
-            if(player.wallet >= item.price && player.inventory.length < 2){
+            if(player.getWallet() >= item.price && player.getInventory().length < 2){
                 btn.setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
-                    if(player.wallet >= item.price && player.inventory.length < 2){
-                        console.log(player.wallet)
-                        player.wallet -= item.price;
+                    if(player.getWallet() >= item.price && player.getInventory().length < 2){
+                        console.log(player.getWallet())
+                        player.setWallet(player.getWallet() - item.price)
                         btn.disableInteractive();
                         image.setTint('0x5c5c5c');
                         btn.setAlpha(.8)
@@ -55,16 +53,12 @@ export default class ItemStore {
                                 break    
                             
                         }
-                        if(player.haveDescuento){
-                            player.haveDescuento = false;
+                        if(player.getHaveDiscount()){
+                            player.setHaveDiscount(false);
                         }
                         containerItems.list.map((container)=>{
-                            // if(!player.haveDescuento){
-                            //     item.price *= 2;
-                            //     container.list[3].setText(item.price)
-                            // }
                             let price = container.list[3].getData('price');
-                            if(player.wallet < price || player.inventory.length === 2){
+                            if(player.getWallet() < price || player.getInventory().length === 2){
                                 container.list[4].disableInteractive();
                                 container.list[4].setAlpha(.8);
                                 container.list[2].setTint('0x5c5c5c');
