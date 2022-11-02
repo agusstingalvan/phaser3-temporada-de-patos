@@ -3,8 +3,8 @@ import { sharedInstance as events } from "../../scenes/EventCenter";
 
 export default class Bomb extends PowerUp{
     #scene;
-    constructor({scene, x, y, texture, position, currentPlayer}){
-        super({scene, x, y, texture, position, currentPlayer})
+    constructor({scene, x, y, texture, position, currentPlayer, type="bomb"}){
+        super({scene, x, y, texture, position, currentPlayer, type})
         this.#scene = scene;
     }
     //when player plant the bomb in the tablero.
@@ -18,20 +18,15 @@ export default class Bomb extends PowerUp{
         events.emit('hide-dice');
         this.delete()
         
-        setTimeout(()=>{
-            player.changeTurn()
-        }, 3000)
+        setTimeout(()=> player.changeTurn(), 3000)
     }
     effect(playerCollide){
         //He is call for the tablero.
         this.currentPlayer = playerCollide;
-        this.anims.play('bomb-anims', true).on('animationcomplete', ()=>{
-            this.destroy();
-        })
+        this.anims.play('bomb-anims', true).on('animationcomplete', ()=> this.destroy());
         if (this.currentPlayer.getCurrentPosition() <= 5){
             this.currentPlayer.onlyMove(1000)
-        }
-        else{
+        }else{
             this.currentPlayer.changePosition(-5, false)
         }
         

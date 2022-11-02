@@ -10,20 +10,10 @@ import Button from '../objects/Button';
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
     #players = []; //Intances of class Player 
-    #currentPositionPlayer;
     #currentPlayer;
-    #time;
-    #interfaces;
-    #slots; //Contain the power ups
-    #timeTurn = 15;
-    #startTurnPlayer;
-    #casillaConsecuenciaGroup;
-    #boxesGroup; //Group of casillas
-    #storeBoxesGroup;
     bombsGroup;
     nuclearBombsGroup;
     map;
-    // casillaDesactivada;
     constructor() {
         super('Tablero')
     }
@@ -54,8 +44,6 @@ export default class Tablero extends Phaser.Scene {
         //Create groups for Boxes layers.
         this.addGroups();
 
-        //Create Boxes layer on the tablero.
-        this.addBoxes(objectsBoxesLayer)
 
         //Create the players on the tablero.
         this.addPlayers(salida);
@@ -107,35 +95,9 @@ export default class Tablero extends Phaser.Scene {
         this.changeTurn();
     }
     addGroups() {
-        this.#boxesGroup = this.physics.add.group();
-        this.#casillaConsecuenciaGroup = this.physics.add.group();
-        this.#storeBoxesGroup = this.physics.add.group();
 
         //#bombsGroup group is only for test
         this.bombsGroup = this.physics.add.group({ allowGravity: false, classType: Bomb })
-        this.nuclearBombsGroup = this.physics.add.group({ allowGravity: false, classType: NuclearBomb })
-    }
-    addBoxes(objectsBoxesLayer) {
-        objectsBoxesLayer.objects.forEach((box) => {
-            const { type, x, y, name } = box;
-
-            // const casilla = this.#boxesGroup.create(box.x, box.y, 'invisible')
-            // casilla.body.allowGravity = false;
-            // casilla.visible = false;
-            switch (type) {
-                // case 'consecuencia':
-                //     console.log('consecuencia')
-                //     const casillaConsecuencia = this.#casillaConsecuenciaGroup.create(x, y, 'invisible');
-                //     casillaConsecuencia.body.allowGravity = false;
-                //     casillaConsecuencia.visible = false;
-                //     break;
-                // case 'tienda':
-                //     const storeBox = this.#storeBoxesGroup.create(x, y, 'invisible')
-                //     storeBox.body.allowGravity = false;
-                //     storeBox.visible = false;
-                //     break;
-            }
-        })
     }
     addPlayers(salida) {
         for (let player of this.#playersData) {
@@ -153,27 +115,21 @@ export default class Tablero extends Phaser.Scene {
             }
             if (index === 0) props.isTurn = true;
 
-            //Only test powerup of bomb. Each player starts with a bomb.
             player = new Player(props);
+            //Only test powerup of bomb. Each player starts with a bomb.
             const bomb = new Bomb({ scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
             const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
             const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
 
             // player.addPowerUp(bomb);
             player.addPowerUp(nuclearBomb);
-            // player.addPowerUp(hook);
+            player.addPowerUp(hook);
             this.#players = [...this.#players, player];
         }
         console.log(this.#players);
     }
 
     addOverlaps() {
-        this.physics.add.overlap(this.getPlayers(), this.#boxesGroup, (player, box) => {
-            this.#currentPositionPlayer = player.getCurrentPosition();
-            box.disableBody(true, true);
-        }, null, this);
-
-
         this.physics.add.overlap(this.getPlayers(), this.bombsGroup, (player, bomb) => {
             const owner = bomb.getData('owner');
             if(player.getName() === owner) return;

@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
 import ItemStore from '../objects/ItemStore';
-import PopUpContainer from '../objects/PopupContainer';
 import { sharedInstance as events } from './EventCenter';
 
 export default class Interface extends Phaser.Scene{
@@ -8,7 +7,6 @@ export default class Interface extends Phaser.Scene{
     #slot1;
     #slot2;
     #buttonDice;
-    // #timerLabel;
     #band;
     #nameLabel;
     #numberDiceLabel;
@@ -25,36 +23,41 @@ export default class Interface extends Phaser.Scene{
         this.sonidos = data.sonidos
     }
     create(){
-        
         //Slots
        this.#slot1 = this.add.image(100, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
        .on("pointerdown", () => this.#slot1.image.useEffect())
        .on("pointerover", (btn) => this.#slot1.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot1.setTint('0xe5e5e5'))
-       this.#slot1.image = this.add.image();
-       this.#slot1.image.useEffect = ()=> console.log('hola');
-
        this.#slot2 = this.add.image(174, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
        .on("pointerdown", () => this.#slot2.image.useEffect())
        .on("pointerover", (btn) => this.#slot2.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot2.setTint('0xe5e5e5'))
+
+       //Reset the properties of slots
+        this.#slot1.image = this.add.image();
+        this.#slot1.image.useEffect = ()=> null;
         this.#slot2.image = this.add.image();
-        this.#slot2.image.useEffect = ()=> console.log('hola');
-       this.#slots = [this.#slot1, this.#slot2];
+        this.#slot2.image.useEffect = ()=> null;
+
+        //Add a array to the slot
+        this.#slots = [this.#slot1, this.#slot2];
+
+
         //Wallet
         this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
-       //Timer
-         //    this.#timerLabel = this.add.text(this.scale.width/2, this.scale.height - 64, '15s', {fontSize: 36, fontStyle: 'bold'}).setOrigin(0.5)
+
+        
+        //Add image of band
         this.#band = this.add.image(this.scale.width/2, this.scale.height - 64, 'band');
         //TextName
        this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5);
 
-       //Number of dice
+       //Number of dice and image of the dice.
        this.#imageDice = this.add.image(this.scale.width / 2, -32, 'ticket-dice')
        this.#imageDiceFail = this.add.image(this.scale.width / 2, -32, 'ticket-dice-fail')
        this.#imageDiceRight = this.add.image(this.scale.width / 2, -32, 'ticket-dice-right')
        this.#numberDiceLabel = this.add.text(this.scale.width / 2, -32, '0', {fontSize: 32, fontStyle: 'bold', color: '242424'} ).setOrigin(0.5);
-       this.#imageDice.visible = true;
+       this.#imageDice.visible = false;
        this.#numberDiceLabel.visible = false;
 
        //Button Dice
@@ -79,37 +82,25 @@ export default class Interface extends Phaser.Scene{
                 this.disableSlot(slot)
            })
         }, this)
-        
-        // events.on('update-money', (money) => {
-        //     const text = `$:${money}`
-        //     this.#moneyLabel.setText(text);
-        // })
+
         events.on('open-store', (player) => {
             this.#openStore = true;
-            if(this.#openStore){
-                this.#slots.map((slot) => {
-                    this.disableSlot(slot)
-                });
-            }
-            const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 150, texture: 'nuclear-bomb'},  {name: 'Hook', price: 100, texture: 'hook'}]
-            const props  = {
-                scene: player.getTablero(),
-                items, 
-                player: player,
-            }
+            if(this.#openStore) this.#slots.map((slot) => this.disableSlot(slot));
+
+            const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 1500, texture: 'nuclear-bomb'},  {name: 'Hook', price: 1200, texture: 'hook'}]
+            const props  = { scene: player.getTablero(), items, player: player}
             const popup = new ItemStore(props)
         })
         events.on('close-store', ()=>{
             this.#openStore = false;
-            this.#slots.map((slot) => {
-                this.enableSlot(slot)
-            });
+            this.#slots.map((slot) => this.enableSlot(slot));
         })
         
         events.on('change-turn', (player)=> {
             this.#currentPlayer = player;
             //Change the interfaces with own properties of player, when change the turn
-            this.updateName(player)
+            const name = this.#currentPlayer.getName();
+            this.updateName(name)
 
             const wallet = player.getWallet();
             this.updateWallet(wallet);
@@ -130,15 +121,15 @@ export default class Interface extends Phaser.Scene{
     }
     handleDice(){
         this.#currentPlayer.throwDice();
-        // console.info('popup', this.#currentPlayer.name+' dado:'+ this.#currentPlayer.numberDice)
         this.#numberDiceLabel.setText(this.#currentPlayer.getNumberDice());
+        
         const height = (this.scale.height / 2) - 320;
         this.#imageDice.setY(-32)
         this.#imageDiceFail.setY(-32)
         this.#imageDiceRight.setY(-32)
         this.#numberDiceLabel.setY(-32)
 
-        //PopUpDice for holidays state.
+        //PopUpDice for holidays STATE.
         let popupDice = '';
         if(this.#currentPlayer.getOnHolidays() && this.#currentPlayer.getNumberDice() !== 4){
             popupDice = this.#imageDiceFail;
@@ -178,8 +169,8 @@ export default class Interface extends Phaser.Scene{
             }
         })
     }
-    updateName(player){
-        this.#nameLabel.setText(this.#currentPlayer.getName());
+    updateName(name){
+        this.#nameLabel.setText(name);
     }
     updateWallet(wallet){
         const text = `$:${wallet}`;
@@ -189,20 +180,20 @@ export default class Interface extends Phaser.Scene{
     updateSlots(inventory, player){
         this.#slots.map((slot) => {
             slot?.image?.destroy();
-            slot.image.useEffect = () => console.log('vacio')
+            slot.image.useEffect = () => null;
         });
         
         inventory.map((item, index)=> {
-            if(player.getOnHolidays()) {
-                this.#slots.map((slot)=> this.disableSlot(slot));
-                return
-            }        
+            if(player.getOnHolidays()) return this.#slots.map((slot)=> this.disableSlot(slot));
+
             const {x, y} = this.#slots[index];
             const {key} = item.texture;
             this.#slots[index].image = this.add.image(x, y, key).setOrigin(0.5).setScale(0.7);
-            events.on('delete-item', (element)=> {
-                if(element === item) this.#slots[index].image.destroy();
-                if(element === item) this.#slots[index].image.useEffect = () => console.log('vacio');
+            events.on('delete-item', (typeElement)=> {
+                if(typeElement === item) {
+                    this.#slots[index].image.destroy();
+                    this.#slots[index].image.useEffect = () => null;
+                }
             })
             this.#slots[index].image.useEffect = () => item.add(player);
         })

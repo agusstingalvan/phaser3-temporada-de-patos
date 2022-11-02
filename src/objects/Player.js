@@ -1,8 +1,5 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
-import PopUpContainer from "./PopupContainer";
 import Postal from "./Postal";
-import Bomb from "./powerups/Bomb";
-import NuclearBomb from "./powerups/NuclearBomb";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     #tablero;
     #name;
@@ -12,7 +9,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #position = 0;
     #wallet = 0;
     #inventory = [];
-    // casillaDesactivada;
     #map; //Map of tilemaps for find objects in the tablero.
     #storeMap = [];
     #moneyMap = [];
@@ -134,7 +130,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.setNumberDice(Phaser.Math.Between(1, 6));
         if(this.getOnHolidays() && this.getNumberDice() !== 4){
-            // console.log('Wanwanwanng! Necesitas un 4.')
             events.emit('hide-dice');
             setTimeout(() => {
              this.changeTurn();
@@ -142,18 +137,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             return
             
         }else if(this.getOnHolidays() && this.getNumberDice() === 4){
-            // console.log('Wiiii!!! sacaste un 4')
             this.setWaitOnHolidays(true);
             this.setOnHolidays(false);
         }
-        // console.log('Scaco uin: ', this.#numberDice)
-        //Move
+
+        //Move this player.
         this.changePosition(this.getNumberDice());
     }
     changePosition(numberPositon, canChangeTurn = true){
 
         if(numberPositon === 1000){
-            //The number 1000, is for init position one
+            //The number 1000, is for init position one (1) in the tablero.
             this.setCurrentPosition(1);
         }else{
             this.setCurrentPosition(this.getCurrentPosition() + numberPositon);
@@ -163,7 +157,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             const rest = ( 39 - (this.getCurrentPosition() - 39))
             this.setCurrentPosition(rest);
         }
-        
         if(this.getCurrentPosition() === 39){
             this.#tablero.scene.stop('Interface')
             this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
@@ -173,6 +166,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             })
             return
         }
+
         this.move(this.getCurrentPosition(), canChangeTurn);
     }
     move(position, canChangeTurn){
@@ -204,33 +198,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.#tablero.sonidos.sound.movimientoDadoSFX.play();
             },
             onComplete: ()=>{
-                this.#tablero.physics.resume()
-                
-                //Reactivar casilla
-                // if(this.casillaDesactivada !== undefined){
-                //     this.casillaDesactivada.enableBody(
-                //         true,
-                //         this.casillaDesactivada.x,
-                //         this.casillaDesactivada.y,
-                //         true,
-                //         true
-                //     );
-                // };
+                this.#tablero.physics.resume();
 
-                let inStoreBox = this.#storeMap.some((numberBox)=> numberBox === position.toString());
-                let inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
-                let inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
-                let inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
-                let inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
-                let inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
+                const inMoneyBox = this.#moneyMap.some((numberBox)=> numberBox === position.toString());
+                const inWapesBox = this.#wavesMap.some((numberBox)=> numberBox === position.toString());
+                const inStoreBox = this.#storeMap.some((numberBox)=> numberBox === position.toString());
+                const inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
+                const inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
+                const inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
 
-                if(this.getIsTurn() && inStoreBox){
-                    events.emit('open-store', this);
-                    return;
-                }
-                if(inMoneyBox){
-                    this.addMoney();
-                }
+                if(inMoneyBox) this.addMoney(); 
+                if(this.getIsTurn() && inWapesBox) this.changePosition(-4, false);
+                if(this.getIsTurn() && inStoreBox) return events.emit('open-store', this);
                 if(inYunqueBox){
                         const yunque = this.#tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
                         yunque.visible = false;
@@ -242,15 +221,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             duration: 600,
                             repeat: 0,
                             yoyo: false,
-                            onStart: ()=> {
-                                yunque.visible = true;
-                            },
+                            onStart: ()=> yunque.visible = true,
                             onComplete: ()=>{
                                 this.#tablero.camara.shake(400, 0.015, false, ()=>{
                                     yunque.visible = false;
                                     yunque.destroy();
                                     this.onlyMove(1000)
-                                    // this.casillaDesactivada = this.casillaDesactivada;
                                 })
                             },
                         })
@@ -302,17 +278,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setOnHolidays(true);
                         events.emit('hide-slots')
                 }
-                if(this.getIsTurn() && inWapesBox){
-                        this.changePosition(-4, false);
-                }
                 
-                //Detect of direction of player.
+                
+                //Detect of direction of this player.
                 const direction = newPositon.properties[0].value;
-                if(direction === 'left'){
-                    this.setFlipX(false)
-                }else{
-                    this.setFlipX(true)
-                }
+                (direction === 'left')? this.setFlipX(false): this.setFlipX(true);
+
 
                 if(canChangeTurn){
                     const secondsChangeTurn = 3000;
@@ -334,10 +305,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.#pointerEntity.visible = false;
 
         //Change Player
-        const currentIndex = this.#tablero.getPlayers().indexOf(this);
+        const players = this.#tablero.getPlayers();
+        const currentIndex = players.indexOf(this);
         let nextIndex = currentIndex + 1;
-        if(nextIndex > this.#tablero.getPlayers().length - 1) nextIndex = 0;
-        const nextPlayer = this.#tablero.getPlayers()[nextIndex];
+        if(nextIndex > players.length - 1) nextIndex = 0;
+        const nextPlayer = players[nextIndex];
         nextPlayer.setIsTurn(true);
         events.emit('change-turn', nextPlayer);
         events.emit('show-dice');

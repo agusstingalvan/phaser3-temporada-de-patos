@@ -4,9 +4,10 @@ import PowerUp from "../PowerUp";
 export default class Hook extends PowerUp{
     #scene;
     #currentPlayer;
-    #canChangeTurn = false
-    constructor({scene, x, y, texture, position, currentPlayer}){
-        super({scene, x, y, texture, position, currentPlayer})
+    #canChangeTurn = false;
+
+    constructor({scene, x, y, texture, position, currentPlayer, type='hook'}){
+        super({scene, x, y, texture, position, currentPlayer, type})
         this.#scene = scene;
         this.#currentPlayer = currentPlayer;
     }
@@ -23,20 +24,18 @@ export default class Hook extends PowerUp{
         }
     }
     effect(player){
-        const players = this.#scene.getPlayers().filter((player) => (player.getCurrentPosition() > this.#currentPlayer.getCurrentPosition()) && !player.get);
+        const players = this.#scene.getPlayers().filter((player) => (player.getCurrentPosition() > this.#currentPlayer.getCurrentPosition()) && !player.getOnHolidays());
 
         if(players.length >= 1){ 
-            const positonArray = players.map(player => {
-                return  {position: player.getCurrentPosition(), player}
-            });
+            const positonArray = players.map(player => ({position: player.getCurrentPosition(), player}));
             const positions = positonArray.sort((a,b) =>  a.position - b.position); 
-            const playerCollide = positions[positions.length - 1].player;
+
+            const playerCollide = positions[0].player;
+            
             if(playerCollide.getHaveBand()) {
                 playerCollide.setHaveBand(false)
                 this.#canChangeTurn = true;
-                this.delete();
-                console.log('se roimpio el gancho y la curita')
-                return
+                return this.delete();
             }
             
             playerCollide.setCurrentPosition(player.getCurrentPosition());
