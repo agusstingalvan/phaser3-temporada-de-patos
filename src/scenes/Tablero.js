@@ -5,6 +5,7 @@ import { sharedInstance as events } from './EventCenter';
 import Bomb from '../objects/powerups/Bomb';
 import NuclearBomb from '../objects/powerups/NuclearBomb';
 import Hook from '../objects/powerups/Hook';
+import Button from '../objects/Button';
 
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
@@ -36,7 +37,9 @@ export default class Tablero extends Phaser.Scene {
     }
 
     create() {
-        this.scene.launch('Interface')
+        this.sonidos.sound.musicTablero.config.volume = 0.1;
+        this.sonidos.sound.musicTablero.play();
+        this.scene.launch('Interface', {sonidos: this.sonidos});
         this.map = this.make.tilemap({ key: "tableroTile" });
         const tiledBackground = this.map.addTilesetImage("background", "fondo-tablero");
         const backgroundLayer = this.map.createLayer("background", tiledBackground)
@@ -60,6 +63,25 @@ export default class Tablero extends Phaser.Scene {
 
         this.addOverlaps();
 
+        const btnCerrar = new Button(
+            this,
+            this.scale.width - 45,
+            this.scale.height - (this.scale.height - 45),
+            "botones",
+            "boton-cerrar",
+            () => {
+                this.sonidos.sound.musicTablero.stop();    
+                this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
+                    this.scene.stop('Interface');
+                    this.scene.stop('Tablero');
+                    this.scene.start("Inicio");
+                })
+            },
+            0.5
+        );
+        this.events.on('create', ()=>{
+            this.cameras.main.fadeIn(500)
+        });
     }
     changeTurn() {
         for (let player of this.getPlayers()) {

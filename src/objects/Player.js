@@ -133,7 +133,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     throwDice(){
         this.setNumberDice(Phaser.Math.Between(1, 6));
         if(this.getOnHolidays() && this.getNumberDice() !== 4){
-            console.log('Wanwanwanng! Necesitas un 4.')
+            // console.log('Wanwanwanng! Necesitas un 4.')
             events.emit('hide-dice');
             setTimeout(() => {
              this.changeTurn();
@@ -141,7 +141,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             return
             
         }else if(this.getOnHolidays() && this.getNumberDice() === 4){
-            console.log('Wiiii!!! sacaste un 4')
+            // console.log('Wiiii!!! sacaste un 4')
             this.setWaitOnHolidays(true);
             this.setOnHolidays(false);
         }
@@ -164,10 +164,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
         
         if(this.getCurrentPosition() === 39){
-
-            this.#tablero.scene.stop('Tablero')
             this.#tablero.scene.stop('Interface')
-            this.#tablero.scene.start('Ganador', this)
+            this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
+                this.#tablero.sonidos.sound.musicTablero.stop();
+                this.#tablero.scene.stop('Tablero')
+                this.#tablero.scene.start('Ganador', {name: this.getName(), sonidos: this.#tablero.sonidos})
+            })
+            return
         }
         this.move(this.getCurrentPosition(), canChangeTurn);
     }
@@ -197,6 +200,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             yoyo: false,
             onStart: ()=>{
                 this.#tablero.physics.pause()
+                this.#tablero.sonidos.sound.movimientoDadoSFX.play();
             },
             onComplete: ()=>{
                 this.#tablero.physics.resume()

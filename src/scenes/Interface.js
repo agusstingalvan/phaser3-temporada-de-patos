@@ -21,6 +21,9 @@ export default class Interface extends Phaser.Scene{
     constructor(){
         super("Interface")
     }
+    init(data){
+        this.sonidos = data.sonidos
+    }
     create(){
         
         //Slots
@@ -56,7 +59,10 @@ export default class Interface extends Phaser.Scene{
 
        //Button Dice
        this.#buttonDice = this.add.image(this.scale.width - 84, this.scale.height - 94, 'boton-dado').setInteractive({ useHandCursor: true })
-       .on("pointerdown", () => this.handleDice())
+       .on("pointerdown", () => {
+            this.sonidos.sound.tirarDadoSFX.play();
+            this.handleDice()
+       })
        .on("pointerover", (btn) => this.#buttonDice.setTint('0xc2c2c2').setScale(1.2))
        .on("pointerout", (btn) => this.#buttonDice.setTint('0xe5e5e5').setScale(1))
 

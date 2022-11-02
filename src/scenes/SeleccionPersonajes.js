@@ -29,23 +29,22 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 x: 525,
                 y: 300,
             },
-            // {
-            //     name: 'Jugador 3',
-            //     texture: "pato-verde",
-            //     x: 700,
-            //     y: 300,
-            // },
-            // {
-            //     name: 'Jugador 4',
-            //     texture: "pato-galera",
-            //     x: 900,
-            //     y: 300,
-            // }
+            {
+                name: 'Jugador 3',
+                texture: "pato-verde",
+                x: 700,
+                y: 300,
+            },
+            {
+                name: 'Jugador 4',
+                texture: "pato-galera",
+                x: 900,
+                y: 300,
+            }
         ];
         this.sonidos = data.sonidos;
     }
     create() {
-        
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -108,6 +107,9 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 this.#textLabel.visible = false;
             }
         })
+        this.events.on('create', ()=>{
+            this.cameras.main.fadeIn(500)
+        });
     }
 
     createInputs(nameText, playerObj) {

@@ -10,22 +10,25 @@ export default class Ganador extends Phaser.Scene
 	}
 
     init(data){
-        console.log(data)
-        this.#winPlayer = data.getName();
-    }
-	preload()
-    {
+        this.#winPlayer = data.name;
+        this.sonidos = data.sonidos;
     }
 
     create()
     {
-        
+        this.events.on('create', ()=> this.cameras.main.fadeIn(500));
         this.add.image(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'atlas-backgrounds', "fondo-ganador");
         this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2 - 220, this.#winPlayer, {
             fontFamily: 'Montserrat', fontSize: 20, fontStyle: 'bold', 
         } ).setOrigin(0.5)
         new Button(this, this.sys.game.config.width / 2 - 5, this.sys.game.config.height - 45, 'botones', "boton-volver", () => {
-            this.scene.start("Inicio")
+            
+            this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
+                this.scene.start("Inicio");
+            //     this.sonidos.sound.musicTablero.stop();
+            //     this.scene.stop('Ganador')
+            //     this.scene.start("Inicio")
+            })
         })
         
     }
