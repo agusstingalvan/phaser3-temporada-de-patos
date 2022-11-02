@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Button from '../objects/Button';
+import { getTranslations, getPhrase } from '../services/translations'
 
 let stringName = ""
 
@@ -9,6 +10,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
     #imageDice;
     #textLabel;
     canEdit = true;
+    #language;
 
 	constructor() {
         super("SeleccionPersonajes");
@@ -43,8 +45,11 @@ export default class SeleccionPersonajes extends Phaser.Scene
             }
         ];
         this.sonidos = data.sonidos;
+        this.#language = data.language;
     }
     create() {
+        this.getTranslations(this.#language)
+        
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -193,5 +198,10 @@ export default class SeleccionPersonajes extends Phaser.Scene
             nameText.setText(string);
             playerObj.name = string;
         }
+    }
+
+    async getTranslations(language){
+        const res = await getTranslations(language)
+        console.log(getPhrase('listo'))
     }
 }

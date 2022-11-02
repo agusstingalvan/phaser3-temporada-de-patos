@@ -60,6 +60,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.searchBoxes();
+        console.log(this)
     }
     getTablero(){
         return this.#tablero;

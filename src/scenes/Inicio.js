@@ -2,6 +2,9 @@ import Phaser from 'phaser'
 import Button from '../objects/Button';
 import SoundsManage from '../functions/SoundManage';
 import PopUpContainer from '../objects/PopupContainer';
+import { getTranslations, getPhrase } from '../services/translations'
+import keys from '../enums/keys';
+import { FETCHED, FETCHING, READY, TODO } from '../enums/status'
 
 export default class Inicio extends Phaser.Scene
 {
@@ -13,10 +16,17 @@ export default class Inicio extends Phaser.Scene
     #popUpCredits;
     #popUpOptions
     canOpenPopUp = true;
+    #wasChangedLanguage = TODO
+    #language;
 	constructor()
 	{
-		super('Inicio')
+		super('Inicio');
+        const {jugar} = keys.sceneInicio;
+        this.jugar = jugar;
 	}
+    init(data){
+        this.#language = data.language;
+    }
     create()
     {   
         const {width, height} = this.scale;
@@ -28,9 +38,13 @@ export default class Inicio extends Phaser.Scene
         const sonidos = new SoundsManage(this.sound, 0.3);
         sonidos.sound.musicMain.play();
  
-        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y, 'botones', "boton-jugar", () => this.scene.start("SeleccionPersonajes", { sonidos }), 1.15)
+        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y, 'botones', "boton-jugar", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 1.15)
         
-        
+        const buttonEn = this.add.rectangle(width * 0.1, height * 0.15, 150, 75, 0xffffff)
+			.setInteractive()
+			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
+                this.getTranslations('en-US')
+			})
         this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 80, 'botones', "boton-ayuda",
         () => {
             if(this.canOpenPopUp){
@@ -69,8 +83,27 @@ export default class Inicio extends Phaser.Scene
             btnClose: true,
             scale: 1,
         })
+        this.txt = this.add.text(400, 400, getPhrase('jugar'), {fontSize: 100})
     }
     createPopUp(data){
         return new PopUpContainer(data)
     }
+    //For time
+    updateWasChangedLanguage = () => {
+        this.#wasChangedLanguage = FETCHED
+    };
+    async getTranslations(language){
+        this.#language = language;
+        this.#wasChangedLanguage = FETCHING;
+        
+        await getTranslations(language, this.updateWasChangedLanguage)
+    }
+    
+    update(){
+        if(this.#wasChangedLanguage === FETCHED){
+            this.#wasChangedLanguage = READY;
+            this.txt.setText(getPhrase('jugar'))
+        }
+    }
+    
 }

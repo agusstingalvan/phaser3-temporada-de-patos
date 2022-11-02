@@ -1,7 +1,8 @@
 import Phaser from 'phaser'
-
+import { getLanguageConfig, getTranslations } from "../services/translations";
 export default class Precarga extends Phaser.Scene
 {
+    #language;
 	constructor()
 	{
 		super('Precarga')
@@ -9,6 +10,7 @@ export default class Precarga extends Phaser.Scene
 
 	preload()
     {
+        this.#language = getLanguageConfig();
         //Tilemaps
         this.load.tilemapTiledJSON("tableroTile", "assets/tilemaps/tablero.json");
         this.load.image("fondo-menu", 'assets/escenas/fondo-menu.png');
@@ -103,7 +105,11 @@ export default class Precarga extends Phaser.Scene
             rectangleProgress.width = maxWidth * progress;
         })
         this.load.on('complete',  () => {
-            this.scene.start("Inicio");
+            // this.scene.start("Inicio");
+            getTranslations(
+                this.#language,
+                () => this.scene.start('Inicio', { language: this.#language }),
+            );
         });
     }
 
