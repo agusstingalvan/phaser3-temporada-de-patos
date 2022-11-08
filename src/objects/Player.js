@@ -1,8 +1,6 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
 import Postal from "./Postal";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-    nombre;
-    esTurno;
     #tablero;
     #name;
     #isTurn;
@@ -30,9 +28,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
         this.#name = name; 
-        this.nombre = this.#name;
         this.#isTurn = isTurn;
-        this.esTurno = this.#isTurn;
         this.#currentPosition = currentPositon;
         this.#frameAnimation = frame;
         this.#position = position;

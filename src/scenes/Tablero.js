@@ -121,8 +121,8 @@ export default class Tablero extends Phaser.Scene {
             const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
 
             // player.addPowerUp(bomb);
-            player.addPowerUp(nuclearBomb);
-            player.addPowerUp(hook);
+            // player.addPowerUp(nuclearBomb);
+            // player.addPowerUp(hook);
             this.#players = [...this.#players, player];
         }
         console.log(this.#players);

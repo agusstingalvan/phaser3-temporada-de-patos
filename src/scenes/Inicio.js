@@ -32,9 +32,9 @@ export default class Inicio extends Phaser.Scene
         const sonidos = new SoundsManage(this.sound, 0.3);
         sonidos.sound.musicMain.play();
  
-        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 'Jugar', 28,  1.35)
+        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y + 100, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 'Jugar', 28,  1.35)
         
-        this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 80, 'atlas-botones', "contenedores-madera",
+        this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 180, 'atlas-botones', "contenedores-madera",
         () => {
             if(this.canOpenPopUp){
                 this.#popUpHelp.show()
@@ -42,13 +42,13 @@ export default class Inicio extends Phaser.Scene
             }
             
         }, 'Ayuda', 28,  1.05);
-        this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 150, 'atlas-botones',"contenedores-madera", () => {
+        this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 250, 'atlas-botones',"contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpCredits.show()
                 return;
             }
         }, 'Creditos', 24, 0.85)
-        this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 150, 'atlas-botones', "contenedores-madera", () => {
+        this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 250, 'atlas-botones', "contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpOptions.show()
                 return;
