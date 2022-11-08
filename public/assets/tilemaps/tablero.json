@@ -207,8 +207,8 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":783.333333333333,
-                 "y":194.666666666667
+                 "x":783.333,
+                 "y":194.667
                 }, 
                 {
                  "height":0,
@@ -261,8 +261,8 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":765.666666666667,
-                 "y":465.666666666667
+                 "x":765.667,
+                 "y":465.667
                 }, 
                 {
                  "height":0,
@@ -279,7 +279,7 @@
                  "type":"yunque",
                  "visible":true,
                  "width":0,
-                 "x":688.333666666667,
+                 "x":688.334,
                  "y":457.333
                 }, 
                 {
@@ -297,8 +297,8 @@
                  "type":"consecuencia",
                  "visible":true,
                  "width":0,
-                 "x":653.666666666667,
-                 "y":384.333333333333
+                 "x":653.667,
+                 "y":384.333
                 }, 
                 {
                  "height":0,
@@ -315,7 +315,7 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":665.333333333333,
+                 "x":665.333,
                  "y":303
                 }, 
                 {
@@ -333,7 +333,7 @@
                  "type":"casilla",
                  "visible":true,
                  "width":0,
-                 "x":715.666666666667,
+                 "x":715.667,
                  "y":251
                 }, 
                 {
@@ -370,7 +370,7 @@
                  "visible":true,
                  "width":0,
                  "x":1008,
-                 "y":212.666666666667
+                 "y":212.667
                 }, 
                 {
                  "height":0,
@@ -406,8 +406,8 @@
                  "type":"tienda",
                  "visible":true,
                  "width":0,
-                 "x":1113.33333333333,
-                 "y":335.666666666667
+                 "x":1113.33,
+                 "y":335.667
                 }, 
                 {
                  "height":0,
@@ -424,7 +424,7 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":1136.66666666667,
+                 "x":1136.67,
                  "y":410
                 }, 
                 {
@@ -442,7 +442,7 @@
                  "type":"consecuencia",
                  "visible":true,
                  "width":0,
-                 "x":1113.33333333333,
+                 "x":1113.33,
                  "y":510
                 }, 
                 {
@@ -460,7 +460,7 @@
                  "type":"casilla",
                  "visible":true,
                  "width":0,
-                 "x":1086.66666666667,
+                 "x":1086.67,
                  "y":569
                 }, 
                 {
@@ -478,8 +478,8 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":1027.66666666667,
-                 "y":607.333333333333
+                 "x":1027.67,
+                 "y":607.333
                 }, 
                 {
                  "height":0,
@@ -496,8 +496,8 @@
                  "type":"tienda",
                  "visible":true,
                  "width":0,
-                 "x":949.666666666667,
-                 "y":621.333333333333
+                 "x":949.667,
+                 "y":621.333
                 }, 
                 {
                  "height":0,
@@ -511,11 +511,11 @@
                          "value":"right"
                         }],
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"vacaciones",
                  "visible":true,
                  "width":0,
-                 "x":849.333333333333,
-                 "y":621.333333333333
+                 "x":849.333,
+                 "y":621.333
                 }, 
                 {
                  "height":0,
@@ -532,8 +532,8 @@
                  "type":"dinero",
                  "visible":true,
                  "width":0,
-                 "x":764.666666666667,
-                 "y":603.666666666667
+                 "x":764.667,
+                 "y":603.667
                 }, 
                 {
                  "height":0,
@@ -551,7 +551,7 @@
                  "visible":true,
                  "width":0,
                  "x":681,
-                 "y":556.666666666667
+                 "y":556.667
                 }, 
                 {
                  "height":0,
@@ -565,7 +565,7 @@
                          "value":"right"
                         }],
                  "rotation":0,
-                 "type":"vacaciones",
+                 "type":"tienda",
                  "visible":true,
                  "width":0,
                  "x":538,
@@ -583,7 +583,7 @@
                          "value":"right"
                         }],
                  "rotation":0,
-                 "type":"tienda",
+                 "type":"casilla",
                  "visible":true,
                  "width":0,
                  "x":418,
@@ -605,7 +605,7 @@
                  "visible":true,
                  "width":0,
                  "x":296,
-                 "y":384.333333333333
+                 "y":384.333
                 }, 
                 {
                  "height":0,
@@ -622,8 +622,8 @@
                  "type":"consecuencia",
                  "visible":true,
                  "width":0,
-                 "x":152.333333333333,
-                 "y":478.666666666667
+                 "x":152.333,
+                 "y":478.667
                 }, 
                 {
                  "height":0,
