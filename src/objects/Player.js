@@ -1,6 +1,8 @@
 import { sharedInstance as events } from "../scenes/EventCenter";
 import Postal from "./Postal";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
+    nombre;
+    esTurno;
     #tablero;
     #name;
     #isTurn;
@@ -28,7 +30,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
         this.#name = name; 
+        this.nombre = this.#name;
         this.#isTurn = isTurn;
+        this.esTurno = this.#isTurn;
         this.#currentPosition = currentPositon;
         this.#frameAnimation = frame;
         this.#position = position;
@@ -56,7 +60,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.searchBoxes();
-        console.log(this)
     }
     getTablero(){
         return this.#tablero;
@@ -153,11 +156,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.setCurrentPosition(this.getCurrentPosition() + numberPositon);
         }
         //Change position and the postions is evaluated
-        if(this.getCurrentPosition() > 39) {
-            const rest = ( 39 - (this.getCurrentPosition() - 39))
+        if(this.getCurrentPosition() > 35) {
+            const rest = ( 35 - (this.getCurrentPosition() - 35))
             this.setCurrentPosition(rest);
         }
-        if(this.getCurrentPosition() === 39){
+        if(this.getCurrentPosition() === 35){
             this.#tablero.scene.stop('Interface')
             this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
                 this.#tablero.sonidos.sound.musicTablero.stop();
@@ -207,11 +210,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 const inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
                 const inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
 
-                if(inMoneyBox) this.addMoney(); 
+                if(inMoneyBox) {
+                    const money = this.#tablero.add.sprite(this.x, this.y - 32, 'money-spritesheet', [3]);
+                    money.anims.play("money-anims");
+                    this.addMoney()
+                }; 
                 if(this.getIsTurn() && inWapesBox) this.changePosition(-4, false);
                 if(this.getIsTurn() && inStoreBox) return events.emit('open-store', this);
                 if(inYunqueBox){
-                        const yunque = this.#tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');
+                        const yunque = this.#tablero.add.image(Phaser.Math.Between(this.x, 700), 0, 'yunque');yunque.setScale(1.5)
                         yunque.visible = false;
                         this.#tablero.tweens.add({
                             targets: yunque,
@@ -226,16 +233,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 this.#tablero.camara.shake(400, 0.015, false, ()=>{
                                     yunque.visible = false;
                                     yunque.destroy();
-                                    this.onlyMove(1000)
                                 })
+                                if(this.getIsTurn()){
+                                    this.changePosition(-7, true);
+                                }else{
+                                    this.changePosition(-7, false);
+                                    return;
+                                }
                             },
                         })
+                        if(!this.getIsTurn()) return
                 }
                 if(this.getIsTurn() && inImpactsBox){
                         const numberRandom = Phaser.Math.Between(1,4);
                         switch(numberRandom){
                             case 1:
-                                console.log('Cerdito');
                                 const propsCerdo = {
                                     scene: this.#tablero,
                                     animsName: 'cerdo-anims',
@@ -245,7 +257,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 this.deleteMoney();
                                 break;
                             case 2:
-                                console.log('Se le lanza un pan y pierde el turno');
                                 const propsPato = {
                                     scene: this.#tablero,
                                     animsName: 'pan-anims',
@@ -257,11 +268,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 return;
                                 break;
                             case 3:
-                                console.log('descuento')
+                                const descuento = this.#tablero.add.sprite(this.x, this.y - 32, 'descuento');
+                                descuento.anims.play("discount-anims");
                                 this.setHaveDiscount(true);
                                 break;
                             case 4:
-                                console.log('curita')
+                                const band = this.#tablero.add.sprite(this.x, this.y - 32, 'band');
+                                band.anims.play("band-anims");
                                 this.setHaveBand(true);
                                 break;
                         }
@@ -332,7 +345,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 case 'consecuencia': 
                     this.#impactsMap.push(name)
                 break;
-                case 'holidays': 
+                case 'vacaciones': 
                     this.#holidaysMap.push(name)
                 break;
                 case 'wave': 

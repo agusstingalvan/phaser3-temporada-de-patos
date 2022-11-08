@@ -2,9 +2,6 @@ import Phaser from 'phaser'
 import Button from '../objects/Button';
 import SoundsManage from '../functions/SoundManage';
 import PopUpContainer from '../objects/PopupContainer';
-import { getTranslations, getPhrase } from '../services/translations'
-import keys from '../enums/keys';
-import { FETCHED, FETCHING, READY, TODO } from '../enums/status'
 
 export default class Inicio extends Phaser.Scene
 {
@@ -16,13 +13,10 @@ export default class Inicio extends Phaser.Scene
     #popUpCredits;
     #popUpOptions
     canOpenPopUp = true;
-    #wasChangedLanguage = TODO
     #language;
 	constructor()
 	{
 		super('Inicio');
-        const {jugar} = keys.sceneInicio;
-        this.jugar = jugar;
 	}
     init(data){
         this.#language = data.language;
@@ -38,33 +32,28 @@ export default class Inicio extends Phaser.Scene
         const sonidos = new SoundsManage(this.sound, 0.3);
         sonidos.sound.musicMain.play();
  
-        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y, 'botones', "boton-jugar", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 1.15)
+        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 'Jugar', 28,  1.35)
         
-        const buttonEn = this.add.rectangle(width * 0.1, height * 0.15, 150, 75, 0xffffff)
-			.setInteractive()
-			.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-                this.getTranslations('en-US')
-			})
-        this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 80, 'botones', "boton-ayuda",
+        this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 80, 'atlas-botones', "contenedores-madera",
         () => {
             if(this.canOpenPopUp){
                 this.#popUpHelp.show()
                 return;
             }
             
-        },  0.85);
-        this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 150, 'botones',"boton-creditos", () => {
+        }, 'Ayuda', 28,  1.05);
+        this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 150, 'atlas-botones',"contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpCredits.show()
                 return;
             }
-        }, 0.65)
-        this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 150, 'botones', "boton-opciones", () => {
+        }, 'Creditos', 24, 0.85)
+        this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 150, 'atlas-botones', "contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpOptions.show()
                 return;
             }
-        }, 0.65)
+        }, 'Opciones', 24, 0.85)
         this.#popUpHelp = this.createPopUp({
             scene: this,
             texture: 'popup-ayuda',
@@ -83,27 +72,9 @@ export default class Inicio extends Phaser.Scene
             btnClose: true,
             scale: 1,
         })
-        this.txt = this.add.text(400, 400, getPhrase('jugar'), {fontSize: 100})
     }
     createPopUp(data){
         return new PopUpContainer(data)
-    }
-    //For time
-    updateWasChangedLanguage = () => {
-        this.#wasChangedLanguage = FETCHED
-    };
-    async getTranslations(language){
-        this.#language = language;
-        this.#wasChangedLanguage = FETCHING;
-        
-        await getTranslations(language, this.updateWasChangedLanguage)
-    }
-    
-    update(){
-        if(this.#wasChangedLanguage === FETCHED){
-            this.#wasChangedLanguage = READY;
-            this.txt.setText(getPhrase('jugar'))
-        }
     }
     
 }

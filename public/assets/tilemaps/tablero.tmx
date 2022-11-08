@@ -35,7 +35,7 @@
    </properties>
    <point/>
   </object>
-  <object id="103" name="2" type="tienda" x="192" y="245">
+  <object id="103" name="2" type="casilla" x="192" y="245">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -47,13 +47,13 @@
    </properties>
    <point/>
   </object>
-  <object id="105" name="4" type="consecuencia" x="335" y="242">
+  <object id="105" name="4" type="casilla" x="335" y="242">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="106" name="5" type="holidays" x="421" y="198">
+  <object id="106" name="5" type="tienda" x="421" y="198">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -65,7 +65,7 @@
    </properties>
    <point/>
   </object>
-  <object id="108" name="7" type="tienda" x="589" y="166">
+  <object id="108" name="7" type="consecuencia" x="589" y="166">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -77,49 +77,49 @@
    </properties>
    <point/>
   </object>
-  <object id="110" name="9" type="consecuencia" x="786" y="190">
+  <object id="110" name="9" type="dinero" x="783.333" y="194.667">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="111" name="10" type="casilla" x="839" y="291">
+  <object id="111" name="10" type="tienda" x="839" y="291">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="112" name="11" type="holidays" x="836" y="372">
+  <object id="112" name="11" type="casilla" x="836" y="372">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="113" name="12" type="dinero" x="779" y="451">
+  <object id="113" name="12" type="dinero" x="765.667" y="465.667">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="114" name="13" type="yunque" x="683.667" y="447.333">
+  <object id="114" name="13" type="yunque" x="688.334" y="457.333">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="115" name="14" type="tienda" x="653" y="361">
+  <object id="115" name="14" type="consecuencia" x="653.667" y="384.333">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="116" name="15" type="dinero" x="676" y="293">
+  <object id="116" name="15" type="dinero" x="665.333" y="303">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="117" name="16" type="wave" x="717" y="235">
+  <object id="117" name="16" type="casilla" x="715.667" y="251">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -131,135 +131,111 @@
    </properties>
    <point/>
   </object>
-  <object id="119" name="18" type="dinero" x="1018" y="206">
+  <object id="119" name="18" type="dinero" x="1008" y="212.667">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="120" name="19" type="casilla" x="1085" y="252">
+  <object id="120" name="19" type="vacaciones" x="1067" y="262">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="121" name="20" type="consecuencia" x="1118" y="323">
+  <object id="121" name="20" type="tienda" x="1113.33" y="335.667">
    <properties>
     <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>
-  <object id="122" name="21" type="dinero" x="1138" y="396">
+  <object id="122" name="21" type="dinero" x="1136.67" y="410">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="123" name="22" type="casilla" x="1122" y="494">
+  <object id="123" name="22" type="consecuencia" x="1113.33" y="510">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="125" name="23" type="holidays" x="1088" y="557">
+  <object id="125" name="23" type="casilla" x="1086.67" y="569">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="126" name="24" type="dinero" x="1029" y="602">
+  <object id="126" name="24" type="dinero" x="1027.67" y="607.333">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="127" name="25" type="wave" x="943" y="616">
+  <object id="127" name="25" type="tienda" x="949.667" y="621.333">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="128" name="26" type="casilla" x="852" y="616">
+  <object id="128" name="26" type="casilla" x="849.333" y="621.333">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="129" name="27" type="yunque" x="750" y="591">
+  <object id="129" name="27" type="dinero" x="764.667" y="603.667">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="130" name="28" type="casilla" x="681" y="544">
+  <object id="130" name="28" type="yunque" x="681" y="556.667">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="131" name="29" type="consecuencia" x="607" y="510">
+  <object id="131" name="29" type="vacaciones" x="538" y="474">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="132" name="30" type="dinero" x="537" y="470">
+  <object id="132" name="30" type="tienda" x="418" y="416">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="133" name="31" type="tienda" x="452" y="420">
+  <object id="133" name="31" type="casilla" x="296" y="384.333">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="134" name="32" type="casilla" x="381" y="389">
+  <object id="134" name="32" type="consecuencia" x="152.333" y="478.667">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="135" name="33" type="dinero" x="292" y="380">
+  <object id="135" name="33" type="yunque" x="189" y="573">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="136" name="34" type="casilla" x="191" y="413">
+  <object id="136" name="34" type="casilla" x="301" y="582">
    <properties>
     <property name="direction" value="right"/>
    </properties>
    <point/>
   </object>
-  <object id="137" name="35" type="tienda" x="151" y="470.333">
+  <object id="137" name="35" type="casilla" x="378" y="497.333">
    <properties>
     <property name="direction" value="right"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="138" name="36" type="yunque" x="160" y="540.667">
-   <properties>
-    <property name="direction" value="left"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="139" name="37" type="casilla" x="222.333" y="578.667">
-   <properties>
-    <property name="direction" value="left"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="140" name="38" type="casilla" x="328" y="565">
-   <properties>
-    <property name="direction" value="left"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="141" name="39" type="casilla" x="384" y="485">
-   <properties>
-    <property name="direction" value="left"/>
    </properties>
    <point/>
   </object>

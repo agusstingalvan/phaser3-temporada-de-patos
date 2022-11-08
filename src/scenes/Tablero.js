@@ -50,13 +50,12 @@ export default class Tablero extends Phaser.Scene {
 
 
         this.addOverlaps();
-
         const btnCerrar = new Button(
             this,
             this.scale.width - 45,
             this.scale.height - (this.scale.height - 45),
-            "botones",
-            "boton-cerrar",
+            "atlas-botones",
+            "contenedores-madera-x",
             () => {
                 this.sonidos.sound.musicTablero.stop();    
                 this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
@@ -64,9 +63,9 @@ export default class Tablero extends Phaser.Scene {
                     this.scene.stop('Tablero');
                     this.scene.start("Inicio");
                 })
-            },
-            0.5
+            }, 'X', 24, 0.9
         );
+        
         this.events.on('create', ()=>{
             this.cameras.main.fadeIn(500)
         });

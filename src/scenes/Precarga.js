@@ -1,8 +1,6 @@
-import Phaser from 'phaser'
-import { getLanguageConfig, getTranslations } from "../services/translations";
+import Phaser from 'phaser';
 export default class Precarga extends Phaser.Scene
 {
-    #language;
 	constructor()
 	{
 		super('Precarga')
@@ -10,7 +8,6 @@ export default class Precarga extends Phaser.Scene
 
 	preload()
     {
-        this.#language = getLanguageConfig();
         //Tilemaps
         this.load.tilemapTiledJSON("tableroTile", "assets/tilemaps/tablero.json");
         this.load.image("fondo-menu", 'assets/escenas/fondo-menu.png');
@@ -43,22 +40,29 @@ export default class Precarga extends Phaser.Scene
 
 
         this.load.image("postal", 'assets/postal/postal.png');
-        this.load.image("holidays", 'assets/postal/vacaciones.png');
         
         //PowerUps- StaticSprites
         this.load.image("bomb", 'assets/powerups/bomb/bomb.png');
         this.load.image("nuclear-bomb", 'assets/powerups/nuclear-bomb/nuclear-bomb.png');
         this.load.image("hook", 'assets/powerups/hook/hook.png');
-        this.load.image("yunque", 'assets/powerups/yunque/yunque.png');
+
 
         //PowerUps-Anims
         this.load.spritesheet("bomb-spritesheet", 'assets/powerups/bomb/bomb-spritesheet.png', {frameWidth: 64, frameHeight: 64})
         this.load.spritesheet("nuclear-bomb-spritesheet", 'assets/powerups/nuclear-bomb/nuclear-bomb-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet("hook-spritesheet", 'assets/powerups/hook/hook-spritesheet.png', {frameWidth: 575, frameHeight: 315})
 
+
         //Consecuencias - Impacts
-        this.load.spritesheet("cerdo-spritesheet", 'assets/powerups/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
-        this.load.spritesheet("pan-spritesheet", 'assets/powerups/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.image("yunque", 'assets/consecuencias/yunque/yunque.png');
+        this.load.image("holidays", 'assets/consecuencias/holidays/holidays.png');
+        this.load.spritesheet("cerdo-spritesheet", 'assets/consecuencias/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.spritesheet("pan-spritesheet", 'assets/consecuencias/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
+        this.load.spritesheet('band-spritesheet', 'assets/consecuencias/band/band-spritesheet.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('discount-spritesheet', 'assets/consecuencias/discount/discount-spritesheet.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('money-spritesheet', 'assets/consecuencias/money/money-spritesheet.png', {frameWidth: 64, frameHeight: 64});
+
+
         //Utils
         this.load.image("reloj", 'assets/reloj.png');
         this.load.image("ticket-dice", 'assets/interface/ticket-dice.png');
@@ -66,22 +70,21 @@ export default class Precarga extends Phaser.Scene
         this.load.image("ticket-dice-right", 'assets/interface/ticket-dice-right.png');
 
 
-        
-
-
         //Buttons
         this.load.atlas("botones", 'assets/botones/atlas_botones_amarrillos.png', 'assets/botones/atlas_botones_amarrillos.json')
+        this.load.atlas("atlas-botones", 'assets/botones/atlas-botones.png', 'assets/botones/atlas-botones.json')
         this.load.image('boton-check', 'assets/botones/boton-check.png');
         this.load.image('boton-lapiz-edit', 'assets/botones/boton-lapiz-edit.png');
         this.load.image('contenedor-madera', 'assets/botones/contenedores-madera.png');
-
-
+        
+        
         //UserInterfaces
         this.load.image('slot', 'assets/interface/slot.png');
         this.load.image('boton-dado', 'assets/interface/boton-dado.png');
         this.load.image('band', 'assets/interface/band.png');
-        this.load.spritesheet('boton-dado-pointer-spritesheet', 'assets/interface/boton-dado-pointer-spritesheet.png', {frameWidth: 128, frameHeight: 128});
-
+        this.load.image('discount', 'assets/interface/discount.png');
+        
+        
         //Music
         this.load.audio('musicTablero', 'assets/sounds/music-tablero.mp3');
         this.load.audio('musicMain', 'assets/sounds/music-main-menu.mp3');
@@ -105,11 +108,7 @@ export default class Precarga extends Phaser.Scene
             rectangleProgress.width = maxWidth * progress;
         })
         this.load.on('complete',  () => {
-            // this.scene.start("Inicio");
-            getTranslations(
-                this.#language,
-                () => this.scene.start('Inicio', { language: this.#language }),
-            );
+            this.scene.start('Inicio');
         });
     }
 
@@ -205,6 +204,36 @@ export default class Precarga extends Phaser.Scene
             frames: this.anims.generateFrameNumbers("pan-spritesheet", {
                 start: 0,
                 end: 8,
+            }),
+            hideOnComplete: true,
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: "band-anims",
+            frames: this.anims.generateFrameNumbers("band-spritesheet", {
+                start: 0,
+                end: 3,
+            }),
+            hideOnComplete: true,
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: "discount-anims",
+            frames: this.anims.generateFrameNumbers("discount-spritesheet", {
+                start: 0,
+                end: 3,
+            }),
+            hideOnComplete: true,
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: "money-anims",
+            frames: this.anims.generateFrameNumbers("money-spritesheet", {
+                start: 0,
+                end: 3,
             }),
             hideOnComplete: true,
             frameRate: 4,

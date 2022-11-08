@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
 import Button from '../objects/Button';
-import { getTranslations, getPhrase } from '../services/translations'
 
 let stringName = ""
 
@@ -45,11 +44,8 @@ export default class SeleccionPersonajes extends Phaser.Scene
             }
         ];
         this.sonidos = data.sonidos;
-        this.#language = data.language;
     }
-    create() {
-        this.getTranslations(this.#language)
-        
+    create() {        
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -61,24 +57,20 @@ export default class SeleccionPersonajes extends Phaser.Scene
             let { x, y, name, texture } = player;
             this.add.rectangle(x + 20, y + 5, 84, 84, '0x0B4551');
             this.add.image(x + 20, y, 'atlas-patos-statics', texture, { frameWidth: 64, frameHeight: 64 });
-            let nameText = this.add.text(x, y + 70, name, {
-                fontFamily: 'Montserrat',
-                fontSize: 18,
-            }).setOrigin(0.5);
+            let nameText = this.add.text(x, y + 70, name, {fontSize: 18, fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'}).setOrigin(0.5);
             this.createInputs(nameText, player);
         }
         const sonidos = this.sonidos;
-        const btnCerrar = new Button(this, width - 45, height - (height - 45), 'botones', "boton-cerrar", () => {
+        const btnCerrar = new Button(this, width - 45, height - (height - 45), 'atlas-botones', "contenedores-madera-x", () => {
             this.sonidos.sound.musicMain.stop();
             this.scene.start("Inicio")
-        }, 0.5);
+        }, 'X', 24, 0.9);
 
-        const btnListo = new Button(this, width / 2, height - 100, 'botones', "boton-listo", () => {
+        const btnListo = new Button(this, width / 2, height - 100, 'atlas-botones', "contenedores-madera", () => {
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
-        });
+        }, 'Listo', 30,  1.35);
         
-        //Number of dice
         this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)
         this.#textLabel = this.add.text(this.scale.width + 160, 128, 'Recuerda leer\n el tutorial.', {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
         this.#imageDice.visible = true;
@@ -198,10 +190,5 @@ export default class SeleccionPersonajes extends Phaser.Scene
             nameText.setText(string);
             playerObj.name = string;
         }
-    }
-
-    async getTranslations(language){
-        const res = await getTranslations(language)
-        console.log(getPhrase('listo'))
     }
 }

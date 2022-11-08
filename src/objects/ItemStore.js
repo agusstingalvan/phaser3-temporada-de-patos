@@ -33,7 +33,6 @@ export default class ItemStore {
             if(player.getWallet() >= item.price && player.getInventory().length < 2){
                 btn.setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
                     if(player.getWallet() >= item.price && player.getInventory().length < 2){
-                        console.log(player.getWallet())
                         player.setWallet(player.getWallet() - item.price)
                         btn.disableInteractive();
                         image.setTint('0x5c5c5c');
@@ -75,9 +74,7 @@ export default class ItemStore {
                 btn.setAlpha(.8);
                 image.setTint('0x5c5c5c');
             }
-
             
-
             const positionX = index  * (rectangle.width + 20);
             itemContainer = scene.add.container(positionX, 0, [rectangle ,name ,image, priceText, btn])
             widthContainerItems = positionX;

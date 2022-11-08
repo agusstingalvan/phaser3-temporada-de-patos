@@ -1,3 +1,5 @@
+import Text from "./Text";
+
 export default class Postal{
     container;
     #position;
@@ -12,7 +14,7 @@ export default class Postal{
         const background = this.scene.add.image(0, 0, texture);
         const imageStatic = this.scene.add.sprite(0, 0, image)
         const entidad = (textureSprite)? this.scene.add.sprite(0, (background.height / 2) - 90 , textureSprite):null;
-        const textLabel = this.scene.add.text(0, (background.height / 2) - 100, (text)? text: null, {fontSize: 18, fontStyle: 'bold', color: '242424', fontFamily: 'Montserrat'}).setOrigin(0.5);
+        const textLabel = new Text(this.scene, 0, (background.height / 2) - 100, (text)? text: null, {fontSize: 18, fontStyle: 'bold', color: '242424', fontFamily: 'Montserrat'})
 
         let elements;
         if(image){

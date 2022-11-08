@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import ItemStore from '../objects/ItemStore';
+import Text from '../objects/Text';
 import { sharedInstance as events } from './EventCenter';
 
 export default class Interface extends Phaser.Scene{
@@ -8,6 +9,7 @@ export default class Interface extends Phaser.Scene{
     #slot2;
     #buttonDice;
     #band;
+    #discount;
     #nameLabel;
     #numberDiceLabel;
     #imageDice;
@@ -24,11 +26,11 @@ export default class Interface extends Phaser.Scene{
     }
     create(){
         //Slots
-       this.#slot1 = this.add.image(100, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
+       this.#slot1 = this.add.image(130, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
        .on("pointerdown", () => this.#slot1.image.useEffect())
        .on("pointerover", (btn) => this.#slot1.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot1.setTint('0xe5e5e5'))
-       this.#slot2 = this.add.image(174, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
+       this.#slot2 = this.add.image(220, this.scale.height - 64, 'slot').setInteractive({ useHandCursor: true })
        .on("pointerdown", () => this.#slot2.image.useEffect())
        .on("pointerover", (btn) => this.#slot2.setTint('0xc2c2c2'))
        .on("pointerout", (btn) => this.#slot2.setTint('0xe5e5e5'))
@@ -44,19 +46,22 @@ export default class Interface extends Phaser.Scene{
 
 
         //Wallet
-        this.#moneyLabel = this.add.text(272, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold'}).setOrigin(0.5)
+        this.#moneyLabel = this.add.text(280, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'}).setOrigin(0, 0.5)
 
         
         //Add image of band
         this.#band = this.add.image(this.scale.width/2, this.scale.height - 64, 'band');
+        this.#discount = this.add.image((this.scale.width/2) - 74, this.scale.height - 64, 'discount');
+        this.#discount.setScale(0.8)
+        this.#discount.visible = false;
         //TextName
-       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold'} ).setOrigin(0.5);
+       this.#nameLabel = this.add.text(this.scale.width - 240, this.scale.height - 64, '123456789', {fontSize: 32, fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'} ).setOrigin(0.5);
 
        //Number of dice and image of the dice.
        this.#imageDice = this.add.image(this.scale.width / 2, -32, 'ticket-dice')
        this.#imageDiceFail = this.add.image(this.scale.width / 2, -32, 'ticket-dice-fail')
        this.#imageDiceRight = this.add.image(this.scale.width / 2, -32, 'ticket-dice-right')
-       this.#numberDiceLabel = this.add.text(this.scale.width / 2, -32, '0', {fontSize: 32, fontStyle: 'bold', color: '242424'} ).setOrigin(0.5);
+       this.#numberDiceLabel = this.add.text(this.scale.width / 2, -32, '0', {fontSize: 32, fontStyle: 'bold', color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
        this.#imageDice.visible = false;
        this.#numberDiceLabel.visible = false;
 
@@ -109,6 +114,7 @@ export default class Interface extends Phaser.Scene{
             this.updateSlots(inventory, player);
 
             (player.getHaveBand()) ? this.#band.visible = true : this.#band.visible = false;
+            (player.getHaveDiscount()) ? this.#discount.visible = true : this.#discount.visible = false;
         }, this)
     }
     enableSlot(slot){
