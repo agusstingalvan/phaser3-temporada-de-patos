@@ -16,6 +16,8 @@ export default class Ganador extends Phaser.Scene
 
     create()
     {
+        this.sonidos.sound.musicTablero.stop()
+        this.sonidos.sound.ganadorSFX.play()
         this.events.on('create', ()=> this.cameras.main.fadeIn(500));
         this.add.image(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'atlas-backgrounds', "fondo-ganador");
         const name = this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height / 2 - 220, this.#winPlayer, {
@@ -23,6 +25,7 @@ export default class Ganador extends Phaser.Scene
         } ).setOrigin(0.5)
         new Button(this, this.sys.game.config.width / 2 - 5, this.sys.game.config.height - 45, 'atlas-botones', 'contenedores-madera',() => {
             
+            this.sonidos.sound.ganadorSFX.stop()
             this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
                 this.scene.start("Inicio");
             })

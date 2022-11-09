@@ -21,6 +21,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
     }
     init(data) {
         this.canEdit = true
+        this.canOpenPopUp = true;
         stringName = "";
         this.#players =  [
             {
@@ -85,8 +86,13 @@ export default class SeleccionPersonajes extends Phaser.Scene
             scale: 1,
         })
         const btnListo = new Button(this, width / 2, height - 100, 'atlas-botones', "contenedores-madera", () => {
-            this.scene.start("Tablero", { players: this.#players, sonidos })
-            this.sonidos.sound.musicMain.stop()
+            btnListo.image.disableInteractive()
+            this.sonidos.sound.seleccionPersonajesSFX.play()
+            setTimeout(()=>{
+                this.scene.start("Tablero", { players: this.#players, sonidos })
+                this.sonidos.sound.musicMain.stop()
+            }, 2400)
+            
         }, 'LISTO', 30,  1.35);
         
         this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)

@@ -23,7 +23,10 @@ export default class PopUpContainer{
         const rightPosition = background.width / 2;
         const topPosition = background.texture.frames.__BASE.height / 2;
 
-        const buttonClose = new Text(this.scene, rightPosition - 50, -topPosition + 20, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>this.hide(changeTurn, player));
+        const buttonClose = new Text(this.scene, rightPosition - 30, -topPosition + 30, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
+            this.scene.sonidos.sound.btnSFX.play()
+            this.hide(changeTurn, player)
+        });
         
         //If exist the button, then create one in the container.
         (btnClose)? this.#elements = [background, txt, buttonClose] : this.#elements = [background, txt];
@@ -32,9 +35,7 @@ export default class PopUpContainer{
         this.container = this.scene.add.container(this.#position.x, this.#position.y, this.#elements).setScale(scale);
         this.container.visible = false;
 
-        if(this.#isStore){
-            this.container.visible = true;
-        }
+        if(this.#isStore)this.container.visible = true;
     }
     addChild(child){
         this.container.add(child)
@@ -43,7 +44,6 @@ export default class PopUpContainer{
         this.container.visible = true;
         //Return false for the canOpenPopUp in the scene.
         this.scene.canOpenPopUp = false;
-        return false;
     }
     hide(changeTurn, player){
         this.container.visible = false;
@@ -56,9 +56,6 @@ export default class PopUpContainer{
             }
             setTimeout(()=>player.changeTurn(), 1000)
         }
-        
-        console.log('cerrando')
-        return true
     }
     canOpen(){
         return this.container.visible;

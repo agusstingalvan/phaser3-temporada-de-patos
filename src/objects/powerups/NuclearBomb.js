@@ -21,7 +21,7 @@ export default class NuclearBomb extends PowerUp{
             player: player
         }
         const postal = new Postal(props);
-       
+        this.#scene.sonidos.sound.nuclearSFX.play()
         this.delete();
         
         setTimeout(()=>{

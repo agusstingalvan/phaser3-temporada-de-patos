@@ -1,5 +1,5 @@
 export default class Button {
-    btn;
+    container;
     #text;
     image;
 
@@ -9,15 +9,18 @@ export default class Button {
         .image(0, 0, atlas, texture)
         .setOrigin(0.5)
         .setInteractive({ useHandCursor: true })
-        .on("pointerdown", () => callback())
-        .on("pointerover", () => this.btn.setScale(scale + 0.1))
-        .on("pointerout", () => this.btn.setScale(scale))
-        this.btn = scene.add.container(x, y,[this.image, this.#text]).setScale(scale);
+        .on("pointerdown", () => {
+            scene.sonidos.sound.btnSFX.play()
+            callback();
+        })
+        .on("pointerover", () => this.container.setScale(scale + 0.1))
+        .on("pointerout", () => this.container.setScale(scale))
+        this.container = scene.add.container(x, y,[this.image, this.#text]).setScale(scale);
     }
     show(){
-        this.btn.visible = true;
+        this.container.visible = true;
     }
     hide(){
-        this.btn.visible = false;
+        this.container.visible = false;
     }
 }

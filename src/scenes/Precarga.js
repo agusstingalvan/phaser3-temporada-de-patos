@@ -8,6 +8,7 @@ export default class Precarga extends Phaser.Scene
 
 	preload()
     {
+        this.load.image('cargando', 'assets/escenas/cargando.png')
         //Tilemaps
         this.load.tilemapTiledJSON("tableroTile", "assets/tilemaps/tablero.json");
         this.load.image("fondo-menu", 'assets/escenas/fondo-menu.png');
@@ -95,6 +96,13 @@ export default class Precarga extends Phaser.Scene
         //Sound Effects
         this.load.audio('movimiento', 'assets/sounds/movimiento3.mp3');
         this.load.audio('tirarDado', 'assets/sounds/sonido-dado.mp3');
+        this.load.audio('sonido-inicio-partida', 'assets/sounds/sonido-inicio-partida.mp3');
+        this.load.audio('sonido-pato-inicio-partida', 'assets/sounds/sonido-pato-inicio-partida.mp3');
+        this.load.audio('sonido-ganador', 'assets/sounds/sonido-ganador.mp3');
+        this.load.audio('sonido-yunque', 'assets/sounds/sonido-yunque.mp3');
+        this.load.audio('sonido-nuclear', 'assets/sounds/sonido-nuclear.mp3');
+        this.load.audio('sonido-bomba', 'assets/sounds/sonido-bomba.mp3');
+        this.load.audio('sonido-boton', 'assets/sounds/sonido-boton.mp3');
 
         //PopUps
         this.load.image('popup-contenedor', 'assets/popups/popup-contenedor.png');
@@ -102,13 +110,15 @@ export default class Precarga extends Phaser.Scene
         this.load.image('popup-opciones', 'assets/popups/popup-opciones.png');
         this.load.image('popup-creditos', 'assets/popups/popup-creditos.png');
 
-        this.load.image('cargando', 'assets/escenas/cargando.png')
         
         
-        const maxWidth = 1280;
-        const rectangleProgress = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, maxWidth, 160, '0xffc600');
+        const maxWidth = 400;
+        const rectangleProgress = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, maxWidth, 30, '0xffc600');
+        const txt = this.add.text(this.scale.width / 2, this.scale.height / 2, '0%',{fontSize: '18px', fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'} ).setOrigin(0.5)
         this.load.on('progress', (progress)=>{
             rectangleProgress.width = maxWidth * progress;
+            console.log()
+            txt.setText(`${Math.round(progress * 100)}%`)
         })
         this.load.on('complete',  () => {
             this.scene.start('Inicio');
@@ -117,7 +127,6 @@ export default class Precarga extends Phaser.Scene
 
     create()
     {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'cargando')
         this.anims.create({
             key: "pato-bruja-idle-anims",
             frames: this.anims.generateFrameNumbers("pato-bruja-idle", {

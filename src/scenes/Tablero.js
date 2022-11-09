@@ -3,8 +3,6 @@ import { shuffle } from 'underscore';
 import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
 import Bomb from '../objects/powerups/Bomb';
-import NuclearBomb from '../objects/powerups/NuclearBomb';
-import Hook from '../objects/powerups/Hook';
 import Button from '../objects/Button';
 
 export default class Tablero extends Phaser.Scene {
@@ -28,7 +26,12 @@ export default class Tablero extends Phaser.Scene {
 
     create() {
         this.sonidos.sound.musicTablero.config.volume = 0.1;
-        this.sonidos.sound.musicTablero.play();
+        
+        this.sonidos.sound.inicioPartidaSFX.play();
+        this.sonidos.sound.inicioPartidaSFX.on('complete', ()=>{
+            this.sonidos.sound.musicTablero.play();
+        })
+        // setTimeout(()=>, 4000)
         this.scene.launch('Interface', {sonidos: this.sonidos});
         this.map = this.make.tilemap({ key: "tableroTile" });
         const tiledBackground = this.map.addTilesetImage("background", "fondo-tablero");
@@ -59,6 +62,7 @@ export default class Tablero extends Phaser.Scene {
             () => {
                 this.#players = [];
                 this.sonidos.sound.musicTablero.stop();    
+                this.sonidos.sound.inicioPartidaSFX.stop()
                 this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
                     this.scene.stop('Interface');
                     events.removeListener('open-store')
@@ -77,7 +81,6 @@ export default class Tablero extends Phaser.Scene {
         for (let player of this.getPlayers()) {
             if (player.getIsTurn()) {
                 if(player.getWaitTurn()){
-                    console.log(`${player.getName()} en la proxima jugada podra jugar.`);
                     const pan = this.add.image(0, 0, 'pan')
                     pan.visible = false;
                     this.add.tween({
@@ -129,18 +132,8 @@ export default class Tablero extends Phaser.Scene {
             if (index === 0) props.isTurn = true;
 
             player = new Player(props);
-            //Only test powerup of bomb. Each player starts with a bomb.
-            const bomb = new Bomb({ scene: this, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
-            const nuclearBomb = new NuclearBomb({ scene: this, x: player.x, y: player.y, texture: 'nuclear-bomb', currentPlayer: player });
-            const hook = new Hook({ scene: this, x: player.x, y: player.y, texture: 'hook', currentPlayer: player });
-
-            // player.addPowerUp(bomb);
-            // player.addPowerUp(nuclearBomb);
-            // player.addPowerUp(hook);
-            // player.addPowerUp(hook);
             this.#players = [...this.#players, player];
         }
-        console.log(this.#players);
     }
 
     addOverlaps() {

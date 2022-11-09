@@ -25,7 +25,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #waitTurn = false;
     #pointerEntity;
 
-    constructor({tablero, name,position, currentPositon = 0, texture, frame, isTurn, wallet = 3000, invetory = []}){
+    constructor({tablero, name,position, currentPositon = 0, texture, frame, isTurn, wallet = 0, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
         this.#name = name; 
@@ -33,7 +33,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.#currentPosition = currentPositon;
         this.#frameAnimation = frame;
         this.#position = position;
-        this.#wallet = wallet = 3000;
+        this.#wallet = wallet;
         this.#inventory = invetory;
         this.#map = this.#tablero.map;
 
@@ -129,34 +129,25 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
     throwDice(){
         this.setNumberDice(Phaser.Math.Between(1, 6));
+
         if(this.getOnHolidays() && this.getNumberDice() !== 4){
             events.emit('hide-dice');
-            setTimeout(() => {
-             this.changeTurn();
-            }, 3000);
+            setTimeout(() => this.changeTurn(), 3000);
             return
-            
         }else if(this.getOnHolidays() && this.getNumberDice() === 4){
             this.setWaitOnHolidays(true);
             this.setOnHolidays(false);
         }
 
         //Move this player.
-        this.changePosition(35);
+        this.changePosition(this.getNumberDice());
     }
     changePosition(numberPositon, canChangeTurn = true){
-
-        if(numberPositon === 1000){
-            //The number 1000, is for init position one (1) in the tablero.
-            this.setCurrentPosition(1);
-        }else{
-            this.setCurrentPosition(this.getCurrentPosition() + numberPositon);
-        }
+        //The number 1000, is for init position one (1) in the tablero.
+        (numberPositon === 1000)? this.setCurrentPosition(1): this.setCurrentPosition(this.getCurrentPosition() + numberPositon);
         //Change position and the postions is evaluated
-        if(this.getCurrentPosition() > 35) {
-            const rest = ( 35 - (this.getCurrentPosition() - 35))
-            this.setCurrentPosition(rest);
-        }
+        const rest = ( 35 - (this.getCurrentPosition() - 35))
+        if(this.getCurrentPosition() > 35) this.setCurrentPosition(rest);
         if(this.getCurrentPosition() === 35){
             this.#tablero.scene.stop('Interface')
             this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
@@ -173,20 +164,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
     move(position, canChangeTurn){
         events.emit('hide-dice');
-        let newPositon = this.#map.findObject(
-            "objectsBoxes",
-            (obj) => obj.name === position.toString()
-        );
+        let newPositon = this.#map.findObject("objectsBoxes", (obj) => obj.name === position.toString());
         
-        this.#tablero.tweens.add({
-            targets: this.#pointerEntity,
-            x: newPositon.x,
-            y: newPositon.y,
-            ease: "Sine.easeOut",
-            duration: 1100,
-            repeat: 0,
-            yoyo: false,
-        })
+        this.#tablero.tweens.add({targets: this.#pointerEntity, x: newPositon.x, y: newPositon.y, ease: "Sine.easeOut", duration: 1100, repeat: 0, yoyo: false,})
         this.#tablero.tweens.add({
             targets: this,
             x: newPositon.x,
@@ -234,6 +214,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                     yunque.visible = false;
                                     yunque.destroy();
                                 })
+                                this.#tablero.sonidos.sound.yunqueSFX.play()
                                 if(this.getIsTurn()){
                                     this.onlyMove(1000, true);
                                 }else{
@@ -291,7 +272,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         }
                         const postalPan = new Postal(propsPato);
                     }else if(!this.#isTurn){
-                        console.log(this.#name, 'perdio el turno')
                         this.setWaitTurn(true);
                     }
                     return;

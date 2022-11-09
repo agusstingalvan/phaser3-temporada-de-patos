@@ -18,9 +18,7 @@ export default class Hook extends PowerUp{
         this.effect(player);
         if(this.#canChangeTurn){
             this.delete();
-            setTimeout(()=>{
-                player.changeTurn()
-            }, 3000)
+            setTimeout(()=>player.changeTurn(), 3000)
         }
     }
     effect(player){
@@ -61,7 +59,6 @@ export default class Hook extends PowerUp{
             this.#canChangeTurn = true;
            
         }else {
-            console.log('No puede usar el gancho porque no tienen ningun contricante delante de ti');
             this.#canChangeTurn = false;
         }
         

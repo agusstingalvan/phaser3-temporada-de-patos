@@ -20,27 +20,20 @@ export default class ItemStore {
         let itemContainer;
         let containerItems = scene.add.container(0, 0, []);
         items.map((item, index)=>{
-            if(player.getHaveDiscount()){
-                item.price = item.price/2;
-            }
+            if(player.getHaveDiscount()) item.price = item.price/2;
+
             const image = scene.add.image(0, 0, item.texture)
             const rectangle = scene.add.rectangle(0, 0, image.width + 30, image.height + 30, '0x242424' )
             rectangle.visible = false;
-            // const priceText = scene.add.text(0, image.height, `Price: $${item.price}`).setOrigin(0.5);
-            // priceText.setData('price', item.price)
             const button = new Button(scene, 0, image.height + 48, 'atlas-botones', "contenedores-madera", ()=>null, `$${item.price}`, 36, 0.7 );
-            const btn = button.btn
+            const btnContainer = button.container
             button.image.setData('price', item.price)
-            // const btn = scene.add.text(0, image.height + 24, 'Comprar', {padding: 8, backgroundColor: '#ffffff', color: '#000000', fontStyle: 'bold', fontFamily: 'Montserrat'}).setOrigin(0.5)
-
-            console.log(player.getWallet())
+            
             if(player.getWallet() >= item.price && player.getInventory().length < 2){
                 button.image.setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
                     if(player.getWallet() >= item.price && player.getInventory().length < 2){
                         player.setWallet(player.getWallet() - item.price)
-                        button.image.disableInteractive();
-                        image.setTint('0x5c5c5c');
-                        btn.setAlpha(.6)
+                        this.disableButton(button, btnContainer, image)
                         switch(item.name.toLowerCase()){
                             case 'bomb':
                                 const bomb = new Bomb({ scene: scene, x: player.x, y: player.y, texture: 'bomb', currentPlayer: player });
@@ -56,9 +49,8 @@ export default class ItemStore {
                                 break    
                         }
 
-                        if(player.getHaveDiscount()){
-                            player.setHaveDiscount(false);
-                        }
+                        if(player.getHaveDiscount()) player.setHaveDiscount(false);
+
                         containerItems.list.map((container)=>{
                             let price = container.list[2].list[0].getData('price');
                             if(player.getWallet() < price || player.getInventory().length === 2){
@@ -68,28 +60,29 @@ export default class ItemStore {
                             }
                         })
                     }else{
-                        button.image.disableInteractive();
-                        btn.setAlpha(.6);
-                        image.setTint('0x5c5c5c');
+                        this.disableButton(button, btnContainer, image)
                     }
                 })
             }else{
-                button.image.disableInteractive();
-                btn.setAlpha(.6);
-                image.setTint('0x5c5c5c');
+                this.disableButton(button, btnContainer, image)
             }
             
             const positionX = index  * (rectangle.width + 50);
-            itemContainer = scene.add.container(positionX, 0, [rectangle,image, btn])
+            itemContainer = scene.add.container(positionX, 0, [rectangle, image, btnContainer])
             widthContainerItems = positionX;
-            console.log(positionX)
             containerItems.add(itemContainer);
             this.popup.addChild(containerItems);
         })
+
         containerItems.setX(-(widthContainerItems/ 2))
         if(widthContainerItems > 410) {
             let width = (widthContainerItems - 410) / 100;
             this.popup.container.list[0].setScale(1 + width + 0.20)
         }
+    }
+    disableButton(buttonImage, btnContainer, image){
+        buttonImage.image.disableInteractive();
+        btnContainer.setAlpha(.6);
+        image.setTint('0x5c5c5c');
     }
 }

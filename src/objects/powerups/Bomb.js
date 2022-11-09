@@ -22,6 +22,7 @@ export default class Bomb extends PowerUp{
     }
     effect(playerCollide){
         //He is call for the tablero.
+        this.#scene.sonidos.sound.bombSFX.play()
         this.currentPlayer = playerCollide;
         this.anims.play('bomb-anims', true).on('animationcomplete', ()=> this.destroy());
         if (this.currentPlayer.getCurrentPosition() <= 5){
