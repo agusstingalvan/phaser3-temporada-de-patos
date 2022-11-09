@@ -34,14 +34,7 @@ export default class Inicio extends Phaser.Scene
  
         this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y + 100, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos, language: this.#language }), 'Jugar', 28,  1.35)
         
-        this.#btnHelp = new Button(this, positionCenter.x, positionCenter.y + 180, 'atlas-botones', "contenedores-madera",
-        () => {
-            if(this.canOpenPopUp){
-                this.#popUpHelp.show()
-                return;
-            }
-            
-        }, 'Ayuda', 28,  1.05);
+        
         this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 250, 'atlas-botones',"contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpCredits.show()
@@ -54,12 +47,7 @@ export default class Inicio extends Phaser.Scene
                 return;
             }
         }, 'Opciones', 24, 0.85)
-        this.#popUpHelp = this.createPopUp({
-            scene: this,
-            texture: 'popup-ayuda',
-            btnClose: true,
-            scale: 1,
-        })
+        
         this.#popUpCredits = this.createPopUp({
             scene: this,
             texture: 'popup-creditos',
@@ -72,6 +60,27 @@ export default class Inicio extends Phaser.Scene
             btnClose: true,
             scale: 1,
         })
+
+        
+
+        const rest = this.add.text(-40, 0, '-', {fontSize: '56px', fontStyle: 'bold', color: 'red', fontFamily: 'Montserrat'}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
+            if(sonidos.sound.volume <= 0.1) return
+            let newNumber = sonidos.sound.volume - 0.1
+            sonidos.sound.volume = newNumber;
+            number = Math.round(newNumber * 100)
+            numberText.setText(`${number.toString()}%`)
+        }).setOrigin(0.5)
+        let number =  Math.round(sonidos.sound.volume * 100);
+        const numberText =  this.add.text(0, 0, `${number.toString()}%`, {fontSize: '56px', fontStyle: 'bold', color: 'black', fontFamily: 'Montserrat'}).setOrigin(0.5)
+        const plus = this.add.text(40, 0, '+', {fontSize: '56px', fontStyle: 'bold', color: 'red', fontFamily: 'Montserrat'}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
+            if(sonidos.sound.volume >= 1.0) return
+            let newNumber = sonidos.sound.volume + 0.1
+            sonidos.sound.volume = newNumber;
+            number = Math.round(newNumber * 100)
+            numberText.setText(`${number.toString()}%`)
+        }).setOrigin(0.5)
+        const containerVolume = this.add.container(100, 0, [rest,numberText,plus]);
+        this.#popUpOptions.addChild(containerVolume)
     }
     createPopUp(data){
         return new PopUpContainer(data)

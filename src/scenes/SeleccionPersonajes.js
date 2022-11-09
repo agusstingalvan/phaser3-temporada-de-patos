@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Button from '../objects/Button';
+import PopUpContainer from '../objects/PopupContainer';
 
 let stringName = ""
 
@@ -9,6 +10,10 @@ export default class SeleccionPersonajes extends Phaser.Scene
     #imageDice;
     #textLabel;
     canEdit = true;
+    #btnHelp;
+    #popUpHelp;
+    canOpenPopUp = true;
+    #pop
     #language;
 
 	constructor() {
@@ -36,12 +41,12 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 x: 700,
                 y: 300,
             },
-            // {
-            //     name: 'Jugador 4',
-            //     texture: "pato-galera",
-            //     x: 900,
-            //     y: 300,
-            // }
+            {
+                name: 'Jugador 4',
+                texture: "pato-galera",
+                x: 900,
+                y: 300,
+            }
         ];
         this.sonidos = data.sonidos;
     }
@@ -65,11 +70,24 @@ export default class SeleccionPersonajes extends Phaser.Scene
             this.sonidos.sound.musicMain.stop();
             this.scene.start("Inicio")
         }, 'X', 24, 0.9);
-
+        this.#btnHelp = new Button(this, this.scale.width - 100, height - 100, 'atlas-botones', "contenedores-madera",
+        () => {
+            if(this.canOpenPopUp){
+                this.#popUpHelp.show()
+                return;
+            }
+            
+        }, 'TUTORIAL', 24,  0.85);
+        this.#popUpHelp = this.createPopUp({
+            scene: this,
+            texture: 'popup-ayuda',
+            btnClose: true,
+            scale: 1,
+        })
         const btnListo = new Button(this, width / 2, height - 100, 'atlas-botones', "contenedores-madera", () => {
             this.scene.start("Tablero", { players: this.#players, sonidos })
             this.sonidos.sound.musicMain.stop()
-        }, 'Listo', 30,  1.35);
+        }, 'LISTO', 30,  1.35);
         
         this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)
         this.#textLabel = this.add.text(this.scale.width + 160, 128, 'Recuerda leer\n el tutorial.', {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
@@ -190,5 +208,8 @@ export default class SeleccionPersonajes extends Phaser.Scene
             nameText.setText(string);
             playerObj.name = string;
         }
+    }
+    createPopUp(data){
+        return new PopUpContainer(data)
     }
 }

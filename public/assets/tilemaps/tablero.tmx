@@ -95,7 +95,7 @@
    </properties>
    <point/>
   </object>
-  <object id="113" name="12" type="tienda" x="765.667" y="465.667">
+  <object id="113" name="12" type="dinero" x="765.667" y="465.667">
    <properties>
     <property name="direction" value="right"/>
    </properties>

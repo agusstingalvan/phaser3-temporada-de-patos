@@ -142,7 +142,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //Move this player.
-        this.changePosition(5);
+        this.changePosition(35);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
