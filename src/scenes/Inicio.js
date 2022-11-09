@@ -34,7 +34,7 @@ export default class Inicio extends Phaser.Scene
         this.sonidos = new SoundsManage(this.sound, 1);
         this.sonidos.sound.musicMain.play();
  
-        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y + 150, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos: this.sonidos, language: this.#language }), 'Jugar', 28,  1.35)
+        this.#btnPlay = new Button(this, positionCenter.x, positionCenter.y + 150, 'atlas-botones', "contenedores-madera", () => this.scene.start("SeleccionPersonajes", { sonidos: this.sonidos, language: this.#language }), 'JUGAR', 28,  1.35)
         
         
         this.#btnCredits = new Button(this, positionCenter.x - 100, positionCenter.y + 250, 'atlas-botones',"contenedores-madera", () => {
@@ -42,13 +42,13 @@ export default class Inicio extends Phaser.Scene
                 this.#popUpCredits.show()
                 return;
             }
-        }, 'Creditos', 24, 1)
+        }, 'CREDITOS', 24, 1)
         this.#btnOptions = new Button(this, positionCenter.x + 100, positionCenter.y + 250, 'atlas-botones', "contenedores-madera", () => {
             if(this.canOpenPopUp){
                 this.#popUpOptions.show()
                 return;
             }
-        }, 'Opciones', 24, 1)
+        }, 'OPCIONES', 24, 1)
         
         this.#popUpCredits = this.createPopUp({
             scene: this,
