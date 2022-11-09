@@ -1,10 +1,10 @@
 {
-	"name": "phaser3-temporada-de-patos	",
+	"name": "phaser3-temporada-de-patos",
 	"version": "1.0.0",
 	"description": "Temporada de Patos. Integrantes: Agustin Galvan, Gonzalo Belen, Joaquin Fratin",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
-		"build": "parcel build src/index.html --out-dir dist --no-minify",
+		"build": "parcel build src/index.html --out-dir dist",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Agustin Galvan. Joaquin Fratini. Gonzalo Belen",
