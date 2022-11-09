@@ -212,15 +212,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             onComplete: ()=>{
                                 this.#tablero.camara.shake(400, 0.015, false, ()=>{
                                     yunque.visible = false;
-                                    yunque.destroy();
                                 })
+                                yunque.destroy();
                                 this.#tablero.sonidos.sound.yunqueSFX.play()
-                                if(this.getIsTurn()){
-                                    this.onlyMove(1000, true);
-                                }else{
-                                    this.onlyMove(1000, false);
-                                    return;
-                                }
+                                this.onlyMove(1000, true);
                             },
                         })
                         if(!this.getIsTurn()) return
