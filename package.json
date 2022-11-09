@@ -1,19 +1,19 @@
 {
-	"name": "phaser3-parcel-template",
+	"name": "phaser3-temporada-de-patos",
 	"version": "1.0.0",
-	"description": "A template project for Phaser 3 using Parceljs",
+	"description": "Temporada de Patos. Integrantes: Agustin Galvan, Gonzalo Belen, Joaquin Fratin",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
 		"build": "parcel build src/index.html --out-dir dist",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	"author": "supertommy",
+	"author": "Agustin Galvan. Joaquin Fratini. Gonzalo Belen",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ourcade/phaser3-parcel-template.git"
+		"url": "https://github.com/agusstingalvan/phaser3-temporada-de-patos"
 	},
-	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
+	"homepage": "https://github.com/agusstingalvan/phaser3-temporada-de-patos",
 	"devDependencies": {
 		"@babel/core": "^7.10.5",
 		"@babel/plugin-proposal-class-properties": "^7.10.4",
@@ -24,7 +24,8 @@
 		"parcel-plugin-static-files-copy": "^2.4.3"
 	},
 	"dependencies": {
-		"phaser": "^3.55.2"
+		"phaser": "^3.55.2",
+		"underscore": "^1.13.6"
 	},
 	"parcelCleanPaths": [
 		"dist"
