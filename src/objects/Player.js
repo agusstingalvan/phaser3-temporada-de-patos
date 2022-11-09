@@ -16,6 +16,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #impactsMap = [];
     #holidaysMap = [];
     #wavesMap = [];
+    #panMap = [];
     #onHolidays = false;
     #waitOnHolidays = false;
     #haveBand = false;
@@ -205,6 +206,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 const inYunqueBox = this.#yunqueMap.some((numberBox)=> numberBox === position.toString());
                 const inImpactsBox = this.#impactsMap.some((numberBox)=> numberBox === position.toString());
                 const inHolidaysBox = this.#holidaysMap.some((numberBox)=> numberBox === position.toString());
+                const inPanBox = this.#panMap.some((numberBox)=> numberBox === position.toString());
 
                 if(inMoneyBox) {
                     const money = this.#tablero.add.sprite(this.x, this.y - 32, 'money-spritesheet', [3]);
@@ -231,9 +233,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                     yunque.destroy();
                                 })
                                 if(this.getIsTurn()){
-                                    this.changePosition(-7, true);
+                                    this.onlyMove(1000, true);
                                 }else{
-                                    this.changePosition(-7, false);
+                                    this.onlyMove(1000, false);
                                     return;
                                 }
                             },
@@ -241,7 +243,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         if(!this.getIsTurn()) return
                 }
                 if(this.getIsTurn() && inImpactsBox){
-                        const numberRandom = Phaser.Math.Between(1,4);
+                        const numberRandom = Phaser.Math.Between(1,3);
                         switch(numberRandom){
                             case 1:
                                 const propsCerdo = {
@@ -253,22 +255,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 this.deleteMoney();
                                 break;
                             case 2:
-                                const propsPato = {
-                                    scene: this.#tablero,
-                                    animsName: 'pan-anims',
-                                    text: 'Te lanzan un pan y pierdes el siguiente turno.',
-                                    autoChange: true,
-                                    player: this,
-                                }
-                                const postalPan = new Postal(propsPato);
-                                return;
-                                break;
-                            case 3:
                                 const descuento = this.#tablero.add.sprite(this.x, this.y - 32, 'descuento');
                                 descuento.anims.play("discount-anims");
                                 this.setHaveDiscount(true);
                                 break;
-                            case 4:
+                            case 3:
                                 const band = this.#tablero.add.sprite(this.x, this.y - 32, 'band');
                                 band.anims.play("band-anims");
                                 this.setHaveBand(true);
@@ -287,7 +278,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         this.setOnHolidays(true);
                         events.emit('hide-slots')
                 }
-                
+                if(inPanBox){
+                    if(this.#isTurn){
+                        const propsPato = {
+                            scene: this.#tablero,
+                            animsName: 'pan-anims',
+                            text: 'Te lanzan un pan y pierdes el siguiente turno.',
+                            autoChange: true,
+                            player: this,
+                        }
+                        const postalPan = new Postal(propsPato);
+                    }else if(!this.#isTurn){
+                        console.log(this.#name, 'perdio el turno')
+                        this.setWaitTurn(true);
+                    }
+                    return;
+                }
                 
                 //Detect of direction of this player.
                 const direction = newPositon.properties[0].value;
@@ -346,6 +352,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
                 case 'wave': 
                     this.#wavesMap.push(name)
+                break;
+                case 'pan': 
+                    this.#panMap.push(name)
                 break;
             }
         });

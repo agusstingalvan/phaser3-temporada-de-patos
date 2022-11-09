@@ -123,6 +123,7 @@ export default class Tablero extends Phaser.Scene {
             // player.addPowerUp(bomb);
             // player.addPowerUp(nuclearBomb);
             // player.addPowerUp(hook);
+            // player.addPowerUp(hook);
             this.#players = [...this.#players, player];
         }
         console.log(this.#players);

@@ -46,7 +46,7 @@ export default class Interface extends Phaser.Scene{
 
 
         //Wallet
-        this.#moneyLabel = this.add.text(280, this.scale.height - 64, '$:0', {fontSize: 32, fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'}).setOrigin(0, 0.5)
+        this.#moneyLabel = this.add.text(280, this.scale.height - 64, '$0', {fontSize: 32, fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'}).setOrigin(0, 0.5)
 
         
         //Add image of band
@@ -179,7 +179,7 @@ export default class Interface extends Phaser.Scene{
         this.#nameLabel.setText(name);
     }
     updateWallet(wallet){
-        const text = `$:${wallet}`;
+        const text = `$${wallet}`;
         this.#moneyLabel.setText(text);
     }
 

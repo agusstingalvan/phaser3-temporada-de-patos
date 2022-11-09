@@ -68,6 +68,7 @@ export default class Precarga extends Phaser.Scene
         this.load.image("ticket-dice", 'assets/interface/ticket-dice.png');
         this.load.image("ticket-dice-fail", 'assets/interface/ticket-dice-fail.png');
         this.load.image("ticket-dice-right", 'assets/interface/ticket-dice-right.png');
+        this.load.image("tienda", 'assets/interface/tienda.png');
 
 
         //Buttons
