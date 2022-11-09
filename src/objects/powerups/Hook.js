@@ -30,10 +30,10 @@ export default class Hook extends PowerUp{
             const positonArray = players.map(player => ({position: player.getCurrentPosition(), player}));
             const positions = positonArray.sort((a,b) =>  a.position - b.position); 
 
-            const playerCollide = positions[0].player;
+            const playerCollide = positions[positions.length - 1].player;
             
             if(playerCollide.getHaveBand()) {
-                playerCollide.setHaveBand(false)
+                playerCollide.brokenBand()
                 this.#canChangeTurn = true;
                 return this.delete();
             }

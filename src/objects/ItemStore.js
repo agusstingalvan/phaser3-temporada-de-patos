@@ -5,6 +5,7 @@ import Hook from "./powerups/Hook";
 import NuclearBomb from "./powerups/NuclearBomb";
 
 export default class ItemStore {
+    popup
     constructor({scene, items, player}){
         const props = {
             scene: scene,
@@ -14,8 +15,7 @@ export default class ItemStore {
             player: player,
             texture: 'tienda'
         }
-        const popup = new PopUpContainer(props)
-        popup.container.visible = true;
+        this.popup = new PopUpContainer(props);
         let widthContainerItems = 0;
         let itemContainer;
         let containerItems = scene.add.container(0, 0, []);
@@ -26,16 +26,14 @@ export default class ItemStore {
             const image = scene.add.image(0, 0, item.texture)
             const rectangle = scene.add.rectangle(0, 0, image.width + 30, image.height + 30, '0x242424' )
             rectangle.visible = false;
-            // const name = scene.add.text(0, -image.height, item.name).setOrigin(0.5)
             // const priceText = scene.add.text(0, image.height, `Price: $${item.price}`).setOrigin(0.5);
             // priceText.setData('price', item.price)
-            const button = new Button(scene, 0, image.height + 48, 'atlas-botones', "contenedores-madera", ()=>null, `$${item.price}`, 36 );
+            const button = new Button(scene, 0, image.height + 48, 'atlas-botones', "contenedores-madera", ()=>null, `$${item.price}`, 36, 0.7 );
             const btn = button.btn
-            btn.setScale(0.5)
             button.image.setData('price', item.price)
             // const btn = scene.add.text(0, image.height + 24, 'Comprar', {padding: 8, backgroundColor: '#ffffff', color: '#000000', fontStyle: 'bold', fontFamily: 'Montserrat'}).setOrigin(0.5)
 
-
+            console.log(player.getWallet())
             if(player.getWallet() >= item.price && player.getInventory().length < 2){
                 button.image.setInteractive({ useHandCursor: true }).on('pointerdown', ()=>{
                     if(player.getWallet() >= item.price && player.getInventory().length < 2){
@@ -73,7 +71,6 @@ export default class ItemStore {
                         button.image.disableInteractive();
                         btn.setAlpha(.6);
                         image.setTint('0x5c5c5c');
-                        console.log('sii')
                     }
                 })
             }else{
@@ -82,16 +79,17 @@ export default class ItemStore {
                 image.setTint('0x5c5c5c');
             }
             
-            const positionX = index  * (rectangle.width + 20);
-            itemContainer = scene.add.container(positionX, 0, [rectangle,image, btn, ])
+            const positionX = index  * (rectangle.width + 50);
+            itemContainer = scene.add.container(positionX, 0, [rectangle,image, btn])
             widthContainerItems = positionX;
+            console.log(positionX)
             containerItems.add(itemContainer);
-            popup.addChild(containerItems);
+            this.popup.addChild(containerItems);
         })
         containerItems.setX(-(widthContainerItems/ 2))
-        if(widthContainerItems > 386) {
-            let width = (widthContainerItems - 386) / 100;
-            popup.container.list[0].setScale(1 + width + 0.20)
+        if(widthContainerItems > 410) {
+            let width = (widthContainerItems - 410) / 100;
+            this.popup.container.list[0].setScale(1 + width + 0.20)
         }
     }
 }

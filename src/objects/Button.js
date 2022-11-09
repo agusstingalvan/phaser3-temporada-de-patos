@@ -10,6 +10,8 @@ export default class Button {
         .setOrigin(0.5)
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", () => callback())
+        .on("pointerover", () => this.btn.setScale(scale + 0.1))
+        .on("pointerout", () => this.btn.setScale(scale))
         this.btn = scene.add.container(x, y,[this.image, this.#text]).setScale(scale);
     }
     show(){

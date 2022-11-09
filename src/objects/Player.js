@@ -25,7 +25,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #waitTurn = false;
     #pointerEntity;
 
-    constructor({tablero, name,position, currentPositon = 0, texture, frame, isTurn, wallet = 0, invetory = []}){
+    constructor({tablero, name,position, currentPositon = 0, texture, frame, isTurn, wallet = 3000, invetory = []}){
         super(tablero, position.x, position.y, texture, frame)
         this.#tablero = tablero;
         this.#name = name; 
@@ -33,7 +33,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.#currentPosition = currentPositon;
         this.#frameAnimation = frame;
         this.#position = position;
-        this.#wallet = wallet;
+        this.#wallet = wallet = 3000;
         this.#inventory = invetory;
         this.#map = this.#tablero.map;
 
@@ -142,7 +142,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         //Move this player.
-        this.changePosition(this.getNumberDice());
+        this.changePosition(5);
     }
     changePosition(numberPositon, canChangeTurn = true){
 
@@ -160,6 +160,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.getCurrentPosition() === 35){
             this.#tablero.scene.stop('Interface')
             this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
+                events.removeListener('open-store')
+                events.removeListener('close-store')
                 this.#tablero.sonidos.sound.musicTablero.stop();
                 this.#tablero.scene.stop('Tablero')
                 this.#tablero.scene.start('Ganador', {name: this.getName(), sonidos: this.#tablero.sonidos})
@@ -373,5 +375,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     loseTurn(){
         this.setWaitTurn(true);
         this.changeTurn();
+    }
+    brokenBand(){
+        const bandBroken = this.#tablero.add.sprite(this.x, this.y - 32, 'band-broken-spritesheet', [0]);
+        bandBroken.anims.play("band-broken-anims");
+        this.setHaveBand(false)
     }
 }

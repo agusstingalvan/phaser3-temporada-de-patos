@@ -36,12 +36,12 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 x: 700,
                 y: 300,
             },
-            {
-                name: 'Jugador 4',
-                texture: "pato-galera",
-                x: 900,
-                y: 300,
-            }
+            // {
+            //     name: 'Jugador 4',
+            //     texture: "pato-galera",
+            //     x: 900,
+            //     y: 300,
+            // }
         ];
         this.sonidos = data.sonidos;
     }

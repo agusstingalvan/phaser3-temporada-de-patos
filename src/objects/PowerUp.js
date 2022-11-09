@@ -25,8 +25,6 @@ export default class PowerUp extends Phaser.Physics.Arcade.Sprite{
 
         events.emit('hide-dice');
         player.changeTurn()
-        // setTimeout(()=>{
-        // }, 3000)
     }
     delete(){
         this.currentPlayer.setInventory(this.currentPlayer.getInventory().filter((item) => item.texture.key !== this.texture.key)); 

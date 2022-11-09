@@ -55,10 +55,12 @@ export default class Precarga extends Phaser.Scene
 
         //Consecuencias - Impacts
         this.load.image("yunque", 'assets/consecuencias/yunque/yunque.png');
+        this.load.image("pan", 'assets/consecuencias/pan/pan.png');
         this.load.image("holidays", 'assets/consecuencias/holidays/holidays.png');
         this.load.spritesheet("cerdo-spritesheet", 'assets/consecuencias/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet("pan-spritesheet", 'assets/consecuencias/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet('band-spritesheet', 'assets/consecuencias/band/band-spritesheet.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('band-broken-spritesheet', 'assets/consecuencias/band/band-broken-spritesheet.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('discount-spritesheet', 'assets/consecuencias/discount/discount-spritesheet.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('money-spritesheet', 'assets/consecuencias/money/money-spritesheet.png', {frameWidth: 64, frameHeight: 64});
 
@@ -213,6 +215,16 @@ export default class Precarga extends Phaser.Scene
         this.anims.create({
             key: "band-anims",
             frames: this.anims.generateFrameNumbers("band-spritesheet", {
+                start: 0,
+                end: 3,
+            }),
+            hideOnComplete: true,
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: "band-broken-anims",
+            frames: this.anims.generateFrameNumbers("band-broken-spritesheet", {
                 start: 0,
                 end: 3,
             }),

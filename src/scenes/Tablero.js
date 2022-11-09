@@ -57,9 +57,12 @@ export default class Tablero extends Phaser.Scene {
             "atlas-botones",
             "contenedores-madera-x",
             () => {
+                this.#players = [];
                 this.sonidos.sound.musicTablero.stop();    
                 this.cameras.main.fadeOut(500).on('camerafadeoutcomplete', ()=>{
                     this.scene.stop('Interface');
+                    events.removeListener('open-store')
+                    events.removeListener('close-store')
                     this.scene.stop('Tablero');
                     this.scene.start("Inicio");
                 })
@@ -75,10 +78,23 @@ export default class Tablero extends Phaser.Scene {
             if (player.getIsTurn()) {
                 if(player.getWaitTurn()){
                     console.log(`${player.getName()} en la proxima jugada podra jugar.`);
+                    const pan = this.add.image(0, 0, 'pan')
+                    pan.visible = false;
+                    this.add.tween({
+                        targets: pan,
+                        x: Phaser.Math.Between(player.x - 15, player.x + 15),
+                        y: Phaser.Math.Between(player.y - 15, player.y + 15),
+                        ease: "Sine.easeIn",
+                        duration: 600,
+                        repeat: 0,
+                        yoyo: false,
+                        onStart: ()=> pan.visible = true,
+                        onComplete: ()=>{
+                            pan.destroy()
+                        },
+                    })
                     player.changeTurn()
-                    player.setWaitTurn(false);
-                    // setTimeout(()=>{
-                    // }, 3000)
+                    player.setWaitTurn(false);               
                     return;
                 }
                 player.anims.resume();
@@ -94,8 +110,6 @@ export default class Tablero extends Phaser.Scene {
         this.changeTurn();
     }
     addGroups() {
-
-        //#bombsGroup group is only for test
         this.bombsGroup = this.physics.add.group({ allowGravity: false, classType: Bomb })
     }
     addPlayers(salida) {
@@ -135,7 +149,7 @@ export default class Tablero extends Phaser.Scene {
             if(player.getName() === owner) return;
             if(player.getOnHolidays()) return;
             if(player.getHaveBand()) {
-                player.setHaveBand(false);
+                player.brokenBand()
                 bomb.destroy();
                 return
             }

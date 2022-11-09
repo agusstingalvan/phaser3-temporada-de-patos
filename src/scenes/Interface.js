@@ -94,9 +94,9 @@ export default class Interface extends Phaser.Scene{
 
             const items = [{name: 'Bomb', price: 300, texture: 'bomb'}, {name: 'Nuclear Bomb', price: 600, texture: 'nuclear-bomb'},  {name: 'Hook', price: 900, texture: 'hook'}]
             const props  = { scene: player.getTablero(), items, player: player}
-            const popup = new ItemStore(props)
+            const popup = new ItemStore(props);
         })
-        events.on('close-store', ()=>{
+        events.on('close-store', (player, popup)=>{
             this.#openStore = false;
             this.#slots.map((slot) => this.enableSlot(slot));
         })

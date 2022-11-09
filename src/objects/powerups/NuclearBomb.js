@@ -35,7 +35,7 @@ export default class NuclearBomb extends PowerUp{
         const players = this.#scene.getPlayers().filter((player)=> (player.getName() !== this.currentPlayer.getName()) && !player.getOnHolidays());
 
         for(let player of players){
-            if(player.getHaveBand()) player.setHaveBand(false);
+            if(player.getHaveBand()) player.brokenBand();
             if (player.getCurrentPosition() <= 4){
                 player.onlyMove(1000)
             } else{

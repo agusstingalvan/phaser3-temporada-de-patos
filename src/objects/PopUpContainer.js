@@ -15,7 +15,7 @@ export default class PopUpContainer{
             x: (position)? position.x : this.scene.scale.width / 2,
             y: (position)? position.y : this.scene.scale.height / 2
         }
-        this.#isStore = isStore
+        this.#isStore = isStore;
         const background = this.scene.add.image(0, 0, texture)
         const txt = new Text(this.scene, 0, 0, this.#text)
 
@@ -31,6 +31,10 @@ export default class PopUpContainer{
         
         this.container = this.scene.add.container(this.#position.x, this.#position.y, this.#elements).setScale(scale);
         this.container.visible = false;
+
+        if(this.#isStore){
+            this.container.visible = true;
+        }
     }
     addChild(child){
         this.container.add(child)
@@ -46,11 +50,14 @@ export default class PopUpContainer{
         //Return true for the canOpenPopUp in the scene.
         this.scene.canOpenPopUp = true;
         if(changeTurn){
-            player.changeTurn()
+            this.container.visible = false;
+            if(this.#isStore){
+                events.emit('close-store', player, this)
+            }
+            setTimeout(()=>player.changeTurn(), 1000)
         }
-        if(this.#isStore){
-            events.emit('close-store', player)
-        }
+        
+        console.log('cerrando')
         return true
     }
     canOpen(){
