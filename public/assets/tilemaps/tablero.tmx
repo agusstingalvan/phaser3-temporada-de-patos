@@ -65,7 +65,7 @@
    </properties>
    <point/>
   </object>
-  <object id="108" name="7" type="casilla" x="589" y="166">
+  <object id="108" name="7" type="wave" x="589" y="166">
    <properties>
     <property name="direction" value="left"/>
    </properties>
@@ -89,7 +89,7 @@
    </properties>
    <point/>
   </object>
-  <object id="112" name="11" type="casilla" x="836" y="372">
+  <object id="112" name="11" type="yunque" x="836" y="372">
    <properties>
     <property name="direction" value="right"/>
    </properties>
@@ -113,7 +113,7 @@
    </properties>
    <point/>
   </object>
-  <object id="116" name="15" type="casilla" x="665.333" y="303">
+  <object id="116" name="15" type="wave" x="665.333" y="303">
    <properties>
     <property name="direction" value="left"/>
    </properties>
