@@ -168,7 +168,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"wave",
                  "visible":true,
                  "width":0,
                  "x":589,
@@ -240,7 +240,7 @@
                          "value":"right"
                         }],
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"yunque",
                  "visible":true,
                  "width":0,
                  "x":836,
@@ -312,7 +312,7 @@
                          "value":"left"
                         }],
                  "rotation":0,
-                 "type":"casilla",
+                 "type":"wave",
                  "visible":true,
                  "width":0,
                  "x":665.333,
