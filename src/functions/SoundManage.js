@@ -13,5 +13,7 @@ export default class SoundsManage{
         this.sound.nuclearSFX = this.sound.add("sonido-nuclear");
         this.sound.bombSFX = this.sound.add("sonido-bomba");
         this.sound.btnSFX = this.sound.add("sonido-boton");
+        
+        if(localStorage.getItem('volume')) this.sound.volume = JSON.parse(localStorage.getItem('volume')) / 100;
     }
 }

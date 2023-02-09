@@ -8,7 +8,7 @@ export default class PopUpContainer{
     #position;
     #elements;
     #isStore;
-    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null, changeTurn = false, player, isStore = false}){
+    constructor({scene, position, text, texture = 'popup-contenedor', scale = 1, btnClose = null, btnCloseSize = 30, changeTurn = false, player, isStore = false}){
         this.scene = scene.scene.scene;
         this.#text = (text)? text : null;
         this.#position = {
