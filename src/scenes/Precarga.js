@@ -28,7 +28,6 @@ export default class Precarga extends Phaser.Scene
         this.load.atlas('atlas-patos-statics', 'assets/patos/atlas-patos-statics.png', 'assets/patos/atlas-patos-statics.json')
 
         //Pointer of ducks
-        this.load.image("point", 'assets/pointers/point.png');
         this.load.spritesheet("pointer-duck", 'assets/pointers/pointer-spritesheet.png', {frameWidth: 64, frameHeight: 64})
 
         //Spritesheets of "ducks"
@@ -73,7 +72,6 @@ export default class Precarga extends Phaser.Scene
 
 
         //Utils
-        this.load.image("reloj", 'assets/reloj.png');
         this.load.image("ticket-dice", 'assets/interface/ticket-dice.png');
         this.load.image("ticket-dice-fail", 'assets/interface/ticket-dice-fail.png');
         this.load.image("ticket-dice-right", 'assets/interface/ticket-dice-right.png');
@@ -112,7 +110,6 @@ export default class Precarga extends Phaser.Scene
         this.load.audio('sonido-boton', 'assets/sounds/sonido-boton.mp3');
 
         //PopUps
-        this.load.image('popup-contenedor', 'assets/popups/popup-contenedor.png');
         this.load.image('popup-ayuda', 'assets/popups/popup-ayuda.png');
         this.load.image('popup-opciones', 'assets/popups/popup-opciones.png');
         this.load.image('popup-creditos', 'assets/popups/popup-creditos.png');
