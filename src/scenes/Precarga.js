@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
+import { getLanguageConfig, getTranslations } from "../services/translations";
 export default class Precarga extends Phaser.Scene
 {
+    #language;
 	constructor()
 	{
 		super('Precarga')
@@ -8,6 +10,8 @@ export default class Precarga extends Phaser.Scene
 
 	preload()
     {
+        this.#language = getLanguageConfig();
+        getTranslations(this.#language);
         this.load.image('cargando', 'assets/escenas/cargando.png')
         //Tilemaps
         this.load.tilemapTiledJSON("tableroTile", "assets/tilemaps/tablero.json");
@@ -75,9 +79,10 @@ export default class Precarga extends Phaser.Scene
 
 
         //Buttons
-        this.load.atlas("botones", 'assets/botones/atlas_botones_amarrillos.png', 'assets/botones/atlas_botones_amarrillos.json')
         this.load.atlas("atlas-botones", 'assets/botones/atlas-botones.png', 'assets/botones/atlas-botones.json')
         this.load.image('boton-check', 'assets/botones/boton-check.png');
+        this.load.image('en-US', 'assets/botones/en-US.png');
+        this.load.image('es-Ar', 'assets/botones/es-Ar.png');
         this.load.image('boton-lapiz-edit', 'assets/botones/boton-lapiz-edit.png');
         this.load.image('contenedor-madera', 'assets/botones/contenedores-madera.png');
         
@@ -117,11 +122,13 @@ export default class Precarga extends Phaser.Scene
         const txt = this.add.text(this.scale.width / 2, this.scale.height / 2, '0%',{fontSize: '18px', fontStyle: 'bold', color: 'white', fontFamily: 'Montserrat'} ).setOrigin(0.5)
         this.load.on('progress', (progress)=>{
             rectangleProgress.width = maxWidth * progress;
-            console.log()
             txt.setText(`${Math.round(progress * 100)}%`)
         })
         this.load.on('complete',  () => {
-            this.scene.start('Inicio');
+            getTranslations(
+                this.#language,
+                () => this.scene.start('Inicio', { language: this.#language }),
+            );
         });
     }
 

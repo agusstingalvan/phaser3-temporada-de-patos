@@ -23,10 +23,11 @@ export default class PopUpContainer{
         const rightPosition = background.width / 2;
         const topPosition = background.texture.frames.__BASE.height / 2;
 
-        const buttonClose = new Text(this.scene, rightPosition - 30, -topPosition + 30, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true }).on('pointerdown', ()=> {
+        const buttonClose = new Text(this.scene, rightPosition - 30, -topPosition + 30, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true })
+        .on('pointerdown', ()=> {
             this.scene.sonidos.sound.btnSFX.play()
             this.hide(changeTurn, player)
-        });
+        }).on('pointerover', ()=> this.container.list[2].setScale(1.2)).on("pointerout", () => this.container.list[2].setScale(1));
         
         //If exist the button, then create one in the container.
         (btnClose)? this.#elements = [background, txt, buttonClose] : this.#elements = [background, txt];

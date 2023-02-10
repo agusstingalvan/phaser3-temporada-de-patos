@@ -1,4 +1,6 @@
+import { sceneTablero } from "../enums/keys";
 import { sharedInstance as events } from "../scenes/EventCenter";
+import { getPhrase } from "../services/translations";
 import Postal from "./Postal";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     #tablero;
@@ -36,7 +38,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.#wallet = wallet;
         this.#inventory = invetory;
         this.#map = this.#tablero.map;
-
         this.#tablero.add.existing(this);
         this.#tablero.physics.add.existing(this);
         this.body.allowGravity = false;
@@ -155,7 +156,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 events.removeListener('close-store')
                 this.#tablero.sonidos.sound.musicTablero.stop();
                 this.#tablero.scene.stop('Tablero')
-                this.#tablero.scene.start('Ganador', {name: this.getName(), sonidos: this.#tablero.sonidos})
+                this.#tablero.scene.start('Ganador', {name: this.getName(), sonidos: this.#tablero.sonidos, language: this.#tablero.language})
             })
             return
         }
@@ -227,7 +228,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                                 const propsCerdo = {
                                     scene: this.#tablero,
                                     animsName: 'cerdo-anims',
-                                    text: 'El cerdo banquero te cobra los impuestos.'
+                                    text: getPhrase(sceneTablero.cerdo)
                                 }
                                 const postalCerdo = new Postal(propsCerdo);
                                 this.deleteMoney();
@@ -249,7 +250,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             const props = {
                                 scene: this.#tablero,
                                 image: 'holidays',
-                                text: '     Estás tomando unas vacaciones.\nNecesitas sacar un 4 para salir de ellas.'
+                                text: getPhrase(sceneTablero.vacaciones)
                             }
                             const postalHolidays = new Postal(props)
                         }
@@ -261,7 +262,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         const propsPato = {
                             scene: this.#tablero,
                             animsName: 'pan-anims',
-                            text: 'Te lanzan un pan y pierdes el siguiente turno.',
+                            text: getPhrase(sceneTablero.pan),
                             autoChange: true,
                             player: this,
                         }
