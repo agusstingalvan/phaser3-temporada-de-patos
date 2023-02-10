@@ -8,7 +8,7 @@ const firebaseConfig = {
     storageBucket: "temporada-de-patos.appspot.com",
     messagingSenderId: "1042917914585",
     appId: "1:1042917914585:web:cc59b6e15db186939a8bc8"
-  };
+};
 
 
 const app = initializeApp(firebaseConfig);

@@ -26,18 +26,7 @@ export default class Ganador extends Phaser.Scene
 
     async create()
     {
-        try {
-            const gameParty = {
-                id: window.crypto.randomUUID(),
-                name: this.#winPlayer,
-                counterMovement: this.#counterMovement,
-                skin: this.#skin,
-            }
-            await setGame(gameParty)
-            const topGames = await getTop();
-        } catch (error) {
-            console.log('Raios! Ocurrió al intentar acceder y/o cargar datos de la DataBase! ')
-        }
+        
         this.sonidos.sound.musicTablero.stop()
         this.sonidos.sound.ganadorSFX.play()
         this.getTranslations(this.#language);  
@@ -54,6 +43,29 @@ export default class Ganador extends Phaser.Scene
             })
         }, getPhrase(sceneGanador.volver), 28 )
         
+        try {
+            const gameParty = {
+                id: window.crypto.randomUUID(),
+                name: this.#winPlayer,
+                counterMovement: this.#counterMovement,
+                skin: this.#skin,
+            }
+            await setGame(gameParty);
+            const topGames = await getTop();
+            if(topGames.length != 0){
+                this.add.text((this.scale.width) - 200, 20, '🏆 - TOP#10:', {fontSize: 28, fontStyle: 'bold', color: 'black', fontFamily: 'Montserrat'})
+            topGames.map((top, index) => {
+                let icon = null;
+                if(index === 0) icon = '🥇';
+                if(index === 1) icon = '🥈';
+                if(index === 2) icon = '🥉';
+
+                return this.add.text((this.scale.width) - 200, (index * 20) +  60, `${icon? icon : index + 1}#- ${top.name} - 🎲:  ${top.counterMovement}`,  {fontSize: 16, fontStyle: 'bold', color: 'black', fontFamily: 'Montserrat'});
+            })
+            }
+        } catch (error) {
+            console.log('Raios! Ocurrió al intentar acceder y/o cargar datos de la DataBase! ')
+        }
     }
     async getTranslations(language){
         const res = await getTranslations(language)

@@ -62,6 +62,8 @@ export default class Precarga extends Phaser.Scene
         this.load.image("yunque", 'assets/consecuencias/yunque/yunque.png');
         this.load.image("pan", 'assets/consecuencias/pan/pan.png');
         this.load.image("holidays", 'assets/consecuencias/holidays/holidays.png');
+        this.load.image("cerdo-static", 'assets/consecuencias/cerdo/cerdo-static.png');
+        this.load.image("pan-static", 'assets/consecuencias/pan/pan-static.png');
         this.load.spritesheet("cerdo-spritesheet", 'assets/consecuencias/cerdo/cerdo-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet("pan-spritesheet", 'assets/consecuencias/pan/pan-spritesheet.png', {frameWidth: 575, frameHeight: 315})
         this.load.spritesheet('band-spritesheet', 'assets/consecuencias/band/band-spritesheet.png', {frameWidth: 64, frameHeight: 64});

@@ -25,7 +25,11 @@ export default class Postal{
             elements = [background, imageStatic, textLabel];
             setTimeout(()=>{
                 if(autoClose){
+                    if(callback) callback()
                     this.container.visible = false;
+                    if(autoChange){
+                        player?.loseTurn();
+                    }
                 }
             }, 3000)
         }

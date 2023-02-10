@@ -143,7 +143,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.#counterMovement++;
         //Move this player.
-        this.changePosition(35);
+        this.changePosition(this.getNumberDice());
     }
     changePosition(numberPositon, canChangeTurn = true){
         //The number 1000, is for init position one (1) in the tablero.
@@ -229,7 +229,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                             case 1:
                                 const propsCerdo = {
                                     scene: this.#tablero,
-                                    animsName: 'cerdo-anims',
+                                    image: 'cerdo-static',
                                     text: getPhrase(sceneTablero.cerdo)
                                 }
                                 const postalCerdo = new Postal(propsCerdo);
@@ -263,7 +263,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     if(this.#isTurn){
                         const propsPato = {
                             scene: this.#tablero,
-                            animsName: 'pan-anims',
+                            image: 'pan-static',
                             text: getPhrase(sceneTablero.pan),
                             autoChange: true,
                             player: this,
