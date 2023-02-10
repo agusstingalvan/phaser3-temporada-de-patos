@@ -23,7 +23,7 @@ export default class PopUpContainer{
         const rightPosition = background.width / 2;
         const topPosition = background.texture.frames.__BASE.height / 2;
 
-        const buttonClose = new Text(this.scene, rightPosition - 30, -topPosition + 30, 'X', {color: 'red', fontStyle: 'bold', fontSize: 30}).setInteractive({ useHandCursor: true })
+        const buttonClose = new Text(this.scene, rightPosition - 30, -topPosition + 30, 'X', {color: 'red', fontStyle: 'bold', fontSize: btnCloseSize}).setInteractive({ useHandCursor: true })
         .on('pointerdown', ()=> {
             this.scene.sonidos.sound.btnSFX.play()
             this.hide(changeTurn, player)
