@@ -2,12 +2,15 @@ import Phaser from 'phaser'
 import { sceneGanador } from '../enums/keys';
 import Button from '../objects/Button';
 import { getPhrase, getTranslations } from '../services/translations';
+import { getTop } from '../services/getTop';
+import { setGame } from '../services/setGame';
 
 export default class Ganador extends Phaser.Scene
 {
     #winPlayer;
     #language;
-
+    #counterMovement;
+    #skin;
 	constructor()
 	{
 		super('Ganador')
@@ -17,10 +20,24 @@ export default class Ganador extends Phaser.Scene
         this.#winPlayer = data.name;
         this.sonidos = data.sonidos;
         this.#language = data.language;
+        this.#counterMovement = data.counterMovement;
+        this.#skin = data.skin;
     }
 
-    create()
+    async create()
     {
+        try {
+            const gameParty = {
+                id: window.crypto.randomUUID(),
+                name: this.#winPlayer,
+                counterMovement: this.#counterMovement,
+                skin: this.#skin,
+            }
+            await setGame(gameParty)
+            const topGames = await getTop();
+        } catch (error) {
+            console.log('Raios! Ocurrió al intentar acceder y/o cargar datos de la DataBase! ')
+        }
         this.sonidos.sound.musicTablero.stop()
         this.sonidos.sound.ganadorSFX.play()
         this.getTranslations(this.#language);  

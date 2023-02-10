@@ -6,6 +6,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     #tablero;
     #name;
     #isTurn;
+    #counterMovement = 0;
     #currentPosition = 0;
     #frameAnimation;
     #position = 0;
@@ -140,8 +141,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.setOnHolidays(false);
         }
 
+        this.#counterMovement++;
         //Move this player.
-        this.changePosition(this.getNumberDice());
+        this.changePosition(35);
     }
     changePosition(numberPositon, canChangeTurn = true){
         //The number 1000, is for init position one (1) in the tablero.
@@ -152,11 +154,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.getCurrentPosition() === 35){
             this.#tablero.scene.stop('Interface')
             this.#tablero.cameras.main.fadeOut(1500).on('camerafadeoutcomplete', ()=>{
-                events.removeListener('open-store')
-                events.removeListener('close-store')
+                events.removeListener('open-store');
+                events.removeListener('close-store');
                 this.#tablero.sonidos.sound.musicTablero.stop();
-                this.#tablero.scene.stop('Tablero')
-                this.#tablero.scene.start('Ganador', {name: this.getName(), sonidos: this.#tablero.sonidos, language: this.#tablero.language})
+                this.#tablero.scene.stop('Tablero');
+                this.#tablero.scene.start('Ganador', {name: this.getName(), counterMovement: this.#counterMovement, skin: this.#frameAnimation, sonidos: this.#tablero.sonidos, language: this.#tablero.language});
             })
             return
         }

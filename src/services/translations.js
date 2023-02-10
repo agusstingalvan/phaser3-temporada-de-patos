@@ -1,5 +1,6 @@
 import {EN_US, ES_AR } from '../enums/languages';
 
+
 const PROJECT_ID = '40';
 let translations = null;
 let language = ES_AR;
@@ -7,6 +8,8 @@ let language = ES_AR;
 export async function getTranslations(lang = language, callback) {
     localStorage.setItem('translations', '{}');
     language = lang;
+
+    //Este if- no nos quiere :( - si ponemos este if autodefensimo no funciona nada (-.-)
     // if (language === ES_AR) {
     //     return callback ? callback() : false;
     // }
