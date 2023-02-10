@@ -10,6 +10,7 @@ export default class ItemStore {
         const props = {
             scene: scene,
             btnClose: true,
+            btnCloseSize: 70,
             isStore: true,
             changeTurn: true,
             player: player,

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { config } from './config';
+import { getTop } from './services/getTop';
 
 
 export default new Phaser.Game(config);

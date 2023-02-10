@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
+import { sceneSeleccionPersonajes } from '../enums/keys';
 import Button from '../objects/Button';
 import PopUpContainer from '../objects/PopupContainer';
+import { getTranslations, getPhrase } from '../services/translations';
 
 let stringName = ""
 
@@ -13,11 +15,18 @@ export default class SeleccionPersonajes extends Phaser.Scene
     #btnHelp;
     #popUpHelp;
     canOpenPopUp = true;
-    #pop
     #language;
-
+    #listo;
+    #jugador;
+    #escriba;
+    #mensajeTutorial;
 	constructor() {
         super("SeleccionPersonajes");
+        const {listo, mensajeTutorial, jugador, escriba} = sceneSeleccionPersonajes;
+        this.#listo = listo;
+        this.#mensajeTutorial = mensajeTutorial;
+        this.#jugador = jugador;
+        this.#escriba = escriba;
     }
     init(data) {
         this.canEdit = true
@@ -25,33 +34,35 @@ export default class SeleccionPersonajes extends Phaser.Scene
         stringName = "";
         this.#players =  [
             {
-                name: 'Jugador 1',
+                name: `${getPhrase(this.#jugador)} 1`,
                 texture: "pato-bruja",
                 x: 300,
                 y: 300,
             },
             {
-                name: 'Jugador 2',
+                name: `${getPhrase(this.#jugador)} 2`,
                 texture: "pato-recibido",
                 x: 525,
                 y: 300,
             },
             {
-                name: 'Jugador 3',
+                name: `${getPhrase(this.#jugador)} 3`,
                 texture: "pato-verde",
                 x: 700,
                 y: 300,
             },
             {
-                name: 'Jugador 4',
+                name: `${getPhrase(this.#jugador)} 4`,
                 texture: "pato-galera",
                 x: 900,
                 y: 300,
             }
         ];
         this.sonidos = data.sonidos;
+        this.#language = data.language;
     }
-    create() {        
+    create() {
+        this.getTranslations(this.#language);  
         const {width, height} = this.scale;
         const positionCenter = {
             x: width / 2,
@@ -78,25 +89,39 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 return;
             }
             
-        }, 'TUTORIAL', 24,  0.85);
+        }, getPhrase('Tutorial'), 24,  0.85);
         this.#popUpHelp = this.createPopUp({
             scene: this,
             texture: 'popup-ayuda',
             btnClose: true,
             scale: 1,
         })
+        const titleIncognita = this.createText(-325, -140, sceneSeleccionPersonajes.tutorialCIncognitaTitulo);
+        const textIncognita = this.createText(-320, -100, sceneSeleccionPersonajes.tutorialCIncognitaTexto, 24);
+        const titlePan = this.createText(-350, 30, sceneSeleccionPersonajes.tutorialPanTitulo);
+        const textPan = this.createText(-355, 70, sceneSeleccionPersonajes.tutorialPanTexto, 24);
+
+        const titleYunque = this.createText(150, -140, sceneSeleccionPersonajes.tutorialYunqueTitulo);
+        const textYunque = this.createText(150, -100, sceneSeleccionPersonajes.tutorialYunqueTexto, 24);
+
+        const titleStore = this.createText(150, 30, sceneSeleccionPersonajes.tutorialTiendaTitulo);
+        const textStore = this.createText(150, 70, sceneSeleccionPersonajes.tutorialTiendaTexto, 24);
+        const containerHelp = this.add.container(100, 5, [titleIncognita, textIncognita, titlePan, textPan, titleYunque, textYunque, titleStore, textStore]);
+        this.#popUpHelp.addChild(containerHelp)
+
+
         const btnListo = new Button(this, width / 2, height - 100, 'atlas-botones', "contenedores-madera", () => {
             btnListo.image.disableInteractive()
             this.sonidos.sound.seleccionPersonajesSFX.play()
             setTimeout(()=>{
-                this.scene.start("Tablero", { players: this.#players, sonidos })
-                this.sonidos.sound.musicMain.stop()
+                this.scene.start("Tablero", { players: this.#players, sonidos, language: this.#language });
+                this.sonidos.sound.musicMain.stop();
             }, 2400)
             
-        }, 'LISTO', 30,  1.35);
+        }, getPhrase(this.#listo), 30,  1.35);
         
-        this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(1.5, 1)
-        this.#textLabel = this.add.text(this.scale.width + 160, 128, 'Recuerda leer\n el tutorial.', {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
+        this.#imageDice = this.add.image(this.scale.width + 150, 128, 'ticket-dice').setScale(3, 1.5)
+        this.#textLabel = this.add.text(this.scale.width + 160, 128, getPhrase(this.#mensajeTutorial), {fontSize: 16, fontStyle: 'bold',  color: '242424', fontFamily: 'Montserrat'} ).setOrigin(0.5);
         this.#imageDice.visible = true;
         this.#textLabel.visible = false;
         const altura = 128;
@@ -148,7 +173,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             //Primero verifico si no hay ningun otro editandoce.
             if (!this.canEdit) return;
             this.canEdit = false;
-            nameText.setText("Escriba...");
+            nameText.setText(`${getPhrase(this.#escriba)}...`);
             nameText.setColor("red");
             stringName = "";
             window.addEventListener("keydown", writeName);
@@ -160,7 +185,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 btnReady.visible = false;
                 nameText.setColor("white");
                 window.removeEventListener("keydown", writeName);
-                if (nameText.text === "Escriba...") {
+                if (nameText.text === `${getPhrase(this.#escriba)}...`) {
                     nameText.setText(playerObj.name);
                 }
                 });
@@ -171,7 +196,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
             btnReady.visible = false;
             nameText.setColor("white");
             window.removeEventListener("keydown", writeName);
-            if (nameText.text === "Escriba...") {
+            if (nameText.text === `${getPhrase(this.#escriba)}...`) {
                 nameText.setText(playerObj.name);
             }
         });
@@ -203,7 +228,7 @@ export default class SeleccionPersonajes extends Phaser.Scene
                 btnReady.visible = false;
                 nameText.setColor("white");
                 window.removeEventListener("keydown", writeName);
-                if (nameText.text === "Escriba...") {
+                if (nameText.text === "Escriba..." || nameText.text === "Write...") {
                     nameText.setText(playerObj.name);
                 }
                 return
@@ -217,5 +242,11 @@ export default class SeleccionPersonajes extends Phaser.Scene
     }
     createPopUp(data){
         return new PopUpContainer(data)
+    }
+    createText(x, y, string, size=30 ){
+        return this.add.text(x, y, getPhrase(string), {fontSize: size, fontStyle: 'bold',  color: 'white', fontFamily: 'Montserrat'}).setOrigin(0.5)
+    }
+    async getTranslations(language){
+        const res = await getTranslations(language)
     }
 }

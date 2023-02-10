@@ -4,24 +4,27 @@ import Player from '../objects/Player';
 import { sharedInstance as events } from './EventCenter';
 import Bomb from '../objects/powerups/Bomb';
 import Button from '../objects/Button';
+import { getTranslations } from '../services/translations';
 
 export default class Tablero extends Phaser.Scene {
     #playersData = []; //Data of name with texture of player;
     #players = []; //Intances of class Player 
     #currentPlayer;
+    language;
     bombsGroup;
     nuclearBombsGroup;
     map;
     constructor() {
-        super('Tablero')
+        super('Tablero');
     }
     getPlayers(){
         return this.#players;
     }
-    init({ players, sonidos }) {
+    init({ players, sonidos, language }) {
         this.#playersData = shuffle(players);
         this.#players = [];
         this.sonidos = sonidos;
+        this.language = language;
     }
 
     create() {
@@ -31,7 +34,7 @@ export default class Tablero extends Phaser.Scene {
         this.sonidos.sound.inicioPartidaSFX.on('complete', ()=>{
             this.sonidos.sound.musicTablero.play();
         })
-        // setTimeout(()=>, 4000)
+        this.getTranslations(this.language);  
         this.scene.launch('Interface', {sonidos: this.sonidos});
         this.map = this.make.tilemap({ key: "tableroTile" });
         const tiledBackground = this.map.addTilesetImage("background", "fondo-tablero");
@@ -148,5 +151,8 @@ export default class Tablero extends Phaser.Scene {
             }
             bomb.effect(player);
         }, null, this);
+    }
+    async getTranslations(language){
+        const res = await getTranslations(language)
     }
 }
