@@ -1,40 +1,32 @@
 {
-	"name": "phaser3-temporada-de-patos",
-	"version": "1.0.0",
-	"description": "Temporada de Patos. Integrantes: Agustin Galvan, Gonzalo Belen, Joaquin Fratin",
-	"scripts": {
-		"start": "parcel src/index.html -p 8000",
-		"build": "parcel build src/index.html --out-dir dist --no-minify",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author": "Agustin Galvan. Joaquin Fratini. Gonzalo Belen",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/agusstingalvan/phaser3-temporada-de-patos"
-	},
-	"homepage": "https://github.com/agusstingalvan/phaser3-temporada-de-patos",
-	"devDependencies": {
-		"@babel/core": "^7.10.5",
-		"@babel/plugin-proposal-class-properties": "^7.10.4",
-		"babel-eslint": "^10.1.0",
-		"cssnano": "^5.1.14",
-		"eslint": "^6.8.0",
-		"minimist": ">=1.2.2",
-		"parcel-plugin-clean-easy": "^1.0.2",
-		"parcel-plugin-static-files-copy": "^2.4.3",
-		"postcss": "^8.4.18"
-	},
-	"dependencies": {
-		"firebase": "^9.17.1",
-		"phaser": "^3.55.2",
-		"underscore": "^1.13.6"
-	},
-	"parcelCleanPaths": [
-		"dist"
-	],
-	"staticFiles": {
-		"staticPath": "public",
-		"watcherGlob": "**"
-	}
+  "name": "phaser3-temporada-de-patos",
+  "description": "Temporada de Patos. Integrantes: Agustin Galvan, Gonzalo Belen, Joaquin Fratin",
+  "version": "1.3.2",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phaserjs/template-vite.git"
+  },
+  "author": "Agustin Galvan <agusstingalvan2@gmail.com> (https://agustingalvan.netlify.app/)",
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "bugs": {
+    "url": "https://github.com/agusstingalvan/phaser3-temporada-de-patos/issues"
+  },
+  "homepage": "https://github.com/agusstingalvan/phaser3-temporada-de-patos#readme",
+  "scripts": {
+    "dev": "node log.js dev & vite --config vite/config.dev.mjs",
+    "build": "node log.js build & vite build --config vite/config.prod.mjs",
+    "dev-nolog": "vite --config vite/config.dev.mjs",
+    "build-nolog": "vite build --config vite/config.prod.mjs"
+  },
+  "devDependencies": {
+    "terser": "^5.31.0",
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "firebase": "^9.17.1",
+    "phaser": "^3.88.2",
+    "underscore": "^1.13.7"
+  }
 }

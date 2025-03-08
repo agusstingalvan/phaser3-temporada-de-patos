@@ -1,6 +1,4 @@
-module.exports = {
-    READY: 'ready',
-    TODO: 'todo',
-    FETCHING: 'fetching',
-    FETCHED: 'fetched',
-};
+export const READY = "ready";
+export const TODO = "todo";
+export const FETCHING = "fetching";
+export const FETCHED = "fetched";
