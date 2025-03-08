@@ -1,4 +1,2 @@
-module.exports = {
-    ES_AR: 'es-Ar',
-    EN_US: 'en-US',
-};
+export const ES_AR = "es-Ar";
+export const EN_US = "en-US";
