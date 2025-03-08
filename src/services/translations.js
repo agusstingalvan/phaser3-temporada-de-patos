@@ -1,55 +1,59 @@
-import {EN_US, ES_AR } from '../enums/languages';
+import { EN_US, ES_AR } from "../enums/languages";
 
-
-const PROJECT_ID = '40';
+const PROJECT_ID = "40";
 let translations = null;
 let language = ES_AR;
 
 export async function getTranslations(lang = language, callback) {
-    localStorage.setItem('translations', '{}');
-    language = lang;
+  localStorage.setItem("translations", "{}");
+  language = lang;
 
-    //Este if- no nos quiere :( - si ponemos este if autodefensimo no funciona nada (-.-)
-    // if (language === ES_AR) {
-    //     return callback ? callback() : false;
-    // }
+  //Este if- no nos quiere :( - si ponemos este if autodefensimo no funciona nada (-.-)
+  // if (language === ES_AR) {
+  //     return callback ? callback() : false;
+  // }
 
-    return await fetch(`https://traduci-la-strapi.herokuapp.com/api/translations/${PROJECT_ID}/${language}`)
-    .then(response => response.json())
-    .then(data => {
-        localStorage.setItem('translations', JSON.stringify(data));
-        translations = data;
-        if(callback) callback()
+  return await fetch(
+    `https://traduci-la-strapi.herokuapp.com/api/translations/${PROJECT_ID}/${language}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem("translations", JSON.stringify(data));
+      translations = data;
+      if (callback) callback();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 }
 
 export function getPhrase(key) {
-    if (!translations) {
-        // console.log("🚀 ~ file: translations.js ~ line 25 ~ getPhrase ~ translations", translations)
-        const locals = localStorage.getItem('translations');
-        translations = locals ? JSON.parse(locals) : null;
-    }
+  if (!translations) {
+    // console.log("🚀 ~ file: translations.js ~ line 25 ~ getPhrase ~ translations", translations)
+    const locals = localStorage.getItem("translations");
+    translations = locals ? JSON.parse(locals) : null;
+  }
 
-    let phrase = key;
-    if (translations && translations[key]) {
-        phrase = translations[key];
-    }
-    // console.log(phrase)
-    return phrase;
+  let phrase = key;
+  if (translations && translations[key]) {
+    phrase = translations[key];
+  }
+  // console.log(phrase)
+  return phrase;
 }
 
 function isAllowedLanguge(language) {
-    const allowedLanguages = [ES_AR, EN_US];
-    return allowedLanguages.includes(language);
+  const allowedLanguages = [ES_AR, EN_US];
+  return allowedLanguages.includes(language);
 }
 
 export function getLanguageConfig() {
-    let languageConfig;
+  let languageConfig;
 
-    // Obtener desde la URL el idioma
-    console.log(window.location.href)
+  // Obtener desde la URL el idioma
+  console.log(window.location.href);
 
-    /* 
+  /* 
       depende como lo manejemos: 
       1) puede venir como www.dominio.com/es-AR
       2) puede venir como www.dominio.com?lang=es-AR
@@ -59,22 +63,22 @@ export function getLanguageConfig() {
       vamos a implementar una logica que cubra ambos casos
     */
 
-    const path = window.location.pathname;
-    const params = new URL(window.location.href).searchParams;
-    const queryLang = params.get('lang');
+  const path = window.location.pathname;
+  const params = new URL(window.location.href).searchParams;
+  const queryLang = params.get("lang");
 
-    languageConfig = path ?? queryLang;
+  languageConfig = path ?? queryLang;
 
-    if (languageConfig) {
-        if (isAllowedLanguge(languageConfig)) {
-            return languageConfig;
-        }
+  if (languageConfig) {
+    if (isAllowedLanguge(languageConfig)) {
+      return languageConfig;
     }
+  }
 
-    const browserLanguage = window.navigator.language;
-    if (isAllowedLanguge(browserLanguage)) {
-        return browserLanguage;
-    }
+  const browserLanguage = window.navigator.language;
+  if (isAllowedLanguge(browserLanguage)) {
+    return browserLanguage;
+  }
 
-    return ES_AR;
+  return ES_AR;
 }
